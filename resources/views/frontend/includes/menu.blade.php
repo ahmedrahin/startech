@@ -1,156 +1,228 @@
-<header class="header">
-
-    <div class="header-middle">
+<header id="header">
+    <div class="top">
         <div class="container">
-            <div class="header-left mr-md-4">
-                <a href="#" class="mobile-menu-toggle  w-icon-hamburger">
-                </a>
-                <a href="{{ url('/') }}" class="logo ml-lg-0">
-                    <img src="{{ asset(config('app.logo')) }}" alt="logo"  height="45" />
-                </a>
-                <nav class="main-nav">
-                    <ul class="menu">
-                        <li class="{{ request()->is('/') ? 'active' : '' }}">
-                            <a href="{{ url('/') }}">Home</a>
-                        </li>
-                        <li class="{{ request()->is('shop*') ? 'active' : '' }}">
-                            <a href="{{ route('shop') }}">Shop</a>
-                        </li>
-                        <li class="{{ request()->routeIs('about') ? 'active' : '' }}">
-                            <a href="{{ route('about') }}">About Us</a>
-                        </li>
-                        <li class="{{ request()->routeIs('contact') ? 'active' : '' }}">
-                            <a href="{{ route('contact') }}">Contact Us</a>
-                        </li>
-
-                    </ul>
-                </nav>
-            </div>
-            <div class="header-right ml-4">
-
-                @if (auth()->check())
-                     @php
-                        $route = Auth::user()->isAdmin == 1 ? route('admin-management.admin-list.show', Auth::id()) : route('user.dashboard');
-                    @endphp
-                    <div class="account align-items-center d-sm-show">
-                        <a class="login inline-type d-flex ls-normal" href="{{ $route }}">
-                            <i class="w-icon-account d-flex align-items-center justify-content-center br-50"></i>
-                            <span class="d-flex flex-column justify-content-center ml-1 d-xl-show">
-                                <b class="d-block font-weight-bold ls-25">{{ auth()->user()->name }}</b>
-                            </span>
-                        </a>
+            <div class="ht-item logo">
+                <div class="mbl-nav-top h-desk">
+                    <div id="nav-toggler">
+                        <span></span>
+                        <span></span>
+                        <span></span>
                     </div>
-                @else
-                <div class="account align-items-center d-sm-show m-0">
-                    <a class="login inline-type d-flex ls-normal" href="{{ route('user.login') }}">
-                        <span class="d-flex flex-column justify-content-center  d-xl-show" style="font-weight: 500;">
-                            Login
-                        </span>
-                    </a>
                 </div>
-                <span class="m-2">/</span>
-                <div class="account align-items-center d-sm-show m-0">
-                    <a class="login inline-type d-flex ls-normal" href="{{ route('register') }}">
-                        <span class="d-flex flex-column justify-content-center  d-xl-show" style="font-weight: 500;">
-                            Register
-                        </span>
-                    </a>
+                <a class="brand" href="{{ url('/') }}"><img
+                        src="{{ asset(config('app.logo')) }}" title="Star Tech Ltd " width="144"
+                        height="164" alt="Star Tech Ltd "></a>
+                <div class="mbl-right h-desk">
+                    <div class="ac search-toggler"><i class="material-icons">search</i></div>
+                    <div class="ac mc-toggler"><i class="material-icons">shopping_basket</i><span class="counter"
+                            data-count="0">0</span></div>
                 </div>
-                @endif
-                <span class="mr-6 d-xl-show"></span>
-                <div class="dropdown cart-dropdown search-boxmenu for-mobile">
-                    <i class="w-icon-search" onclick="toggleSearchBox()" style="margin-right: 0 !important"></i>
+            </div>
+            <div class="ht-item search" id="search">
+                <input type="text" name="search" placeholder="Search" autocomplete="off" />
+                <button class="material-icons">search</button>
+            </div>
+            <div class="ht-item q-actions">
+                <a href="https://www.startech.com.bd/information/offer" class="ac h-offer-icon">
+                    <div class="ic"><i class="material-icons">card_giftcard</i></div>
+                    <div class="ac-content">
+                        <h5>Offers</h5>
+                        <p>Latest Offers</p>
+                    </div>
+                </a>
+                <a href="https://www.startech.com.bd/happy-hour" class="ac h-offer-icon">
+                    <div class="ic"><i class="material-icons blink">flash_on</i></div>
+                    <div class="ac-content">
+                        <h5>Happy Hour</h5>
+                        <p>Special Deals</p>
+                    </div>
+                </a>
+                <a href="https://www.startech.com.bd/tool/pc_builder" class="ac h-desk build-pc">
+                    <div class="ic"><i class="material-icons">important_devices</i></div>
+                    <div class="ac-content">
+                        <h5 class="text">PC Builder</h5>
+                    </div>
+                </a>
+                <div class="ac cmpr-toggler h-desk">
+                    <div class="ic"><i class="material-icons">library_add</i></div>
+                    <div class="ac-content">
+                        <h5 class="text">Compare (0)</h5>
+                    </div>
                 </div>
-
-                <div class="dropdown cart-dropdown mr-0 mr-4">
-                    <div class="cart-overlay"></div>
-                    <a href="{{ route('wishlist') }}" class="cart-toggle label-down link">
-                        <i class="w-icon-heart">
-                            <livewire:frontend.wishlist.count-wishlist />
-                        </i>
-                        <span class="cart-label">Wishlist</span>
-                    </a>
+                <div class="ac">
+                    <a class="ic" href="https://www.startech.com.bd/account/login"><i
+                            class="material-icons">person</i></a>
+                    <div class="ac-content">
+                        <a href="https://www.startech.com.bd/account/login">
+                            <h5>Account</h5>
+                        </a>
+                        <p><a href="https://www.startech.com.bd/account/register">Register</a> or <a
+                                href="https://www.startech.com.bd/account/login">Login</a></span></p>
+                    </div>
                 </div>
-
-                <div class="dropdown cart-dropdown cart-offcanvas mr-0">
-                    <div class="cart-overlay"></div>
-                    <a href="#" class="cart-toggle label-down link">
-                        <i class="w-icon-cart">
-                            <livewire:frontend.cart.btn-cart />
-                        </i>
-                        <span class="cart-label">Cart</span>
-                    </a>
-
-                    <livewire:frontend.cart.shopping-cart />
+                <div class="ac build-pc m-hide">
+                    <a class="btn" href="https://www.startech.com.bd/tool/pc_builder">PC Builder</a>
                 </div>
-
             </div>
         </div>
-        <livewire:frontend.shop.search-box-mobile />
     </div>
-    <!-- End of Header Middle -->
-
-    <div class="header-bottom sticky-content fix-top sticky-header has-dropdown">
+    <nav class="navbar" id="main-nav">
         <div class="container">
-            <div class="inner-wrap">
-                <div class="header-left flex-1">
-                    <div class="dropdown category-dropdown has-border" data-visible="true">
-                        <a href="#" class="category-toggle text-white " role="button" data-toggle="dropdown"
-                            aria-haspopup="true" aria-expanded="true" data-display="static" title="Browse Categories"
-                            style="border:none;">
-                            <i class="w-icon-category"></i>
-                            <span>Browse Categories</span>
-                        </a>
-
-                        <div class="dropdown-box">
-                            <ul class="menu vertical-menu category-menu">
-                                @foreach( App\Models\Category::with('subcategories')->where('status', 1)->get() as $category )
-
-                                <li class="{{ $category->subcategories->count() > 0 ? 'has-submenu' : '' }}">
-                                    <a href="{{ url('/shop') }}?categories[0]={{ $category->id }}">
-                                        <i class="w-icon-{{ Str::lower($category->name) }}"></i>
-                                        <span class="cat-name">{{ $category->name }}</span>
-                                    </a>
-                                    @if($category->subcategories->count() > 0)
-                                        <ul class="megamenu">
-                                            <li>
-                                                <ul>
-                                                    @foreach($category->subcategories as $subcategory)
-                                                    <li>
-                                                        <a href="{{ url('/shop') }}?subcategories[0]={{ $subcategory->id }}">
-                                                            {{ $subcategory->name }}
-                                                        </a>
-                                                        @if($subcategory->subsubcategories->count() > 0)
-                                                            <ul class="sub-submenu">
-                                                                @foreach($subcategory->subsubcategories as $subsubcategory)
-                                                                <li>
-                                                                    <a href="{{ url('/shop') }}?subsubcategories[0]={{ $subsubcategory->id }}">
-                                                                        {{ $subsubcategory->name }}
-                                                                    </a>
-                                                                </li>
-                                                                @endforeach
-                                                            </ul>
-                                                        @endif
-                                                    </li>
-                                                    @endforeach
-                                                </ul>
-                                            </li>
-                                        </ul>
-                                    @endif
+            <ul class="navbar-nav">
+                <li class="nav-item has-child">
+                    <a class="nav-link" href="https://www.startech.com.bd/desktops">Desktop</a>
+                    <ul class="drop-down drop-menu-1">
+                        <li class="nav-item">
+                            <a class="nav-link" href="https://www.startech.com.bd/special-pc">Desktop Offer</a>
+                        </li>
+                        <li class="nav-item has-child">
+                            <a class="nav-link" href="https://www.startech.com.bd/desktops/star-pc">Star PC</a>
+                            <ul class="drop-down drop-menu-2">
+                                <li class="nav-item">
+                                    <a class="nav-link" href="https://www.startech.com.bd/intel-pc">Intel PC</a>
                                 </li>
-                                @endforeach
+                                <li class="nav-item">
+                                    <a class="nav-link" href="https://www.startech.com.bd/ryzen-pc">Ryzen PC</a>
+                                </li>
                             </ul>
-                        </div>
-                    </div>
-                    <livewire:frontend.shop.search-box />
-                </div>
-                <div class="header-right">
-                    <a href="mailto:{{ config('app.email') }}" class="d-xl-show"><i class="w-icon-envelop-closed"></i>{{
-                        config('app.email') }}</a>
-                    <a href="tel:{{ config('app.phone') }}"><i class="w-icon-call"></i>{{ config('app.phone') }}</a>
-                </div>
-            </div>
+                        </li>
+                        <li class="nav-item has-child">
+                            <a class="nav-link" href="https://www.startech.com.bd/desktops/gaming-pc">Gaming PC</a>
+                            <ul class="drop-down drop-menu-2">
+                                <li class="nav-item">
+                                    <a class="nav-link"
+                                        href="https://www.startech.com.bd/desktops/gaming-pc/intel-gaming-pc">Intel
+                                        PC</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link"
+                                        href="https://www.startech.com.bd/desktops/gaming-pc/amd-gaming-pc">RYZEN
+                                        PC</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="nav-item has-child">
+                            <a class="nav-link" href="https://www.startech.com.bd/desktops/brand-pc">Brand PC</a>
+                            <ul class="drop-down drop-menu-2">
+                                <li class="nav-item">
+                                    <a class="nav-link"
+                                        href="https://www.startech.com.bd/desktops/brand-pc/acer-desktop">Acer</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link"
+                                        href="https://www.startech.com.bd/desktops/brand-pc/asus-desktop">ASUS</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link"
+                                        href="https://www.startech.com.bd/desktops/brand-pc/dell-desktop">Dell</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link"
+                                        href="https://www.startech.com.bd/desktops/brand-pc/hp-desktop">HP</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link"
+                                        href="https://www.startech.com.bd/desktops/brand-pc/lenovo-desktop">Lenovo</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="https://www.startech.com.bd/msi-brand-pc">MSI</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="nav-item has-child">
+                            <a class="nav-link" href="https://www.startech.com.bd/desktops/all-in-one-pc">All-in-One
+                                PC</a>
+                            <ul class="drop-down drop-menu-2">
+                                <li class="nav-item">
+                                    <a class="nav-link" href="https://www.startech.com.bd/dell-all-in-one-pc">Dell</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="https://www.startech.com.bd/hp-all-in-one-pc">HP</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="https://www.startech.com.bd/asus-all-in-one-pc">ASUS</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link"
+                                        href="https://www.startech.com.bd/desktops/all-in-one-pc/lenovo-all-in-one">LENOVO</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link"
+                                        href="https://www.startech.com.bd/teclast-all-in-one-pc">Teclast</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="https://www.startech.com.bd/aoc-all-in-one-pc">AOC</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="https://www.startech.com.bd/smart-all-in-one-pc">Smart</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="nav-item has-child">
+                            <a class="nav-link" href="https://www.startech.com.bd/desktops/portable-mini-pc">Portable
+                                Mini PC</a>
+                            <ul class="drop-down drop-menu-2">
+                                <li class="nav-item">
+                                    <a class="nav-link" href="https://www.startech.com.bd/asus-mini-pc"> Asus</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link"
+                                        href="https://www.startech.com.bd/zotac-portable-mini-pc">Zotac</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="https://www.startech.com.bd/apple-mac-mini">Apple Mac Mini</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="https://www.startech.com.bd/apple-imac">Apple iMac</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="https://www.startech.com.bd/apple-mac-studio">Apple Mac
+                                Studio</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="https://www.startech.com.bd/apple-mac-pro">Apple Mac Pro</a>
+                        </li>
+                        <li>
+                            <a href="https://www.startech.com.bd/desktops" class="see-all">Show All Desktop</a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
         </div>
-    </div>
+    </nav>
+
 
 </header>
+<div class="f-btn mc-toggler" id="cart">
+    <i class="material-icons">shopping_basket</i>
+    <div class="label">Cart</div>
+    <span class="counter">0</span>
+</div>
+<div class="f-btn cmpr-toggler" id="cmpr-btn">
+    <i class="material-icons">library_add</i>
+    <div class="label">Compare</div>
+    <span class="counter">0</span>
+</div>
+<div class="drawer cmpr-panel " id="cmpr-panel">
+    <div class="title">
+        <p>Compare Product</p>
+        <span class="cmpr-toggler"><i class="material-icons">close</i></span>
+    </div>
+    <div class="content">
+        <div class="loader"></div>
+    </div>
+    <div class="footer btn-wrap"></div>
+</div>
+
+<div class="drawer m-cart" id="m-cart">
+    <div class="title">
+        <p>YOUR CART</p>
+        <span class="mc-toggler"><i class="material-icons">close</i></span>
+    </div>
+    <div class="content">
+        <div class="loader"></div>
+    </div>
+    <div class="footer"></div>
+</div>

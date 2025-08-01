@@ -1,96 +1,95 @@
-<footer class="footer appear-animate" data-animation-options="{
-            'name': 'fadeIn'
-        }">
-
-    {{-- <livewire:frontend.subscription /> --}}
-
+<footer>
     <div class="container">
-        <div class="footer-top">
-            <div class="row">
-                <div class="col-lg-4 col-sm-6">
-                    <div class="widget widget-about">
-                        @if (config('app.footer_logo'))
-                            <a href="{{ url('/') }}" class="logo-footer">
-                                <img src="{{ asset(config('app.footer_logo')) }}" class="footer-logo" />
-                            </a>
-                        @endif
-                        <div class="widget-body">
-                            <p class="widget-about-title">Got Question? Call us 24/7</p>
-                            <ul class="contact-info">
-                                <li>
-                                    <i class="w-icon-call"></i>
-                                    <a href="tel:{{ config('app.phone') }}" class="widget-about-call">
-                                        {{ config('app.phone') }}
-                                    </a>
-                                </li>
-                                <li>
-                                    <i class="w-icon-call"></i>
-                                    <a href="tel:{{ config('app.phone2') }}" class="widget-about-call">
-                                        {{ config('app.phone2') }}
-                                    </a>
-                                </li>
-                                <li>
-                                    <i class="w-icon-envelop-closed"></i>
-                                    <a href="mailto:{{ config('app.email') }}" class="widget-about-call">
-                                        {{ config('app.email') }}
-                                    </a>
-                                </li>
-                                
-                            </ul>
+        <div class="main-footer">
 
+            <div class="footer-block contact-us">
+                <h4>Support</h4>
 
-                            <div class="social-icons social-icons-colored">
-                                @if (!is_null(config('app.facebook'))  && !empty(config('app.facebook')))
-                                    <a href="{{ config('app.facebook') }}" target="_blank"
-                                        class="social-icon social-facebook w-icon-facebook"></a>
-                                @endif
+                <a href="tel:16793" class="helpline-btn footer-big-btn">
+                    <div class="ic"><i class="material-icons">phone</i></div>
+                    <p>9 AM - 8 PM </p>
+                    <h5>16793</h5>
+                </a>
 
-                                @if (!is_null(config('app.instra')) && !empty(config('app.instra')))
-                                    <a href="{{ config('app.instra') }}" target="_blank"
-                                        class="social-icon social-instagram w-icon-instagram"></a>
-                                @endif
+                <a href="https://www.startech.com.bd/information/contact" class="store-locator-btn footer-big-btn">
+                    <div class="ic"><i class="material-icons">place</i></div>
+                    <p>Store Locator</p>
+                    <h5>Find Our Stores</h5>
+                </a>
+            </div>
 
-                                @if (!is_null(config('app.youtube')) && !empty(config('app.youtube')) )
-                                    <a href="{{ config('app.youtube') }}" target="_blank"
-                                        class="social-icon social-youtube w-icon-youtube"></a>
-                                @endif
-
-                                @if (!is_null(config('app.whatsapp'))  && !empty(config('app.whatsapp')) )
-                                    <a href="{{ config('app.whatsapp') }}" target="_blank"
-                                        class="social-icon social-whatsapp fab fa-whatsapp"></a>
-                                @endif
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-sm-6">
-                    <div class="widget">
-                        <h3 class="widget-title">Information</h3>
-                        <ul class="widget-body">
-                            <li><a href="{{ url('/') }}">Home</a></li>
-                            <li><a href="{{ route('shop') }}">Product Collections</a></li>
-                            <li><a href="{{ route('about') }}">About Us</a></li>
-                        </ul>
-                    </div>
-                </div>
-                
-                <div class="col-lg-3 col-sm-6">
-                    <div class="widget mb-0">
-                        <h4 class="widget-title">Need Help</h4>
-                        <ul class="widget-body">
-                            <li><a href="{{ route('terms') }}">Term and Conditions</a></li>
-                            <li><a href="{{ route('privacy.policy') }}">Privacy Policy</a></li>
-                            <li><a href="{{ route('refund.policy') }}">Refund Policy</a></li>
-                            <li><a href="{{ route('contact') }}">Contact Us</a></li>
-                        </ul>
-                    </div>
-                </div>
+            <div class="footer-block about-us">
+                <h4>About Us</h4>
+                <ul>
+                    <li><a href="https://www.startech.com.bd/affiliate-program">Affiliate Program</a></li>
+                    <li><a href="https://www.startech.com.bd/emi-terms">EMI Terms</a></li>
+                    <li><a href="https://www.startech.com.bd/about_us">About Us</a></li>
+                    <li><a href="https://www.startech.com.bd/online-delivery">Online Delivery</a></li>
+                    <li><a href="https://www.startech.com.bd/privacy">Privacy Policy</a></li>
+                    <li><a href="https://www.startech.com.bd/warranty-policy">Terms and Conditions</a></li>
+                    <li><a href="https://www.startech.com.bd/refund-policy">Refund and Return Policy</a></li>
+                    <li><a href="https://www.startech.com.bd/star-point-policy">Star Point Policy</a></li>
+                    <li><a href="https://www.startech.com.bd/career">Career</a></li>
+                    <li><a href="https://www.startech.com.bd/blog">Blog</a></li>
+                    <li><a href="https://www.startech.com.bd/information/contact">Contact Us</a></li>
+                    <li><a href="https://www.startech.com.bd/product/manufacturer">Brands</a></li>
+                </ul>
+            </div>
+            <div class="footer-block org-info">
+                <h4>Stay Connected</h4>
+                <p><b class="store-name">Star Tech Ltd</b><br />Head Office: 28 Kazi Nazrul Islam Ave,Navana Zohura
+                    Square, Dhaka 1000</p>
+                <p><b>Email:</b><br /><a href="mailto:webteam@startechbd.com">webteam@startechbd.com</a> </p>
             </div>
         </div>
 
-        <div class="footer-bottom justify-content-center">
-            <p class="copyright">Copyright © {{ date('Y') }} {{ config('app.name') }}. All Rights Reserved.</p>
+        <div class="social-footer">
+            <div class="app-links">
+                <span class="app-link-text">Experience Star Tech App on your mobile:</span>
+                <span class="app-link-items">
+                    <a class="app-link" href="https://play.google.com/store/apps/details?id=com.startech.shop"
+                        target="_blank" rel="noopener" title="Star Tech Android APP">
+                        <span class="icon-sprite playstore"></span>
+                        <span class="app-link-text">
+                            <span class="download">Download on</span>
+                            <span class="app-store">Google Play</span>
+                        </span>
+                    </a>
+                    <a class="app-link" href="https://apps.apple.com/app/id6443544088" target="_blank" rel="noopener"
+                        title="Star Tech ISO APP">
+                        <span class="icon-sprite applestore"></span>
+                        <span class="app-link-text">
+                            <span class="download">Download on</span>
+                            <span class="app-store">App Store</span>
+                        </span>
+                    </a>
+                </span>
+            </div>
+            <div class="social-links">
+                <a href="https://whatsapp.com/channel/0029VaSRMY9AO7RINROxvC3u" target="_blank" rel="noopener"
+                    title="Whatsapp">
+                    <span class="icon-sprite whatsapp"></span>
+                </a>
+                <a href="https://www.facebook.com/star.tech.ltd/" target="_blank" rel="noopener" title="Facebook">
+                    <span class="icon-sprite fb"></span>
+                </a>
+                <a href="https://www.youtube.com/channel/UC-SDF_4DM3unoP7JeAodz2g" target="_blank" rel="noopener"
+                    title="Youtube">
+                    <span class="icon-sprite youtube"></span>
+                </a>
+                <a href="https://www.instagram.com/startech.com.bd/" target="_blank" rel="noopener" title="Instagram">
+                    <span class="icon-sprite insta"></span>
+                </a>
+            </div>
+        </div>
+        <div class="row sub-footer">
+            <div class="col-md-6 copyright-info">
+                <p>© 2025 Star Tech Ltd | All rights reserved</p>
+            </div>
+            <div class="col-md-6 powered-by">
+                <p>Powered By: Star Tech</p>
+            </div>
         </div>
     </div>
 </footer>
+<div class="overlay"></div>

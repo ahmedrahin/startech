@@ -147,7 +147,7 @@
             <!--end:Menu item-->
 
             <!--begin:Menu item-->
-            {{-- <div class="menu-item">
+            <div class="menu-item">
                 <!--begin:Menu link-->
                 <a class="menu-link {{ request()->routeIs('product-catalogue.brand.index') ? 'active' : '' }}"
                     href="{{ route('product-catalogue.brand.index') }}">
@@ -160,7 +160,7 @@
                     <span class="menu-title">Brand</span>
                 </a>
                 <!--end:Menu link-->
-            </div> --}}
+            </div>
             <!--end:Menu item-->
 
             <!-- categories -->

@@ -48,7 +48,7 @@ class AddBrandModal extends Component
         // Validation rules
         $rules = [
             'name'  => 'required|unique:brands,name',
-            'logo'  => 'required|mimes:jpeg,png|max:2048'
+            'logo'  => 'nullable|mimes:jpeg,png|max:2048'
         ];
 
         // Custom messages

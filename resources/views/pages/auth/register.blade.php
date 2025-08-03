@@ -6,6 +6,15 @@
 
 @section('page-css')
     <link href="{{ asset('frontend/style/accounts.min.12.css') }}" type="text/css" rel="stylesheet" media="screen" />
+    <style>
+        .mb-3 {
+            margin-bottom: 10px;
+        }
+        form label {
+            padding-bottom: 10px;
+            display: inline-block;
+        }
+    </style>
 @endsection
 
 @section('body-content')
@@ -28,24 +37,33 @@
             <div class="p-body">
                 <form  method="post" id="registerForm" >
                     @csrf
-                     <div class="required">
-                        <label for="input-firstname">First Name</label>
-                        <input type="text" name="firstname" placeholder="First Name" class="form-control" />
+                     <div class="required mb-3">
+                        <label for="input-firstname">Name</label>
+                        <input type="text" name="firstname" placeholder="Your Name" class="form-control" id="name" />
                         <div class="text-danger mt-2" id="nameError"></div>
                     </div>
 
-                    {{-- <div class="form-group required">
+                    <div class="required mb-3">
                         <label for="input-email">E-Mail</label>
-                        <input type="email" name="email" value="" placeholder="E-Mail" id="input-email" class="form-control" />
-                        <div class="text-danger">E-Mail Address does not appear to be valid!</div>
+                        <input type="text" name="email" placeholder="E-Mail" id="email" class="form-control" />
+                        <div class="text-danger mt-2" id="emailError"></div>
                     </div>
-                    <div class="form-group required">
-                        <label for="input-telephone">Telephone</label>
-                        <input type="tel" name="telephone" value="" placeholder="Telephone" id="input-telephone" class="form-control" />
-                        <div class="text-danger">Phone number does not appear to be valid!</div>
-                    </div> --}}
 
-                    <button type="submit" class="btn btn-primary g-recaptcha" >Continue</button>
+                    <div class="required mb-3">
+                        <label for="input-telephone">Your Password</label>
+                        <input type="password" name="password" placeholder="******" class="form-control" id="password" />
+                        <div class="text-danger mt-2" id="passwordError"></div>
+                    </div>
+
+                    <div class="required mb-0">
+                        <label for="input-telephone">Confirm Password</label>
+                        <input type="password" name="password_confirmation" placeholder="******" class="form-control" id="password_confirmation" />
+                        <div class="text-danger mt-2" id="passwordConfirmationError"></div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary" >
+                        Continue
+                    </button>
 
 
                     <p class="no-account-text"><span>Already have an account?</span></p>
@@ -61,21 +79,14 @@
 
     <script>
 
-      $(document).ready(function () {
+        $(document).ready(function () {
             $("#registerForm").on("submit", function (e) {
                 e.preventDefault();
 
                 // Clear previous errors
-                $("#nameError").text("");
-                $("#emailError").text("");
-                $("#passwordError").text("");
-                $("#passwordConfirmationError").text("");
+                $(".text-danger").text("");
+                $("#name, #email, #password, #password_confirmation").removeClass("error-border");
 
-                // Show spinner and disable button
-                $("#spinner").removeClass("d-none");
-
-
-                // Form data
                 let formData = {
                     name: $("#name").val(),
                     email: $("#email").val(),
@@ -96,28 +107,35 @@
                     error: function (xhr) {
                         if (xhr.responseJSON.errors) {
                             let errors = xhr.responseJSON.errors;
-                            if (errors.name) {
-                                $("#nameError").text(errors.name[0]);
+
+                            if (errors.name || errors.firstname) {
+                                $("#nameError").text(errors.name ? errors.name[0] : errors.firstname[0]);
+                                $("#name").addClass("error-border");
                             }
                             if (errors.email) {
                                 $("#emailError").text(errors.email[0]);
+                                $("#email").addClass("error-border");
                             }
                             if (errors.password) {
                                 $("#passwordError").text(errors.password[0]);
+                                $("#password").addClass("error-border");
                             }
                             if (errors.password_confirmation) {
                                 $("#passwordConfirmationError").text(errors.password_confirmation[0]);
+                                $("#password_confirmation").addClass("error-border");
                             }
                         }
-                    },
-                    complete: function () {
-                        // Hide spinner and enable button
-                        $("#spinner").addClass("d-none");
-                        $("#registerButton").prop("disabled", false);
-                    },
+                    }
                 });
+            });
+
+            // Remove error border on input
+            $("#name, #email, #password, #password_confirmation").on("input", function () {
+                $(this).removeClass("error-border");
             });
         });
 
+
     </script>
 @endsection
+

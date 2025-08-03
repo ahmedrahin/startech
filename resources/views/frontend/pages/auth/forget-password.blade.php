@@ -4,50 +4,53 @@
 Forgot Password
 @endsection
 
+@section('page-css')
+    <link href="{{ asset('frontend/style/accounts.min.12.css') }}" type="text/css" rel="stylesheet" media="screen" />
+    <style>
+        .mb-3 {
+            margin-bottom: 10px;
+        }
+        form label {
+            padding-bottom: 10px;
+            display: inline-block;
+        }
+    </style>
+@endsection
+
 @section('body-content')
 
-<section class="section-b-space login-bg-img pt-2">
-    <div class="container py-5 login-page">
-        <div class="row justify-content-center mb-8">
-            <div class="col-xxl-6 col-lg-8 col-md-10">
-                <div class="card shadow border-0 rounded-4">
-                    <div class="card-body p-5">
-                        <div class="text-center mb-4">
-                            <h3 class="fw-bold text-primary mb-0">Reset Your Password</h3>
-                            <p class="text-muted">We’ll send you a link to reset your password</p>
-                        </div>
+    <section class="after-header p-tb-10">
+        <div class="container">
+            <ul class="breadcrumb">
+                <li><a href="{{ url('/') }}"><i class="material-icons" title="Home">home</i></a></li>
+                <li><a href="{{ route('user.login') }}">Login</a></li>
+                <li><a href="{{ route('password.request') }}">Forgot Password</a></li>
+            </ul>
+        </div>
+    </section>
 
-                        <form id="otpForm" action="{{ route('password.email') }}" method="POST" class="row g-4">
-                            @csrf
-
-                            <div class="mb-3">
-                                <label for="email" class="form-label mb-1">Your Email</label>
-                                <input type="email" id="email" name="email" class="form-control form-control-lg"
-                                    placeholder="you@example.com">
-                                <div class="text-danger mt-2" id="emailError"></div>
-                            </div>
-
-                            <div class="d-flex justify-content-center mt-0">
-                                <button type="submit" class="btn btn-primary btn-login rounded-pill shadow-sm"
-                                    id="registerButton">
-                                    <span id="spinner" class="spinner-border spinner-border-sm d-none" role="status"
-                                        aria-hidden="true"></span>
-                                    Send Reset Link
-                                </button>
-                            </div>
-                        </form>
-
-                        <div class="text-center border-top pt-1 mt-4">
-                            <a href="{{ route('user.login') }}"
-                                class="btn btn-link text-decoration-none text-primary fw-semibold">← Back to Login</a>
-                        </div>
+    <div class="container ac-layout before-login">
+        <div class="panel m-auto">
+            <div class="p-head">
+                <h2 class="text-center">Forgot Your Password?</h2>
+            </div>
+            <div class="p-body">
+                <form  method="post" id="otpForm">
+                    @csrf
+                    <div class="mb-3 required">
+                        <label class="control-label" for="email">E-Mail Address</label>
+                        <input type="text" name="email" placeholder="E-Mail Address" id="email" class="form-control" />
+                        <div class="text-danger mt-2" id="emailError"></div>
                     </div>
-                </div>
+                    <div style="text-align: right;padding:4px 0;">
+                         <a class="forgot-password" href="{{ route('user.login') }}">Back to login</a>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Login</button>
+
+                </form>
             </div>
         </div>
     </div>
-
-</section>
 
 @endsection
 
@@ -55,44 +58,46 @@ Forgot Password
 
 <script>
     $(document).ready(function () {
-                $("#otpForm").on("submit", function (e) {
-                    e.preventDefault();
+            $("#otpForm").on("submit", function (e) {
+                e.preventDefault();
 
-                    // Clear previous errors
-                    $("#emailError").text("");
+                // Clear previous errors
+                $("#emailError").text("");
 
-                    // Show spinner and disable button
-                    $("#spinner").removeClass("d-none");
+                // Show spinner and disable button
+                $(".text-danger").text("");
+                 $("#email, #password").removeClass("error-border");
 
 
-                    let formData = {
-                        email: $("#email").val(),
-                    };
+                let formData = {
+                    email: $("#email").val(),
+                };
 
-                    $.ajax({
-                        url: "{{ route('password.email') }}",
-                        type: "POST",
-                        data: formData,
-                        headers: {
-                            "X-CSRF-TOKEN": "{{ csrf_token() }}",
-                        },
-                        success: function (response) {
-                            message('success', 'Password reset link sent to your email!');
-                            $("#spinner").addClass("d-none");
-                        },
-                        error: function (xhr) {
-                            let errors = xhr.responseJSON.errors;
-                                if (errors.email) {
-                                    $("#emailError").text(errors.email);
-                                }
-                        },
-                        complete: function () {
-                            $("#spinner").addClass("d-none");
-                            $("#otpButton").prop("disabled", false);
-                        },
-                    });
+                $.ajax({
+                    url: "{{ route('password.email') }}",
+                    type: "POST",
+                    data: formData,
+                    headers: {
+                        "X-CSRF-TOKEN": "{{ csrf_token() }}",
+                    },
+                    success: function (response) {
+                        message('success', 'Password reset link sent to your email!');
+                        $("#spinner").addClass("d-none");
+                    },
+                    error: function (xhr) {
+                        let errors = xhr.responseJSON.errors;
+                            if (errors.email) {
+                                $("#emailError").text(errors.email);
+                                 $("#email").addClass("error-border");
+                            }
+                    },
+                    complete: function () {
+                        $("#spinner").addClass("d-none");
+                        $("#otpButton").prop("disabled", false);
+                    },
                 });
             });
+        });
 
 </script>
 @endsection

@@ -49,19 +49,41 @@
                         <h5 class="text">Compare (0)</h5>
                     </div>
                 </div>
-                <div class="ac">
-                    <a class="ic" href="https://www.startech.com.bd/account/login"><i
-                            class="material-icons">person</i></a>
-                    <div class="ac-content">
-                        <a href="https://www.startech.com.bd/account/login">
-                            <h5>Account</h5>
-                        </a>
-                        <p><a href="{{ route('register') }}">Register</a> or <a
-                                href="{{ route('user.login') }}">Login</a></span></p>
+
+
+                @if( !auth()->check() )
+                    <div class="ac">
+                        <a class="ic" href="{{ route('user.login') }}"><i
+                                class="material-icons">person</i></a>
+                        <div class="ac-content">
+                            <a href="{{ route('user.login') }}">
+                                <h5>Account</h5>
+                            </a>
+                            <p><a href="{{ route('register') }}">Register</a> or <a
+                                    href="{{ route('user.login') }}">Login</a></span></p>
+                        </div>
                     </div>
-                </div>
+                @else
+                    <div class="ac">
+                        <a class="ic" href="{{ route('user.dashboard') }}"><i
+                                class="material-icons">person</i></a>
+                        <div class="ac-content">
+                            <a href="{{ route('user.dashboard') }}">
+                                <h5>Account</h5>
+                            </a>
+                            <p>
+                                <a href="{{ route('user.dashboard') }}">Profile</a> or
+                                <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a></span></p>
+                        </div>
+                    </div>
+                @endif
+
+                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                    @csrf
+                </form>
+
                 <div class="ac build-pc m-hide">
-                    <a class="btn" href="https://www.startech.com.bd/tool/pc_builder">PC Builder</a>
+                    <a class="btn" href="">PC Builder</a>
                 </div>
             </div>
         </div>

@@ -1,125 +1,119 @@
 @extends('frontend.layout.app')
 
 @section('page-title')
-Login
+    Login
+@endsection
+
+@section('page-css')
+    <link href="{{ asset('frontend/style/accounts.min.12.css') }}" type="text/css" rel="stylesheet" media="screen" />
+    <style>
+        .mb-3 {
+            margin-bottom: 10px;
+        }
+        form label {
+            padding-bottom: 10px;
+            display: inline-block;
+        }
+    </style>
 @endsection
 
 @section('body-content')
-<section class="pt-3 login-bg-img ">
-  <div class="container py-5 login-page">
-    <div class="row justify-content-center mb-8">
-      <div class="col-xxl-6 col-lg-8 col-md-10">
-        <div class="card shadow border-0 rounded-4">
-          <div class="card-body p-5">
-            <div class="text-center mb-4">
-              <h3 class="fw-bold text-primary mb-10">Login to Your Account</h3>
-            </div>
 
-            <form id="loginForm" method="POST" class="row g-4">
-              @csrf
-
-              <div class="mb-3">
-                <label for="email" class="form-label mb-1">Your Email</label>
-                <input type="email" id="email" name="email" class="form-control form-control-lg"
-                  placeholder="you@example.com">
-                  <div class="text-danger mt-2" id="emailError"></div>
-              </div>
-
-              <div class="m-0">
-                <label for="password" class="from-label mb-1">Enter Your Password</label>
-                <input class="form-control " id="password" type="password" name="password" placeholder="Password">
-                <div class="text-danger mt-2" id="passwordError"></div>
-              </div>
-
-              <div class="col-12 d-flex justify-content-between align-items-center">
-                <div>
-                  <input type="checkbox" id="remember" name="remember" class="form-check-input me-1">
-                  <label for="remember" class="form-check-label">Remember Me</label>
-                </div>
-                <a href="{{ route('password.request') }}" class="text-decoration-none text-primary">Forgot Password?</a>
-              </div>
-
-              <div class="d-flex justify-content-center mt-4">
-                <button type="submit" class="btn btn-primary btn-login rounded-pill shadow-sm" id="registerButton">
-                  <span id="spinner" class="spinner-border spinner-border-sm d-none" role="status"
-                    aria-hidden="true"></span>
-                  Login...
-                </button>
-              </div>
-
-            </form>
-
-            <div class="text-center border-top pt-4 mt-4">
-              <p class="mb-0">Don't have an account?</p>
-              <a href="{{ route('register') }}" class="btn btn-link text-decoration-none text-primary fw-semibold">Sign
-                Up</a>
-            </div>
-          </div>
+    <section class="after-header p-tb-10">
+        <div class="container">
+            <ul class="breadcrumb">
+                <li><a href="{{ url('/') }}"><i class="material-icons" title="Home">home</i></a></li>
+                <li><a href="{{ route('user.dashboard') }}">Account</a></li>
+                <li><a href="{{ route('user.login') }}">Login</a></li>
+            </ul>
         </div>
-      </div>
-    </div>
-  </div>
+    </section>
 
-</section>
+    <div class="container ac-layout before-login">
+        <div class="panel m-auto">
+            <div class="p-head">
+                <h2 class="text-center">Account Login</h2>
+            </div>
+            <div class="p-body">
+                <form  method="post" id="loginForm">
+                    @csrf
+                    <div class="mb-3 required">
+                        <label class="control-label" for="email">E-Mail Address</label>
+                        <input type="text" name="email" value="" placeholder="E-Mail Address" id="email" class="form-control" />
+                        <div class="text-danger mt-2" id="emailError"></div>
+                    </div>
+                    <div class="mb-3 required">
+                        <label class="control-label" for="input-password">Password</label>
+                         <input type="password" name="password" placeholder="******" class="form-control" id="password" />
+                         <div class="text-danger mt-2" id="passwordError"></div>
+                    </div>
+                    <div style="text-align: right;padding:4px 0;">
+                         <a class="forgot-password" href="{{ route('password.request') }}">Forgotten Password?</a>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Login</button>
+
+                </form>
+                <p class="no-account-text"><span>Don't have an account?</span></p>
+                <a class="btn st-outline" href="{{ route('register') }}">Create Your Account</a>
+            </div>
+        </div>
+    </div>
+
 @endsection
 
 @section('page-script')
 
 <script>
   $(document).ready(function () {
-            $("#loginForm").on("submit", function (e) {
-                e.preventDefault();
+        $("#loginForm").on("submit", function (e) {
+            e.preventDefault();
 
-                // Clear previous errors
-                $("#emailError").text("");
-                $("#passwordError").text("");
+            // Clear previous errors
+            $("#emailError").text("");
+            $("#passwordError").text("");
 
-                // Show spinner and disable button
-                $("#spinner").removeClass("d-none");
+           $(".text-danger").text("");
+           $("#email, #password").removeClass("error-border");
 
 
-                // Form data
-                let formData = {
-                    email: $("#email").val(),
-                    password: $("#password").val(),
-                    remember: $("#remember").is(":checked"),
-                };
+            // Form data
+            let formData = {
+                email: $("#email").val(),
+                password: $("#password").val(),
+                remember: $("#remember").is(":checked"),
+            };
 
-                $.ajax({
-                    url: "{{ route('user.login') }}",
-                    type: "POST",
-                    data: formData,
-                    headers: {
-                        "X-CSRF-TOKEN": "{{ csrf_token() }}",
-                    },
-                    success: function (response) {
-                        // Redirect to homepage on successful login
-                        if (response.redirect) {
-                            window.location.href = response.redirect;
+            $.ajax({
+                url: "{{ route('user.login') }}",
+                type: "POST",
+                data: formData,
+                headers: {
+                    "X-CSRF-TOKEN": "{{ csrf_token() }}",
+                },
+                success: function (response) {
+                    // Redirect to homepage on successful login
+                    if (response.redirect) {
+                        window.location.href = response.redirect;
+                    }
+                },
+                error: function (xhr) {
+                    if (xhr.responseJSON.errors) {
+                        let errors = xhr.responseJSON.errors;
+
+                        if (errors.email) {
+                            $("#emailError").text(errors.email);
+                             $("#email").addClass("error-border");
                         }
-                    },
-                    error: function (xhr) {
-                        if (xhr.responseJSON.errors) {
-                            let errors = xhr.responseJSON.errors;
 
-                            if (errors.email) {
-                                $("#emailError").text(errors.email);
-                            }
-
-                            if (errors.password) {
-                                $("#passwordError").text(errors.password[0]);
-                            }
+                        if (errors.password) {
+                            $("#passwordError").text(errors.password[0]);
+                            $("#password").addClass("error-border");
                         }
-                    },
-
-                    complete: function () {
-                        // Hide spinner and enable button
-                        $("#spinner").addClass("d-none");
-                        $("#loginButton").prop("disabled", false);
-                    },
-                });
+                    }
+                }
             });
         });
+    });
 
 
 </script>

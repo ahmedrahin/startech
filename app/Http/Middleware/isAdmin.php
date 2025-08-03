@@ -15,12 +15,14 @@ class isAdmin
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if ( auth()->user()->isAdmin != 1) {
-            // If the user is not authenticated or is not an admin, return an error message
-            return redirect()->to('/');
+        if(auth()->check()){
+            if ( auth()->user()->isAdmin != 1) {
+                return redirect()->to('/');
+            }
+        }else {
+            return redirect()->route('login');
         }
-        
-        
+
         return $next($request);
     }
 }

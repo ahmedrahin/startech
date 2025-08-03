@@ -47,7 +47,7 @@ Route::get('/c-clean', function (){
     return env('APP_NAME') . ' All cache cleared.';
 });
 
-Route::middleware(['auth', 'isAdmin'])->group(function () {
+Route::middleware(['isAdmin'])->group(function () {
 
 
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');

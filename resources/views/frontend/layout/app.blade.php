@@ -1,12 +1,12 @@
 
 <!DOCTYPE html>
 <html lang="en">
-   
+
 
 <head>
     @include('frontend.includes.header')
     @include('frontend.includes.css')
-    @livewireStyles
+    {{-- @livewireStyles --}}
 </head>
 
 <body class="common-home">
@@ -14,7 +14,7 @@
     @if( !request()->routeIs('cart') && !request()->routeIs('checkout') )
         {{-- <livewire:frontend.cart.btnshopping /> --}}
     @endif
-    
+
     <div class="page-wrapper">
          @include('frontend.includes.menu')
 
@@ -24,10 +24,10 @@
         @include('frontend.includes.footer')
         @include('frontend.includes.cart-sidebar')
     </div>
-        
+
     @include('frontend.includes.script')
 
-    @livewireScripts
+    {{-- @livewireScripts --}}
 </body>
 
 </html>

@@ -38,9 +38,10 @@ return new class extends Migration
             $table->enum('free_shipping', ['yes', 'no'])->default('no')->comment('yes or no');
             $table->boolean('is_new')->default(2)->comment('1=yes or 2=no');
             $table->boolean('is_featured')->default(2)->comment('1=Yes, 2=No');
+            $table->longText('key_feature')->nullable();
             $table->softDeletes();
             $table->timestamps();
-        });        
+        });
     }
 
     /**

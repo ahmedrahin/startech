@@ -4,75 +4,63 @@
     Register
 @endsection
 
+@section('page-css')
+    <link href="{{ asset('frontend/style/accounts.min.12.css') }}" type="text/css" rel="stylesheet" media="screen" />
+@endsection
+
 @section('body-content')
-<section class="pt-3 login-bg-img">
-  <div class="container py-5 login-page">
-    <div class="row justify-content-center mb-8">
-      <div class="col-xxl-6 col-lg-8 col-md-10">
-        <div class="card shadow border-0 rounded-4">
-          <div class="card-body p-5">
-            <div class="text-center mb-4">
-              <h3 class="fw-bold text-primary mb-2">Create a New Account</h3>
-              <p class="text-muted" style="font-weight: 600;">Welcome to {{ config('app.name') }}</p>
-            </div>
 
-            <form id="registerForm" method="POST" class="row g-4">
-              @csrf
-
-              <div class="mb-0">
-                <label for="name" class="form-label mb-1">Your Name</label>
-                <input type="text" id="name" name="name" class="form-control form-control-lg"
-                  placeholder="John Doe">
-                <div class="text-danger mt-2" id="nameError"></div>
-              </div>
-
-              <div class="mb-0">
-                <label for="email" class="form-label mb-1">Your Email</label>
-                <input type="email" id="email" name="email" class="form-control form-control-lg"
-                  placeholder="you@example.com">
-                <div class="text-danger mt-2" id="emailError"></div>
-              </div>
-
-              <div class="mb-0">
-                <label for="password" class="form-label mb-1">Enter Your Password</label>
-                <input type="password" id="password" name="password" class="form-control form-control-lg"
-                  placeholder="Password">
-                <div class="text-danger mt-2" id="passwordError"></div>
-              </div>
-
-              <div class="mb-0">
-                <label for="password_confirmation" class="form-label mb-1">Confirm Password</label>
-                <input type="password" id="password_confirmation" name="password_confirmation" class="form-control form-control-lg"
-                  placeholder="Confirm Password">
-                <div class="text-danger mt-2" id="passwordConfirmationError"></div>
-              </div>
-
-              <div class="d-flex justify-content-center mt-4">
-                <button type="submit" class="btn btn-primary btn-login rounded-pill shadow-sm" id="registerButton">
-                  <span id="spinner" class="spinner-border spinner-border-sm d-none" role="status"
-                    aria-hidden="true"></span>
-                  Sign Up
-                </button>
-              </div>
-            </form>
-
-            <div class="text-center border-top pt-4 mt-4">
-              <p class="mb-0">Already have an account?</p>
-              <a href="{{ route('user.login') }}" class="btn btn-link text-decoration-none text-primary fw-semibold">Log
-                In</a>
-            </div>
-          </div>
+    <section class="after-header p-tb-10">
+        <div class="container">
+            <ul class="breadcrumb">
+                <li><a href="{{ url('/') }}"><i class="material-icons" title="Home">home</i></a></li>
+                <li><a href="{{ route('user.dashboard') }}">Account</a></li>
+                <li><a href="{{ route('register') }}">Register</a></li>
+            </ul>
         </div>
-      </div>
+    </section>
+
+     <div class="container ac-layout before-login">
+        <div class="panel m-auto">
+            <div class="p-head">
+                <h2 class="text-center">Register Account</h2>
+            </div>
+            <div class="p-body">
+                <form  method="post" id="registerForm" >
+                    @csrf
+                     <div class="required">
+                        <label for="input-firstname">First Name</label>
+                        <input type="text" name="firstname" placeholder="First Name" class="form-control" />
+                        <div class="text-danger mt-2" id="nameError"></div>
+                    </div>
+
+                    {{-- <div class="form-group required">
+                        <label for="input-email">E-Mail</label>
+                        <input type="email" name="email" value="" placeholder="E-Mail" id="input-email" class="form-control" />
+                        <div class="text-danger">E-Mail Address does not appear to be valid!</div>
+                    </div>
+                    <div class="form-group required">
+                        <label for="input-telephone">Telephone</label>
+                        <input type="tel" name="telephone" value="" placeholder="Telephone" id="input-telephone" class="form-control" />
+                        <div class="text-danger">Phone number does not appear to be valid!</div>
+                    </div> --}}
+
+                    <button type="submit" class="btn btn-primary g-recaptcha" >Continue</button>
+
+
+                    <p class="no-account-text"><span>Already have an account?</span></p>
+                    <p>If you already have an account with us, please login at the <a href="{{ route('user.login') }}">login page</a>.</p>
+                </form>
+            </div>
+        </div>
     </div>
-  </div>
-</section>
 
 @endsection
 
 @section('page-script')
-    <script src="{{asset('frontend/js/jq.min.js')}}"></script>
+
     <script>
+
       $(document).ready(function () {
             $("#registerForm").on("submit", function (e) {
                 e.preventDefault();
@@ -85,7 +73,7 @@
 
                 // Show spinner and disable button
                 $("#spinner").removeClass("d-none");
-                
+
 
                 // Form data
                 let formData = {

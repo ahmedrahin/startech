@@ -44,21 +44,21 @@
                             Add to Compare</span>
                     </div>
                 </div>
-                
+
                 <div class="basic row">
                     <div class="col-md-5 left">
                         <div class="images product-images">
                             <div class="product-img-holder">
-                                <a 
-                                    href="{{ asset($product->thumb_image) }}" 
-                                    data-fancybox="gallery" 
+                                <a
+                                    href="{{ asset($product->thumb_image) }}"
+                                    data-fancybox="gallery"
                                     data-caption="{{ $product->name }}"
                                 >
-                                    <img 
-                                        class="main-img" 
-                                        src="{{ asset($product->thumb_image) }}" 
-                                        alt="{{ $product->name }}" 
-                                        width="500" 
+                                    <img
+                                        class="main-img"
+                                        src="{{ asset($product->thumb_image) }}"
+                                        alt="{{ $product->name }}"
+                                        width="500"
                                         height="500"
                                     />
                                 </a>
@@ -97,9 +97,14 @@
                                 <table class="product-info-table">
                                     <tr class="product-info-group">
                                         <td class="product-info-label">Price</td>
-                                        <td class="product-info-data product-price"><ins>1,349৳</ins><del style="padding-left: 5px;color: #df1414;">1,550৳</del></td>
+                                        <td class="product-info-data product-price">
+                                            <ins>{{ $product->offer_price }}৳</ins>
+                                            @if ($product->discount_option != 1)
+                                                <del style="padding-left: 5px;color: #df1414;">{{ $product->base_price }}৳</del>
+                                            @endif
+                                        </td>
                                     </tr>
-                                    
+
                                     <tr class="product-info-group">
                                         <td class="product-info-label">Status</td>
                                         @if( $product->quantity > 0 )
@@ -121,11 +126,8 @@
                                     @endif
                                 </table>
                             </div>
-                            <div class="short-description" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
-                                <link itemprop="availability" href="http://schema.org/InStock" />
-                                <link itemprop="itemCondition" href="http://schema.org/NewCondition">
-                                <meta itemprop="priceCurrency" content="BDT" />
-                                <meta itemprop="price" content="99500.0000" />
+
+                            <div class="short-description">
                                 <h2>Key Features</h2>
                                 <ul>
                                     <li>MPN: 83DR0080LK</li>
@@ -141,7 +143,6 @@
                                 </ul>
                             </div>
 
-                            
                             <div class="cart-option">
                                 <label class="quantity">
                                     <span class="ctl"><i class="material-icons">remove</i></span>

@@ -56,8 +56,8 @@
                         <a href="https://www.startech.com.bd/account/login">
                             <h5>Account</h5>
                         </a>
-                        <p><a href="https://www.startech.com.bd/account/register">Register</a> or <a
-                                href="https://www.startech.com.bd/account/login">Login</a></span></p>
+                        <p><a href="{{ route('register') }}">Register</a> or <a
+                                href="{{ route('user.login') }}">Login</a></span></p>
                     </div>
                 </div>
                 <div class="ac build-pc m-hide">

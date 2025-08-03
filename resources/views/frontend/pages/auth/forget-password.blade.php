@@ -45,7 +45,7 @@ Forgot Password
                     <div style="text-align: right;padding:4px 0;">
                          <a class="forgot-password" href="{{ route('user.login') }}">Back to login</a>
                     </div>
-                    <button type="submit" class="btn btn-primary">Login</button>
+                    <button type="submit" class="btn btn-primary">Continue</button>
 
                 </form>
             </div>

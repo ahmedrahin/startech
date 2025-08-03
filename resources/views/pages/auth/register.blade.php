@@ -102,7 +102,7 @@
                         "X-CSRF-TOKEN": "{{ csrf_token() }}",
                     },
                     success: function (response) {
-                        window.location.href = "{{ route('homepage') }}";
+                        window.location.href = "{{ route('user.dashboard') }}";
                     },
                     error: function (xhr) {
                         if (xhr.responseJSON.errors) {

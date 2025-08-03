@@ -15,7 +15,7 @@
         {{-- <livewire:frontend.cart.btnshopping /> --}}
     @endif
 
-    <div class="page-wrapper">
+    <div class="">
          @include('frontend.includes.menu')
 
         <!-- body content -->

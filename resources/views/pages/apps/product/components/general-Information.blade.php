@@ -89,6 +89,7 @@
         // Initialize Quill editors for short and long descriptions
         const quillShortDesc = new Quill('#product_short_description', quillOptions);
         const quillLongDesc = new Quill('#product_long_description', quillOptions);
+        const quillLongFeatureDesc = new Quill('#key_features', quillOptions);
 
         // Handle discount type change
         $('#discount_type').change(function() {

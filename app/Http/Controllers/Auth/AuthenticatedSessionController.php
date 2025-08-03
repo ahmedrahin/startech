@@ -93,7 +93,7 @@ class AuthenticatedSessionController extends Controller
 
             session()->flash('success', 'Logged in successfully.');
 
-            return response()->json(['redirect' => route('homepage')], 200);
+            return response()->json(['redirect' => route('user.dashboard')], 200);
         }
 
         return response()->json([

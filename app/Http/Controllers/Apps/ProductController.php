@@ -207,6 +207,7 @@ class ProductController extends Controller
             'subsubcategory_id' => $request->subsubcategory_id,
             'short_description' => $request->short_description,
             'long_description'  => $request->long_description,
+            'key_features'  => $request->key_features,
             'base_price'        => $validated['base_price'],
             'quantity'          => $validated['quantity'],
             'sku_code'          => $validated['sku_code'],

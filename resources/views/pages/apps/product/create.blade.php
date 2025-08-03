@@ -94,6 +94,11 @@
                     var longDescriptionHtml = $('#product_long_description .ql-editor').html();
                     var $longInput = $('input[name="long_description"]');
                     $longInput.val(longDescriptionHtml);
+
+                    // key_features
+                    var key_featuresDescriptionHtml = $('#key_features .ql-editor').html();
+                    var $key_featuresInput = $('input[name="key_features"]');
+                    $key_featuresInput.val(key_featuresDescriptionHtml);
                 }
                 
                 $('#kt_ecommerce_add_product_form').on('submit', function(e) {
@@ -129,6 +134,7 @@
 
                             $('#product_short_description .ql-editor').html('');
                             $('#product_long_description .ql-editor').html('');
+                            $('#key_features .ql-editor').html('');
 
                             $('#kt_ecommerce_add_product_status_select').val(1).trigger('change');
                             $('#discount_type').val(1).trigger('change');

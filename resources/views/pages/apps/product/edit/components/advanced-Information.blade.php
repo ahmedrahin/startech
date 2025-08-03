@@ -149,6 +149,25 @@
 
         </div>
 
+         <div class="card card-flush py-4">
+    
+            <div class="card-header">
+                <div class="card-title">
+                    <h2>Key Features</h2>
+                </div>
+            </div>
+
+            <div class="card-body pt-0">
+                <div>
+                    <div id="key_features" style="width: 100%" class="min-h-200px mb-2 ql-container ql-snow">
+                        @php echo $product->key_features; @endphp
+                    </div>
+                    <input name="key_features" hidden>
+                </div>
+            </div>
+
+        </div>
+
     </div>
 </div>
 @push('scripts')

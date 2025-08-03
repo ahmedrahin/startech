@@ -1,16 +1,16 @@
 @extends('frontend.layout.app')
 
 @section('page-title')
-    Home
+Home
 @endsection
 
 @section('page-css')
-    <style>
-        .banner .intro-wrapper {
-            margin: 0 !important;
-        }
-    </style>
-    
+<style>
+    .banner .intro-wrapper {
+        margin: 0 !important;
+    }
+</style>
+
 @endsection
 
 @section('body-content')
@@ -22,15 +22,15 @@
                 <div class="col-md-12 col-lg-9">
                     <div class="home-slider">
                         @foreach (App\Models\HomeSlider::get() as $banner)
-                            <div class="slide" itemprop="itemListElement">
-                                <a href="{{ url('/') }}" itemprop="url">
-                                    <img src="{{ asset($banner->image) }}"  class="img-responsive" width="982" height="500"
-                                        itemprop="contentUrl" /></a>
-                            </div>
+                        <div class="slide" itemprop="itemListElement">
+                            <a href="{{ url('/') }}" itemprop="url">
+                                <img src="{{ asset($banner->image) }}" class="img-responsive" width="982" height="500"
+                                    itemprop="contentUrl" /></a>
+                        </div>
                         @endforeach
                     </div>
                 </div>
-                
+
                 <div class="col-md-12 col-lg-3">
                     <div class="mdl-compare">
                         <h4>Compare Products</h4>
@@ -116,8 +116,8 @@
                                     <div class="cmp-p-item-img"> <a
                                             href="https://www.startech.com.bd/haier-1-6-ton-energycool-ac"><img
                                                 src="https://www.startech.com.bd/image/cache/catalog/air-conditioner/haier/hsu-18energycool/hsu-12energycool-official-200x200.webp"
-                                                alt="Haier 1.6 Ton EnergyCool Inverter AC" width="228"
-                                                height="228" /></a></div>
+                                                alt="Haier 1.6 Ton EnergyCool Inverter AC" width="228" height="228" /></a>
+                                    </div>
                                     <div class="cmp-p-item-details">
                                         <h4 class="p-item-name"> <a
                                                 href="https://www.startech.com.bd/haier-1-6-ton-energycool-ac">Haier 1.6
@@ -186,14 +186,13 @@
                         <div class="cmp-item-inner ws-box">
                             <div class="cmp-p-item-wrap">
                                 <div class="cmp-p-item">
-                                    <div class="cmp-p-item-img"> <a
-                                            href="https://www.startech.com.bd/haylou-solar-5"><img
+                                    <div class="cmp-p-item-img"> <a href="https://www.startech.com.bd/haylou-solar-5"><img
                                                 src="https://www.startech.com.bd/image/cache/catalog/smart-watch/haylou/solar-5/solar-5-metal-strap-black-official-200x200.webp"
                                                 alt="Haylou Solar 5 Smart Watch with Metallic Strap" width="228"
                                                 height="228" /></a></div>
                                     <div class="cmp-p-item-details">
-                                        <h4 class="p-item-name"> <a
-                                                href="https://www.startech.com.bd/haylou-solar-5">Haylou Solar 5 Smart
+                                        <h4 class="p-item-name"> <a href="https://www.startech.com.bd/haylou-solar-5">Haylou
+                                                Solar 5 Smart
                                                 Watch with Metallic Strap</a></h4>
                                         <div class="p-item-price">
                                             5,990৳ </div>
@@ -240,8 +239,8 @@
                                     <div class="cmp-p-item-img"> <a
                                             href="https://www.startech.com.bd/xiaomi-haylou-x1-neo-true-wireless-earbuds"><img
                                                 src="https://www.startech.com.bd/image/cache/catalog/earbuds/xiaomi/haylou-x1-neo/haylou-x1-neo-02-200x200.webp"
-                                                alt="Haylou X1 Neo True Wireless Earbuds" width="228"
-                                                height="228" /></a></div>
+                                                alt="Haylou X1 Neo True Wireless Earbuds" width="228" height="228" /></a>
+                                    </div>
                                     <div class="cmp-p-item-details">
                                         <h4 class="p-item-name"> <a
                                                 href="https://www.startech.com.bd/xiaomi-haylou-x1-neo-true-wireless-earbuds">Haylou
@@ -361,29 +360,38 @@
                 <div class="p-items-wrap">
 
                     @foreach (App\Models\Product::activeProducts()->where('is_featured', 1)->latest()->get() as $product)
-                        <div class="p-item">
-                            <div class="p-item-inner">
+                    <div class="p-item">
+                        <div class="p-item-inner">
+                            @php
+                                $discountAmount = $product->base_price - $product->offer_price;
+                                $discountPercent = round(($discountAmount / $product->base_price) * 100);
+                            @endphp
+                            @if ($product->discount_option != 1 )
                                 <div class="marks">
-                                    <span class="mark">Save: 9,360৳ (-18%)</span>
+                                    <span class="mark">
+                                        Save: {{ $discountAmount }}৳ ({{ $discountPercent }}%)
+                                    </span>
                                 </div>
-                                <div class="p-item-img">
-                                    <a href="{{ route('product-details', $product->slug) }}">
-                                        <img src="{{ asset($product->thumb_image) }}" alt="{{ $product->name }}" width="228" height="228" /></a>
-                                </div>
-                                <div class="p-item-details">
-                                    <h4 class="p-item-name"> 
-                                        <a href="{{ route('product-details', $product->slug) }}">{{ $product->name }}</a>
-                                    </h4>
+                            @endif
+                            <div class="p-item-img">
+                                <a href="{{ route('product-details', $product->slug) }}">
+                                    <img src="{{ asset($product->thumb_image) }}" alt="{{ $product->name }}" width="228"
+                                        height="228" /></a>
+                            </div>
+                            <div class="p-item-details">
+                                <h4 class="p-item-name">
+                                    <a href="{{ route('product-details', $product->slug) }}">{{ $product->name }}</a>
+                                </h4>
 
-                                    <div class="p-item-price">
-                                        <span class="price-new">{{ $product->offer_price }}৳</span>
-                                        @if ($product->discount_option != 1 )
-                                            <span class="price-old">{{ $product->base_price }}৳</span>
-                                        @endif
-                                    </div>
+                                <div class="p-item-price">
+                                    <span class="price-new">{{ $product->offer_price }}৳</span>
+                                    @if ($product->discount_option != 1 )
+                                    <span class="price-old">{{ $product->base_price }}৳</span>
+                                    @endif
                                 </div>
                             </div>
                         </div>
+                    </div>
                     @endforeach
 
                 </div>
@@ -397,5 +405,3 @@
 @section('page-script')
 
 @endsection
-
-

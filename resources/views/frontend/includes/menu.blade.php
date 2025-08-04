@@ -217,16 +217,19 @@
 
 
 </header>
+
 <div class="f-btn mc-toggler" id="cart">
     <i class="material-icons">shopping_basket</i>
     <div class="label">Cart</div>
-    <span class="counter">0</span>
+    <livewire:frontend.cart.btn-cart />
 </div>
+
 <div class="f-btn cmpr-toggler" id="cmpr-btn">
     <i class="material-icons">library_add</i>
     <div class="label">Compare</div>
     <span class="counter">0</span>
 </div>
+
 <div class="drawer cmpr-panel " id="cmpr-panel">
     <div class="title">
         <p>Compare Product</p>
@@ -238,13 +241,4 @@
     <div class="footer btn-wrap"></div>
 </div>
 
-<div class="drawer m-cart" id="m-cart">
-    <div class="title">
-        <p>YOUR CART</p>
-        <span class="mc-toggler"><i class="material-icons">close</i></span>
-    </div>
-    <div class="content">
-        <div class="loader"></div>
-    </div>
-    <div class="footer"></div>
-</div>
+<livewire:frontend.cart.shopping-cart />

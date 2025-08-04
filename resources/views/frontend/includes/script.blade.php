@@ -168,3 +168,7 @@
         }).showToast();
     }
 </script>
+
+@yield('page-script')
+@yield('addcart-js')
+@stack('scripts')

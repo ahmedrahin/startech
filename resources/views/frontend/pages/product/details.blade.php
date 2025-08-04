@@ -266,10 +266,12 @@
                                         @endif
                                     </tr>
 
-                                    <tr class="product-info-group">
-                                        <td class="product-info-label">Product Code</td>
-                                        <td class="product-info-data product-code">{{ $product->sku_code }}</td>
-                                    </tr>
+                                    @if($product->sku_code)
+                                        <tr class="product-info-group">
+                                            <td class="product-info-label">Product Code</td>
+                                            <td class="product-info-data product-code">{{ $product->sku_code }}</td>
+                                        </tr>
+                                    @endif
                                     @if ($product->brand && !is_null($product->brand_id))
                                         <tr class="product-info-group">
                                             <td class="product-info-label">Brand</td>
@@ -286,17 +288,9 @@
                                 </div>
                             @endif
 
-                            <div class="cart-option">
-                                <label class="quantity">
-                                    <span class="ctl"><i class="material-icons">remove</i></span>
-                                    <span class="qty"><input type="text" name="quantity" id="input-quantity"
-                                            value="1" size="2"></span>
-                                    <span class="ctl increment"><i class="material-icons">add</i></span>
-                                    <input type="hidden" name="product_id" value="42737" />
-                                </label>
-                                <button id="button-cart" class="btn submit-btn" data-loading-text="Loading...">Buy
-                                    Now</button>
-                            </div>
+                            <livewire:frontend.cart.add-cart :productId="$product->id" />
+
+
                         </div>
                     </div>
                 </div>

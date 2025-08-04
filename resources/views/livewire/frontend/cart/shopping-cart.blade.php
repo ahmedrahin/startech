@@ -1,76 +1,44 @@
-<div class="dropdown-box" wire:ignore.self>
-    <div class="cart-header">
-        <span>Shopping Cart</span>
-        <a href="#" class="">Close<i class="w-icon-long-arrow-right"></i></a>
+<div class="drawer m-cart" id="m-cart">
+    <div class="title">
+        <p>YOUR CART</p>
+        <span class="mc-toggler loaded close"><i class="material-icons">close</i></span>
     </div>
-
-     @if( !empty($cart) )
-        <div class="products" id="cart-products">
-            @foreach($cart as $cartKey => $item)
-                <div class="product product-cart">
-                    <div class="product-detail">
-                        <a href="{{ route('product-details', $item['slug']) }}" class="product-name mb-0">
-                            {{ Str::limit($item['name'], 20, '...') }}
-                        </a>
-                        @if( isset($item['size']) || isset($item['color']) )
-                            <p style="font-size: 11px;" class="mb-0">
-                                @if(isset($item['size']) && $item['size'])
-                                    <strong>Size:</strong> {{ $item['size'] }}
-                                @endif
-                                @if(isset($item['color']) && $item['color'])
-                                    <strong>Color:</strong> {{ $item['color'] }}
-                                @endif
-                            </p>
-                        @endif
-                        <div class="price-box">
-                            <span class="product-quantity">{{ $item['quantity'] }}</span>
-                            <span class="product-price mb-0">৳{{ number_format($item['offer_price'], 0) }} = </span>
-                            <span class="product-total">৳{{ $item['offer_price'] * $item['quantity'] }}</span>
-                        </div>
-                    </div>
-                    <figure class="product-media">
-                        <a href="{{ route('product-details', $item['slug']) }}">
-                            <img src="{{ asset($item['image_url']) }}" alt="product" height="84" width="94">
-                        </a>
-                    </figure>
-                    <button class="btn btn-link btn-close" wire:click="removeItem('{{ $cartKey }}')" aria-label="button">
-                        <i class="fas fa-times"></i>
-                    </button>
-                </div>
-            @endforeach
-        </div>
-    @endif
-
-     @if( empty($cart) )
-        <div class="no-cart">
-            <img src="{{asset('frontend/images/no-shopping-cart.png')}}" alt="">
-            <h5>Your Cart is Empty</h5>
-            <a href="{{route('shop')}}" class="btn btn-primary">
-                Start shopping
-                <i class="bi bi-arrow-right-circle-fill"></i>
-            </a>
-        </div>
-    @endif
-
-    @if( !empty($cart) )
-        <div>
-            <div class="cart-total">
-                <label>Subtotal:</label>
-                <span class="price">৳{{ number_format($this->getTotalAmount(), 2) }}</span>
+    <div class="content">
+                <div class="item">
+            <div class="image"><img src="https://www.startech.com.bd/image/cache/catalog/laptop/apple/macbook-air-m2-chip/macbook-air-m2-chip-01-47x47.webp" alt="Apple MacBook Air (2022) M2 Chip 13.6-Inch Liquid Retina Display 16GB RAM 256GB SSD Midnight #MC7X4ZP/A" width="47" height="47"></div>
+            <div class="info">
+                <div class="name">Apple MacBook Air (2022) M2 Chip 13.6-Inch Liquid Retina Display 16GB RAM 256GB SSD Midnight #MC7X4ZP/A
+                                    </div>
+                <span class="amount">105,000৳</span>
+                <i class="material-icons">clear</i>
+                <span>1</span>
+                <span class="eq">=</span>
+                <span class="total">105,000৳</span>
             </div>
 
-            <div class="cart-action">
-                <a href="{{route('cart')}}" class="btn btn-dark btn-outline btn-rounded">View Cart</a>
+            <div class="remove" onclick="cart.remove('YToxOntzOjEwOiJwcm9kdWN0X2lkIjtpOjM5NTYxO30=');" title="Remove"><i class="material-icons" aria-hidden="true">delete</i></div>
 
-                @if( config('website_settings.guest_checkout') == 1 && Auth::check() )
-                <a href="{{route('checkout')}}" class="btn btn-primary  btn-rounded">Checkout</a>
-                @elseif( config('website_settings.guest_checkout') == 0 && !Auth::check() )
-                <button class="btn btn-primary  btn-rounded"
-                    onclick="message('warning', 'Please log in at first to checkout')">Checkout</button>
-                @else
-                <a class="btn btn-primary  btn-rounded" href="{{route('checkout')}}"> Checkout</a>
-                @endif
+        </div>
+            </div>
+    <div class="footer">
+        <div class="promotion-code">
+            <div class="input-group">
+                <input type="text" placeholder="Promo Code" id="input-cart-coupon">
+                <span class="input-group-btn"><button data-target="#input-cart-coupon" class="btn button-coupon" type="submit">Apply</button></span>
             </div>
         </div>
-    @endif
+                <div class="total">
+            <div class="title">Sub-Total</div>
+            <div class="amount">105,000৳</div>
+        </div>
+                <div class="total">
+            <div class="title">Total</div>
+            <div class="amount">105,000৳</div>
+        </div>
+                        <div class="checkout-btn">
+            <a href="https://www.startech.com.bd/checkout/onepagecheckout"><button class="btn submit">Checkout</button></a>
+        </div>
+            </div>
 </div>
+
+

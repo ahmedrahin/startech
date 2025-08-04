@@ -1,6 +1,6 @@
  <section class="related-product-list">
     <h3>Related Product</h3>
-    @foreach ($products as $product)
+    @foreach ($products->take(10) as $product)
         <div class="p-s-item">
             <div class="image-holder">
                 <a href="{{ route('product-details',$product->slug) }}">

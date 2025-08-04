@@ -1,3 +1,27 @@
 .error-border {
     border-color: red !important;
 }
+
+.drawer .footer .total:nth-child(1) {
+    border-top: 1px solid #eee;
+    border-bottom: 1px solid #eee;
+}
+
+.no-cart {
+    position: absolute;
+    left: 50%;
+    top: 48%;
+    transform: translate(-50%, -60%);
+    text-align: center;
+    width: 70%;
+}
+
+.no-cart img {
+    opacity: .65;
+    width: 220px;
+}
+
+.modal-dialog {
+    top: 50% !important;
+    transform: translateY(-50%);
+}

@@ -366,26 +366,7 @@
                             </div>
                         </section>
 
-                        <section class="ask-question q-n-r-section bg-white m-tb-15" id="ask-question">
-                            <div class="section-head">
-                                <div class="title-n-action">
-                                    <h2>Questions (0)</h2>
-                                    <p class="section-blurb">Have question about this product? Get specific details
-                                        about this product from expert.</p>
-                                </div>
-                                <div class="q-action">
-                                    <a href="https://www.startech.com.bd/account/question?product_id=42737"
-                                        class="btn st-outline">Ask Question</a>
-                                </div>
-                            </div>
-                            <div id="question">
-                                <div class="empty-content">
-                                    <span class="icon material-icons">textsms</span>
-                                    <div class="empty-text">There are no questions asked yet. Be the first one to ask a
-                                        question.</div>
-                                </div>
-                            </div>
-                        </section>
+                        <livewire:frontend.product.product-question :productId="$product->id" />
 
                         <livewire:frontend.product.product-review :productId="$product->id" />
 

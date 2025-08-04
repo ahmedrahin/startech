@@ -18,7 +18,7 @@ class BtnCart extends Component
     public function updateCartCount()
     {
         $cart = session()->get('cart', []);
-        $this->cartCount = count($cart); 
+        $this->cartCount = collect($cart)->sum('quantity');
     }
 
     public function render()

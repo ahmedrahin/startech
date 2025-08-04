@@ -10,16 +10,23 @@
         </label>
 
         @if ($product->quantity > 0)
-            <button id="button-cart" class="btn submit-btn" wire:click="addToCart">Buy Now</button>
+            <button id="button-cart" class="btn submit-btn" wire:click="addToCart">
+                <span wire:loading.remove wire:target="addToCart">Buy Now</span>
+                <span wire:loading wire:target="addToCart">
+                    Loading...
+                </span>
+            </button>
         @else
-            <button class="btn submit-btn" disabled>Out of stock!</button>
+            <button class="btn submit-btn"
+                style="background: #8080806b;border-color:#8080806b;box-shadow:rgba(0, 0, 0, 0.2) 0px 50px inset;"
+                disabled>Out of stock!</button>
         @endif
     </div>
 
 
     @section('addcart-js')
-        <script>
-            document.addEventListener("DOMContentLoaded", () => {
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
                 const plusMinusWrappers = document.querySelectorAll('.quantity');
 
                 plusMinusWrappers.forEach((wrapper) => {
@@ -57,12 +64,11 @@
                     }
                 });
             });
-        </script>
+    </script>
 
-
-        {{-- product qty and variaiton js --}}
-        <script>
-            document.addEventListener('DOMContentLoaded', function() {
+    {{-- product qty and variaiton js --}}
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
                 // Size swatches (new theme selector: .product-variations .size)
                 var sizeItems = document.querySelectorAll('.product-variations .size');
                 sizeItems.forEach(function(item) {
@@ -99,6 +105,6 @@
                     });
                 }
             });
-        </script>
+    </script>
     @endsection
 </div>

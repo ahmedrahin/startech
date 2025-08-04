@@ -1340,9 +1340,7 @@ ul.dropdown-menu>li a:hover {
     text-align: center;
 }
 
-.f-btn.close span.counter {
-    display: none;
-}
+
 
 .drawer {
     position: fixed;

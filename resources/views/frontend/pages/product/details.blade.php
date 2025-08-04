@@ -1,23 +1,171 @@
 @extends('frontend.layout.app')
 
 @section('page-title')
-{{ $product->name }}
+    {{ $product->name }}
 @endsection
 
 @section('page-css')
     <link href="{{ asset('frontend/style/product.min.12.css') }}" type="text/css" rel="stylesheet" media="screen" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <style>
         .short-description p {
             margin-bottom: 1px !important;
             color: black !important;
         }
-        .short-description span,.short-description li {
+
+        .short-description span,
+        .short-description li {
             color: black !important;
         }
+
         .short-description ul {
             padding: 0;
             margin: 0;
+        }
+    </style>
+    <style>
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1055;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .modal.show {
+            display: block;
+        }
+        .product-details .review .average-rating{
+            line-height: inherit;
+        }
+        .modal-dialog {
+            position: relative;
+            margin: auto;
+            top: 15%;
+            max-width: 600px;
+            width: 100%;
+        }
+
+        .modal-content {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 6px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, .5);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #dee2e6;
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+        }
+
+        .modal-header h4 {
+            margin: 0;
+        }
+
+        .modal .btn-close {
+            background: none;
+            border: none;
+            font-size: 1.2rem;
+        }
+
+        .modal-button-group {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .modal .btn {
+            border-radius: 5px;
+            border: none;
+            cursor: pointer;
+        }
+
+        .modal .btn-cancel {
+            background: #8080806b;
+        }
+
+        .modal .spinner-border-sm {
+            width: 1rem;
+            height: 1rem;
+            border-width: .2em;
+        }
+    </style>
+
+    <style>
+        .reviews-product {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .reviews-product img {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 5px;
+        }
+        .reviews-product h5 {
+            font-size: 20px;
+            color: black;
+            margin-bottom: 5px;
+        }
+        .reviews-product .customer-rating {
+            padding: 20px 0;
+        }
+        .selectrating {
+            border: none;
+            display: inline-flex;
+            flex-direction: row-reverse;
+            /* Reverse the order of the stars */
+        }
+
+        .selectrating>input {
+            display: none;
+        }
+
+        .customer-rating {
+            padding: 10px 0 10px;
+        }
+
+        .selectrating>label:before {
+            margin: 2px;
+            font-size: 16px;
+            font-family: FontAwesome;
+            display: inline-block;
+            content: "\f005";
+            margin-bottom: 0;
+        }
+
+
+        .selectrating>label {
+            color: #ddd;
+            cursor: pointer;
+        }
+
+        /* Highlight stars on hover and selection */
+        .selectrating>input:checked~label,
+        .selectrating>label:hover,
+        .selectrating>label:hover~label {
+            color: #f93;
+        }
+        .modal label {
+            font-weight: 500;
+            font-size: 15px;
+            color: #000000c9;
+            padding-bottom: 7px;
+            display: inline-block;
+        }
+        .selectrating label {
+            color: #00000061;
         }
     </style>
 @endsection
@@ -62,41 +210,28 @@
                     <div class="col-md-5 left">
                         <div class="images product-images">
                             <div class="product-img-holder">
-                                <a
-                                    href="{{ asset($product->thumb_image) }}"
-                                    data-fancybox="gallery"
-                                    data-caption="{{ $product->name }}"
-                                >
-                                    <img
-                                        class="main-img"
-                                        src="{{ asset($product->thumb_image) }}"
-                                        alt="{{ $product->name }}"
-                                        width="500"
-                                        height="500"
-                                    />
+                                <a href="{{ asset($product->thumb_image) }}" data-fancybox="gallery"
+                                    data-caption="{{ $product->name }}">
+                                    <img class="main-img" src="{{ asset($product->thumb_image) }}"
+                                        alt="{{ $product->name }}" width="500" height="500" />
                                 </a>
                             </div>
 
-                            @if( $product->galleryImages->count() > 0 )
+                            @if ($product->galleryImages->count() > 0)
                                 <ul class="thumbnails">
                                     <li>
                                         <a class="thumbnail" href="{{ asset($product->thumb_image) }}"
-                                            title="{{ $product->name }}"><img
-                                                src="{{ asset($product->thumb_image) }}"
-                                                title="{{ $product->name }}"
-                                                alt="{{ $product->name }}"
-                                                data-fancybox="gallery"
-                                                data-caption="{{ $product->name }}"
-                                                width="74" height="74" /></a>
+                                            title="{{ $product->name }}"><img src="{{ asset($product->thumb_image) }}"
+                                                title="{{ $product->name }}" alt="{{ $product->name }}"
+                                                data-fancybox="gallery" data-caption="{{ $product->name }}" width="74"
+                                                height="74" /></a>
                                     </li>
                                     @foreach ($product->galleryImages ?? [] as $gellary)
                                         <li>
                                             <a class="thumbnail" href="{{ asset($gellary->image) }}"
-                                                title="{{ $product->name }}"><img
-                                                    src="{{ asset($gellary->image) }}"
-                                                    title="{{ $product->name }}"
-                                                    alt="{{ $product->name }}"
-                                                    width="74" height="74" /></a>
+                                                title="{{ $product->name }}"><img src="{{ asset($gellary->image) }}"
+                                                    title="{{ $product->name }}" alt="{{ $product->name }}" width="74"
+                                                    height="74" /></a>
                                         </li>
                                     @endforeach
                                 </ul>
@@ -115,17 +250,19 @@
                                         <td class="product-info-data product-price">
                                             <ins>{{ $product->offer_price }}৳</ins>
                                             @if ($product->discount_option != 1)
-                                                <del style="padding-left: 5px;color: #df1414;">{{ $product->base_price }}৳</del>
+                                                <del
+                                                    style="padding-left: 5px;color: #df1414;">{{ $product->base_price }}৳</del>
                                             @endif
                                         </td>
                                     </tr>
 
                                     <tr class="product-info-group">
                                         <td class="product-info-label">Status</td>
-                                        @if( $product->quantity > 0 )
+                                        @if ($product->quantity > 0)
                                             <td class="product-info-data product-status">In Stock</td>
                                         @else
-                                            <td class="product-info-data product-status" style="color:#ff0000a8;">Out of Stock!</td>
+                                            <td class="product-info-data product-status" style="color:#ff0000a8;">Out of
+                                                Stock!</td>
                                         @endif
                                     </tr>
 
@@ -133,11 +270,11 @@
                                         <td class="product-info-label">Product Code</td>
                                         <td class="product-info-data product-code">{{ $product->sku_code }}</td>
                                     </tr>
-                                    @if( $product->brand && !is_null($product->brand_id) )
-                                    <tr class="product-info-group">
-                                        <td class="product-info-label">Brand</td>
-                                        <td class="product-info-data product-brand">{{ $product->brand->name }}</td>
-                                    </tr>
+                                    @if ($product->brand && !is_null($product->brand_id))
+                                        <tr class="product-info-group">
+                                            <td class="product-info-label">Brand</td>
+                                            <td class="product-info-data product-brand">{{ $product->brand->name }}</td>
+                                        </tr>
                                     @endif
                                 </table>
                             </div>
@@ -152,8 +289,8 @@
                             <div class="cart-option">
                                 <label class="quantity">
                                     <span class="ctl"><i class="material-icons">remove</i></span>
-                                    <span class="qty"><input type="text" name="quantity" id="input-quantity" value="1"
-                                            size="2"></span>
+                                    <span class="qty"><input type="text" name="quantity" id="input-quantity"
+                                            value="1" size="2"></span>
                                     <span class="ctl increment"><i class="material-icons">add</i></span>
                                     <input type="hidden" name="product_id" value="42737" />
                                 </label>
@@ -176,7 +313,7 @@
                                 <li data-area="specification">Specification</li>
                                 <li data-area="description">Description</li>
                                 <li class="hidden-xs" data-area="ask-question">Questions (0)</li>
-                                <li data-area="write-review">Reviews (0)</li>
+                                <li data-area="write-review">Reviews ({{ $product->reviews->count() }})</li>
                             </ul>
                         </div>
                         <section class="specification-tab m-tb-10" id="specification">
@@ -223,7 +360,7 @@
                                         <td class="value">Integrated AMD Ryzen AI, up to 16 TOPS</td>
                                     </tr>
                                 </tbody>
-                                
+
                             </table>
                         </section>
                         <section class="description bg-white m-tb-15" id="description">
@@ -234,7 +371,7 @@
                                 {!! $product->long_description !!}
                             </div>
                         </section>
-                       
+
                         <section class="ask-question q-n-r-section bg-white m-tb-15" id="ask-question">
                             <div class="section-head">
                                 <div class="title-n-action">
@@ -257,109 +394,11 @@
                         </section>
 
                         <livewire:frontend.product.product-review :productId="$product->id" />
-                        
+
                     </div>
 
                     <div class="col-lg-3 col-md-12 c-left">
-                        <section class="related-product-list">
-                            <h3>Related Product</h3>
-                            <div class="p-s-item">
-                                <div class="image-holder">
-                                    <a
-                                        href="https://www.startech.com.bd/lenovo-ideapad-slim-3i-core-i5-12th-gen-15-6-inch-laptop"><img
-                                            src="https://www.startech.com.bd/image/cache/catalog/laptop/lenovo/ideapad-slim-3i-i5/ideapad-slim-3i-80x80.webp"
-                                            alt="Lenovo IdeaPad Slim 3i 15IAU7 Core i5 12th Gen 15.6&quot; FHD Laptop with Windows 11"
-                                            width="80" height="80"></a>
-                                </div>
-                                <div class="caption">
-                                    <h4 class="product-name">
-                                        <a
-                                            href="https://www.startech.com.bd/lenovo-ideapad-slim-3i-core-i5-12th-gen-15-6-inch-laptop">Lenovo
-                                            IdeaPad Slim 3i 15IAU7 Core i5 12th Gen 15.6&quot; FHD Laptop with Windows
-                                            11</a>
-                                    </h4>
-                                    <div class="p-item-price price">
-                                        <span class="price-new">77,000৳</span> <span class="price-old">83,000৳</span>
-                                    </div>
-                                    <div class="actions">
-                                        <span class="btn-compare" onclick="compare.add('31493');"><i
-                                                class="material-icons">library_add</i>Add to Compare</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="p-s-item">
-                                <div class="image-holder">
-                                    <a
-                                        href="https://www.startech.com.bd/lenovo-ideapad-3i-15itl6-core-i7-11th-gen-16gb-ram-laptop"><img
-                                            src="https://www.startech.com.bd/image/cache/catalog/laptop/lenovo/ideapad-slim-3i-15itl6/ideapad-slim-3i-15itl6-80x80.webp"
-                                            alt="Lenovo IdeaPad 3i 15ITL6 core i7 11th Gen 16GB RAM 15.6&quot; FHD Laptop"
-                                            width="80" height="80"></a>
-                                </div>
-                                <div class="caption">
-                                    <h4 class="product-name">
-                                        <a
-                                            href="https://www.startech.com.bd/lenovo-ideapad-3i-15itl6-core-i7-11th-gen-16gb-ram-laptop">Lenovo
-                                            IdeaPad 3i 15ITL6 core i7 11th Gen 16GB RAM 15.6&quot; FHD Laptop</a>
-                                    </h4>
-                                    <div class="p-item-price price">
-                                        <span class="price-new">76,000৳</span> <span class="price-old">81,500৳</span>
-                                    </div>
-                                    <div class="actions">
-                                        <span class="btn-compare" onclick="compare.add('34371');"><i
-                                                class="material-icons">library_add</i>Add to Compare</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="p-s-item">
-                                <div class="image-holder">
-                                    <a href="https://www.startech.com.bd/lenovo-loq-15iax9-i5-12th-gen-gaming-laptop"><img
-                                            src="https://www.startech.com.bd/image/cache/catalog/laptop/lenovo/loq-15iax9/loq-15iax9-01-80x80.webp"
-                                            alt="Lenovo LOQ 15IAX9 Core i5 12th Gen RTX 2050 4GB Graphics 15.6&quot; FHD 144Hz Gaming Laptop"
-                                            width="80" height="80"></a>
-                                </div>
-                                <div class="caption">
-                                    <h4 class="product-name">
-                                        <a href="https://www.startech.com.bd/lenovo-loq-15iax9-i5-12th-gen-gaming-laptop">Lenovo
-                                            LOQ 15IAX9 Core i5 12th Gen RTX 2050 4GB Graphics 15.6&quot; FHD 144Hz
-                                            Gaming Laptop</a>
-                                    </h4>
-                                    <div class="p-item-price price">
-                                        <span>99,500৳</span>
-                                    </div>
-                                    <div class="actions">
-                                        <span class="btn-compare" onclick="compare.add('37171');"><i
-                                                class="material-icons">library_add</i>Add to Compare</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="p-s-item">
-                                <div class="image-holder">
-                                    <a
-                                        href="https://www.startech.com.bd/lenovo-ideapad-slim-5-16imh9-core-ultra-5-125h-laptop"><img
-                                            src="https://www.startech.com.bd/image/cache/catalog/laptop/lenovo/ideapad-slim-5-16imh9/ideapad-slim-5-16imh9-01-80x80.webp"
-                                            alt="Lenovo IdeaPad Slim 5 16IMH9 Core Ultra 5 125H AI Integrated 16&quot; WUXGA Laptop"
-                                            width="80" height="80"></a>
-                                </div>
-                                <div class="caption">
-                                    <h4 class="product-name">
-                                        <a
-                                            href="https://www.startech.com.bd/lenovo-ideapad-slim-5-16imh9-core-ultra-5-125h-laptop">Lenovo
-                                            IdeaPad Slim 5 16IMH9 Core Ultra 5 125H AI Integrated 16&quot; WUXGA
-                                            Laptop</a>
-                                    </h4>
-                                    <div class="p-item-price price">
-                                        <span>118,000৳</span>
-                                    </div>
-                                    <div class="actions">
-                                        <span class="btn-compare" onclick="compare.add('39229');"><i
-                                                class="material-icons">library_add</i>Add to Compare</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </section>
-                        <section class="related-product-list">
-                            <h3>Recently Viewed</h3>
-                        </section>
+                       @include('frontend.pages.product.related-product')
                     </div>
 
                 </div>
@@ -370,8 +409,25 @@
 @endsection
 
 @section('page-script')
-
     <script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
-   
+    <script>
+        function setRating(value) {
+            Livewire.emit('updatedRating', value);
+        }
 
+        const modal = document.querySelector('#Reviews-modal');
+        modal.addEventListener('show.bs.modal', (e) => {
+            Livewire.emit('open_add_modal');
+        });
+
+        document.addEventListener('livewire:load', function () {
+                Livewire.on('success', function () {
+                const cancelButton = document.querySelector('.cancel-modal-review');
+                if (cancelButton) {
+                    cancelButton.click();
+                }
+                });
+            });
+
+    </script>
 @endsection

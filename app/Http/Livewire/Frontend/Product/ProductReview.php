@@ -5,7 +5,7 @@ namespace App\Http\Livewire\Frontend\Product;
 use Livewire\Component;
 use App\Models\Product;
 use App\Models\Review;
-use Auth;
+use illuminate\Support\Facades\Auth;
 
 class ProductReview extends Component
 {
@@ -77,7 +77,7 @@ class ProductReview extends Component
      }
 
      public function openAddModal()
-     {  
+     {
          $this->resetForm();
          $this->resetErrorBag();
          $this->resetValidation();
@@ -87,7 +87,7 @@ class ProductReview extends Component
      public function updated($propertyName)
      {
          $this->resetErrorBag($propertyName);
-     }     
+     }
 
      public function delete($reviewId)
     {

@@ -6,7 +6,7 @@
 <head>
     @include('frontend.includes.header')
     @include('frontend.includes.css')
-    {{-- @livewireStyles --}}
+    @livewireStyles
 </head>
 
 <body class="common-home">
@@ -27,7 +27,7 @@
 
     @include('frontend.includes.script')
 
-    {{-- @livewireScripts --}}
+    @livewireScripts
 </body>
 
 </html>

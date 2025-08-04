@@ -79,7 +79,7 @@
 
     <script>
 
-        $(document).ready(function () {
+        jQuery(function($) {
             $("#registerForm").on("submit", function (e) {
                 e.preventDefault();
 

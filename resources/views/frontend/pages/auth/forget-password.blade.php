@@ -57,7 +57,7 @@ Forgot Password
 @section('page-script')
 
 <script>
-    $(document).ready(function () {
+    jQuery(function($) {
             $("#otpForm").on("submit", function (e) {
                 e.preventDefault();
 

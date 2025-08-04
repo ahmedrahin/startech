@@ -1998,8 +1998,8 @@ ul.dropdown-menu>li a:hover {
 
 .rating .material-icons {
     color: #F58220;
-    font-size: 30px;
-    margin-right: -4px;
+    font-size: 22px;
+    margin-right: -8px;
 }
 
 .countdown {
@@ -4122,7 +4122,7 @@ h1.product-name {
 }
 
 .product-details .section-head {
-    padding-bottom: 20px;
+    padding-bottom: 14px;
 }
 
 .product-details .q-n-r-section .section-head {
@@ -4191,7 +4191,7 @@ h1.product-name {
 }
 
 .product-details .review .average-rating {
-    padding-top: 15px;
+    padding-top: 10px;
     line-height: 30px;
 }
 
@@ -4230,6 +4230,7 @@ h1.product-name {
     float: left;
     width: 16px;
     height: 16px;
+    margin-right: -1px;
 }
 
 .product-details .review-wrap .author {

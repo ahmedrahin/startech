@@ -64,7 +64,7 @@
 @section('page-script')
 
 <script>
-  $(document).ready(function () {
+  jQuery(function($) {
         $("#loginForm").on("submit", function (e) {
             e.preventDefault();
 

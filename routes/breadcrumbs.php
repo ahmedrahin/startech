@@ -38,6 +38,15 @@ Breadcrumbs::for('message-details', function (BreadcrumbTrail $trail) {
     $trail->push('Contact Message Details', );
 });
 
+Breadcrumbs::for('question', function (BreadcrumbTrail $trail) {
+    $trail->parent('dashboard');
+    $trail->push('Product Question', );
+});
+Breadcrumbs::for('question-details', function (BreadcrumbTrail $trail) {
+    $trail->parent('dashboard');
+    $trail->push('Reply to question', );
+});
+
 Breadcrumbs::for('subscription', function (BreadcrumbTrail $trail) {
     $trail->parent('dashboard');
     $trail->push('Subscription Email', );

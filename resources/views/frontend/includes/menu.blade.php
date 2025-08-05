@@ -64,15 +64,18 @@
                         </div>
                     </div>
                 @else
+                    @php
+                        $route = Auth::user()->isAdmin == 1 ? route('admin-management.admin-list.show', Auth::id()) : route('user.dashboard');
+                    @endphp
                     <div class="ac">
-                        <a class="ic" href="{{ route('user.dashboard') }}"><i
+                        <a class="ic" href="{{ $route }}"><i
                                 class="material-icons">person</i></a>
                         <div class="ac-content">
-                            <a href="{{ route('user.dashboard') }}">
+                            <a href="{{ $route }}">
                                 <h5>Account</h5>
                             </a>
                             <p>
-                                <a href="{{ route('user.dashboard') }}">Profile</a> or
+                                <a href="{{ $route }}">Profile</a> or
                                 <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a></span></p>
                         </div>
                     </div>

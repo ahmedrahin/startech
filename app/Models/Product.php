@@ -13,7 +13,7 @@ class Product extends Model
     use HasFactory, SoftDeletes;
 
     protected $guarded = [];
-    
+
     public function orderItems()
     {
         return $this->hasMany(OrderItems::class);
@@ -22,6 +22,14 @@ class Product extends Model
     public function wishlist()
     {
         return $this->hasMany(Wishlist::class);
+    }
+
+    public function QuesionAnswer(){
+        return $this->hasMany(Question::class, 'product_id')->whereNotNull('answer');
+    }
+
+     public function questions(){
+        return $this->hasMany(Question::class, 'product_id');
     }
 
     public function reviews()
@@ -64,8 +72,8 @@ class Product extends Model
         return $this->hasMany(ProductStock::class);
     }
 
-    
-    
+
+
     public function tags()
     {
         return $this->hasMany(Tag::class);
@@ -98,7 +106,7 @@ class Product extends Model
             $slug = "{$originalSlug}-{$count}";
             $count++;
         }
-        
+
         return $slug;
     }
 

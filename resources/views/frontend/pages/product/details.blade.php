@@ -306,7 +306,7 @@
                             <ul class="nav">
                                 <li data-area="specification">Specification</li>
                                 <li data-area="description">Description</li>
-                                <li class="hidden-xs" data-area="ask-question">Questions (0)</li>
+                                <li class="hidden-xs" data-area="ask-question">Questions ({{ $product->QuesionAnswer->count() }})</li>
                                 <li data-area="write-review">Reviews ({{ $product->reviews->count() }})</li>
                             </ul>
                         </div>
@@ -390,19 +390,21 @@
             Livewire.emit('updatedRating', value);
         }
 
-        const modal = document.querySelector('#Reviews-modal');
-        modal.addEventListener('show.bs.modal', (e) => {
-            Livewire.emit('open_add_modal');
+      let modals = document.querySelectorAll('#Reviews-modal, #question-modal');
+        modals.forEach((modal) => {
+            modal.addEventListener('show.bs.modal', (e) => {
+                Livewire.emit('open_add_modal');
+            });
         });
 
         document.addEventListener('livewire:load', function () {
-                Livewire.on('success', function () {
-                const cancelButton = document.querySelector('.cancel-modal-review');
-                if (cancelButton) {
-                    cancelButton.click();
-                }
+            Livewire.on('success', function () {
+                const cancelButtons = document.querySelectorAll('.cancel-modal-review');
+                cancelButtons.forEach(button => {
+                    button.click();
                 });
             });
+        });
 
     </script>
 @endsection

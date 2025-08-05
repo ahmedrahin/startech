@@ -24,6 +24,11 @@ class ProductQuestion extends Component
     }
 
      public function submit(){
+
+        if(!auth()->check()){
+            return ;
+        }
+
          // Validation rules
          $rules = [
             'question' => 'required'
@@ -64,7 +69,7 @@ class ProductQuestion extends Component
      public function updated($propertyName)
      {
          $this->resetErrorBag($propertyName);
-     }   
+     }
 
     public function hydrate()
     {

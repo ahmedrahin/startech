@@ -32,6 +32,7 @@ use App\Http\Controllers\Apps\ReviewController;
 use App\Http\Controllers\Apps\SliderController;
 use App\Http\Controllers\Apps\ContactMessageController;
 use App\Http\Controllers\Apps\SubscriptionController;
+use App\Http\Controllers\Apps\ProductQuestionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -131,6 +132,15 @@ Route::middleware(['isAdmin'])->group(function () {
         Route::get('contact-message-details/{id}', [ContactMessageController::class, 'show'])->name('message.details');
         Route::post('contact-message-reply/{id}', [ContactMessageController::class, 'reply'])->name('message.reply');
         Route::post('contact-message-delete/{id}', [ContactMessageController::class, 'destroy'])->name('message.delete');
+    });
+
+    // product quesiton
+    Route::name('question.')->group(function(){
+        Route::get('question-message', [ProductQuestionController::class, 'index'])->name('product');
+        Route::get('weekly-question', [ProductQuestionController::class, 'weekly'])->name('weekly');
+        Route::get('question-message-details/{id}', [ProductQuestionController::class, 'show'])->name('details');
+        Route::post('question-reply/{id}', [ProductQuestionController::class, 'reply'])->name('reply');
+        Route::post('question-delete/{id}', [ProductQuestionController::class, 'destroy'])->name('delete');
     });
 
     Route::resource('subscription', SubscriptionController::class);

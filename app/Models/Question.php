@@ -15,6 +15,10 @@ class Question extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function repliedby(){
+        return $this->belongsTo(User::class, 'replied_user_id');
+    }
+
     public function product()
     {
         return $this->belongsTo(Product::class, 'product_id');

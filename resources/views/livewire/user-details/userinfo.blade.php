@@ -15,9 +15,9 @@
         <!--begin::Name-->
         <a href="#" class="fs-3 text-gray-800 text-hover-primary fw-bold mb-3">{{ $user->name }}</a>
         <!--end::Name-->
-       
+
     </div>
-    
+
     <div class="d-flex flex-stack fs-4 py-3">
         <div class="fw-bold rotate collapsible" data-bs-toggle="collapse" href="#kt_user_view_details"
             role="button" aria-expanded="false" aria-controls="kt_user_view_details">Details
@@ -25,7 +25,7 @@
                 <i class="ki-duotone ki-down fs-3"></i>
             </span>
         </div>
-        
+
     </div>
     <!--end::Details toggle-->
     <div class="separator"></div>
@@ -41,7 +41,7 @@
             <div class="text-gray-600">
                 <a href="mailto:{{$user->email}};" class="text-gray-600 text-hover-primary">{{$user->email}}</a>
             </div>
-    
+
             <div class="fw-bold mt-5">Phone no.</div>
             <div class="text-gray-600">
                 <a href="tel:{{$user->phone}}" class="text-gray-600 text-hover-primary">{{$user->phone}}</a>
@@ -62,31 +62,31 @@
                     @endif
                 </div>
             @endif
-    
+
             @if( !is_null($user->zipCode) )
                 <div class="fw-bold mt-5">Post/Zip Code</div>
                 <div class="text-gray-600">{{ $user->zipCode }}</div>
            @endif
-    
+
             <div class="fw-bold mt-5">Last Login</div>
             <div class="text-gray-600">{{ $user->last_login_at ? $user->last_login_at->timezone('Asia/Dhaka')->format('d M Y, g:i a') : 'No login yet' }}
             </div>
-    
+
             <div class="fw-bold mt-5">Join Date</div>
             <div class="text-gray-600">{{ $user->created_at->timezone('Asia/Dhaka')->format('d M Y, g:i a') }}
             </div>
-    
+
             <div class="fw-bold mt-5">Last Updated</div>
             <div class="text-gray-600">{{ $user->updated_at->timezone('Asia/Dhaka')->format('d M Y, g:i a') }}
             </div>
-    
-            @if( !is_null($user->created_by) )
+
+            {{-- @if( !is_null($user->created_by) )
                 <div class="fw-bold mt-5">Created By</div>
                 <div class="text-gray-600">
                     <a href="{{route('admin-management.admin-list.show', $created->id)}}">{{ $created->name }}</a>
                 </div>
-           @endif
+           @endif --}}
         </div>
     </div>
-    
+
     </div>

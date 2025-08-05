@@ -52,24 +52,26 @@
                     </div>
                 </div>
             </div>
+            @else
+                <button class="btn st-outline" onclick="message('warning', 'Login at first to ask a question')">Ask Question</button>
             @endif
         </div>
     </div>
     <div id="question">
-        @if(empty($questions))
-        <div class="empty-content">
-            <span class="icon material-icons">textsms</span>
-            <div class="empty-text">There are no questions asked yet. Be the first one to ask a
-                question.</div>
-        </div>
+        @if($questions->count() < 1)
+            <div class="empty-content">
+                <span class="icon material-icons">textsms</span>
+                <div class="empty-text">There are no questions asked yet. Be the first one to ask a
+                    question.</div>
+            </div>
         @else
             @foreach ($questions as $question)
                 <div class="question-wrap" >
                     <p class="author"><span class="name" itemprop="author">{{  $question->user->name }}</span> on <time >{{ \Carbon\Carbon::parse($question->created_at)->format('d M, Y') }}</time></p>
                     <h3 class="question"><span class="hint">Q:</span> <span itemprop="name">{{ $question->question }}</span></h3>
                     <div class="answer-wrap" >
-                        <p class="answer"><span class="hint">A:</span> <span>{{ $question->answer }}</span></p>
-                        
+                        <p class="answer"><span class="hint">A:</span> <span>{!! $question->answer !!}</span></p>
+
                     </div>
                 </div>
             @endforeach

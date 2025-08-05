@@ -4,13 +4,13 @@
 
     @endsection
 
-    @section('title') Reply Message @endsection
+    @section('title') Reply Question @endsection
 
     @section('breadcrumbs')
-    {{ Breadcrumbs::render('message-details') }}
+    {{ Breadcrumbs::render('question-details') }}
     @endsection
 
-    <livewire:contact-message.action :id="$message->id" />
+    <livewire:contact-message.qustionaction :id="$message->id" />
 
     <div class="d-flex flex-column flex-lg-row">
 
@@ -21,7 +21,7 @@
                     <!--begin::Actions-->
                     <div class="d-flex">
                         <!--begin::Back-->
-                        <a href="{{ route('contact.weekly.message') }}"
+                        <a href="{{ route('question.weekly') }}"
                             class="btn btn-sm btn-icon btn-clear btn-active-light-primary me-3" data-bs-toggle="tooltip"
                             data-bs-placement="top" title="Back">
                             <i class="ki-duotone ki-arrow-left fs-1 m-0">
@@ -51,7 +51,7 @@
                             <i class="ki-duotone ki-copy fs-2 m-0"></i>
                         </a>
 
-                        <span id="messageText" class="d-none">{{ $message->message }}</span>
+                        <span id="messageText" class="d-none">{{ $message->question }}</span>
 
                         <!--end::Mark as read-->
                         <!--begin::Move-->
@@ -63,6 +63,9 @@
                             </i>
                         </a>
                         <!--end::Move-->
+                        <a href="{{ route('product-management.show',$message->product_id) }}" class="btn btn-sm btn-icon btn-light btn-active-light-primary" style="width: inherit;padding: 0 10px;margin-left:5px;" target="_blank">
+                            View Product
+                        </a>
                     </div>
 
                     <div>
@@ -77,18 +80,7 @@
 
                 </div>
                 <div class="card-body">
-                    <!--begin::Title-->
-                    @if( $message->subject )
-                    <div class="d-flex flex-wrap gap-2 justify-content-between mb-8">
-                        <div class="d-flex align-items-center flex-wrap gap-2">
 
-                            <h2 class="fw-semibold me-3 my-1">{{ $message->subject }}</h2>
-
-                        </div>
-
-                    </div>
-                    @endif
-                    <!--end::Title-->
                     <!--begin::Message accordion-->
                     <div data-kt-inbox-message="message_wrapper">
                         <!--begin::Message header-->
@@ -103,14 +95,12 @@
                                 <div class="pe-5">
                                     <!--begin::Author details-->
                                     <div class="d-flex align-items-center flex-wrap gap-1">
-                                        <a href="#" class="fw-bold text-dark text-hover-primary">{{ $message->name
-                                            }}</a>
+                                        <a href="#" class="fw-bold text-dark text-hover-primary">{{ $message->user->name }}</a>
                                         <i class="ki-duotone ki-abstract-8 fs-7 text-success mx-3">
                                             <span class="path1"></span>
                                             <span class="path2"></span>
                                         </i>
-                                        <span class="text-muted fw-bold">{{ $message->created_at->diffForHumans()
-                                            }}</span>
+                                        <span class="text-muted fw-bold">{{ $message->created_at->diffForHumans() }}</span>
                                     </div>
                                     <!--end::Author details-->
                                     <!--begin::Message details-->
@@ -130,7 +120,7 @@
                                                 <tbody>
                                                     <tr>
                                                         <td class="w-75px text-muted">From</td>
-                                                        <td>{{ $message->name }}</td>
+                                                        <td>{{ $message->user->name }}</td>
                                                     </tr>
                                                     <tr>
                                                         <td class="text-muted">Date</td>
@@ -143,7 +133,7 @@
                                                     </tr>
                                                     <tr>
                                                         <td class="text-muted">Reply-to</td>
-                                                        <td>{{ $message->email }}</td>
+                                                        <td>{{ $message->user->email }}</td>
                                                     </tr>
                                                 </tbody>
                                             </table>
@@ -170,111 +160,111 @@
 
                         <div class="collapse fade show" data-kt-inbox-message="message">
                             <div class="py-5 pb-0">
-                                <p>{{ $message->message }}</p>
+                                <p>{{ $message->question }}</p>
                             </div>
                         </div>
                         <!--end::Message content-->
                     </div>
                     <!--end::Message accordion-->
                     @if ($message->is_replied)
-                    <div class="separator my-6"></div>
-                    <!--begin::Message accordion-->
-                    <div data-kt-inbox-message="message_wrapper">
-                        <!--begin::Message header-->
-                        <div class="d-flex flex-wrap gap-2 flex-stack cursor-pointer" data-kt-inbox-message="header">
-                            <!--begin::Author-->
-                            <div class="d-flex align-items-center">
-                                <!--begin::Avatar-->
-                                <div class="symbol symbol-50 me-4">
-                                    <img src="{{ asset($message->user->avatar ?? 'uploads/user.png') }}" width="50"
-                                        height="50" class="rounded-circle">
+                        <div class="separator my-6"></div>
+                        <!--begin::Message accordion-->
+                        <div data-kt-inbox-message="message_wrapper">
+                            <!--begin::Message header-->
+                            <div class="d-flex flex-wrap gap-2 flex-stack cursor-pointer" data-kt-inbox-message="header">
+                                <!--begin::Author-->
+                                <div class="d-flex align-items-center">
+                                    <!--begin::Avatar-->
+                                    <div class="symbol symbol-50 me-4">
+                                        <img src="{{ asset($message->repliedby->avatar ?? 'uploads/user.png') }}" width="50"
+                                            height="50" class="rounded-circle">
+                                    </div>
+                                    <!--end::Avatar-->
+                                    <div class="pe-5">
+                                        <!--begin::Author details-->
+                                        <div class="d-flex align-items-center flex-wrap gap-1">
+                                            <a href="{{ route('admin-management.admin-list.show',$message->user->id) }}"
+                                                target="_blank" class="fw-bold text-dark text-hover-primary">{{
+                                                $message->repliedby->name
+                                                }}</a>
+                                            <i class="ki-duotone ki-abstract-8 fs-7 text-success mx-3">
+                                                <span class="path1"></span>
+                                                <span class="path2"></span>
+                                            </i>
+                                            <span class="text-muted fw-bold">{{
+                                                \Carbon\Carbon::parse($message->replied_at)->diffForHumans() }}
+                                            </span>
+                                        </div>
+                                        <!--end::Author details-->
+                                        <!--begin::Message details-->
+                                        <div class="d-none" data-kt-inbox-message="details">
+                                            <span class="text-muted fw-semibold">to {{ $message->user->name }}</span>
+                                            <!--begin::Menu toggle-->
+                                            <a href="#" class="me-1" data-kt-menu-trigger="click"
+                                                data-kt-menu-placement="bottom-start">
+                                                <i class="ki-duotone ki-down fs-5 m-0"></i>
+                                            </a>
+                                        </div>
+                                        <div class="text-muted fw-semibold mw-450px mt-2" data-kt-inbox-message="preview">
+                                            {!! $message->answer !!}
+                                        </div>
+                                        <!--end::Preview message-->
+                                    </div>
                                 </div>
-                                <!--end::Avatar-->
-                                <div class="pe-5">
-                                    <!--begin::Author details-->
-                                    <div class="d-flex align-items-center flex-wrap gap-1">
-                                        <a href="{{ route('admin-management.admin-list.show',$message->user->id) }}"
-                                            target="_blank" class="fw-bold text-dark text-hover-primary">{{
-                                            $message->user->name
-                                            }}</a>
-                                        <i class="ki-duotone ki-abstract-8 fs-7 text-success mx-3">
-                                            <span class="path1"></span>
-                                            <span class="path2"></span>
-                                        </i>
-                                        <span class="text-muted fw-bold">{{
-                                            \Carbon\Carbon::parse($message->replied_at)->diffForHumans() }}
-                                        </span>
-                                    </div>
-                                    <!--end::Author details-->
-                                    <!--begin::Message details-->
-                                    <div class="d-none" data-kt-inbox-message="details">
-                                        <span class="text-muted fw-semibold">to {{ $message->name }}</span>
-                                        <!--begin::Menu toggle-->
-                                        <a href="#" class="me-1" data-kt-menu-trigger="click"
-                                            data-kt-menu-placement="bottom-start">
-                                            <i class="ki-duotone ki-down fs-5 m-0"></i>
-                                        </a>
-                                    </div>
-                                    <div class="text-muted fw-semibold mw-450px mt-2" data-kt-inbox-message="preview">
-                                        {!! $message->reply_message !!}
-                                    </div>
-                                    <!--end::Preview message-->
-                                </div>
-                            </div>
-                            <!--end::Author-->
-                            <!--begin::Actions-->
-                            <div class="d-flex align-items-center flex-wrap gap-2">
-                                <!--begin::Date-->
-                                <span class="fw-semibold text-muted text-end me-3">{{
-                                    Carbon\Carbon::parse($message->replied_at)->format('d M, Y (h:i a)') }}</span>
+                                <!--end::Author-->
+                                <!--begin::Actions-->
+                                <div class="d-flex align-items-center flex-wrap gap-2">
+                                    <!--begin::Date-->
+                                    <span class="fw-semibold text-muted text-end me-3">{{
+                                        Carbon\Carbon::parse($message->replied_at)->format('d M, Y (h:i a)') }}</span>
 
+                                </div>
+                                <!--end::Actions-->
                             </div>
-                            <!--end::Actions-->
-                        </div>
-                        <!--end::Message header-->
-                        <!--begin::Message content-->
-                        <div class="collapse fade" data-kt-inbox-message="message">
-                            <div class="py-5">
-                                <p>{{ $message->message }}</p>
+                            <!--end::Message header-->
+                            <!--begin::Message content-->
+                            <div class="collapse fade" data-kt-inbox-message="message">
+                                <div class="py-5">
+                                    <p>{{ $message->message }}</p>
+                                </div>
                             </div>
+                            <!--end::Message content-->
                         </div>
-                        <!--end::Message content-->
-                    </div>
                     @endif
 
                     @if ($errors->any())
-                    <div class="form-message mt-10">
-                        @foreach ($errors->all() as $error)
-                        <ul id="errors-msgs" type="none" class="p-0">
-                            <li>
-                                <div
-                                    class="alert alert-dismissible bg-light-danger border border-danger border-dashed d-flex flex-column flex-sm-row w-100 p-5">
-                                    <i class="ki-duotone ki-message-text-2 fs-2hx text-danger me-4 mb-5 mb-sm-0">
-                                        <span class="path1"></span>
-                                        <span class="path2"></span>
-                                        <span class="path3"></span>
-                                    </i>
-                                    <div class="d-flex flex-column pe-0 pe-sm-10">
-                                        <h5 class="mb-1">{{ $error }}</h5>
-                                        <span>Please fill up the field with valid data!</span>
-                                    </div>
-                                    <button type="button"
-                                        class="position-absolute position-sm-relative m-2 m-sm-0 top-0 end-0 btn btn-icon ms-sm-auto"
-                                        data-bs-dismiss="alert">
-                                        <i class="ki-duotone ki-cross fs-1 text-danger">
+                        <div class="form-message mt-10">
+                            @foreach ($errors->all() as $error)
+                            <ul id="errors-msgs" type="none" class="p-0">
+                                <li>
+                                    <div
+                                        class="alert alert-dismissible bg-light-danger border border-danger border-dashed d-flex flex-column flex-sm-row w-100 p-5">
+                                        <i class="ki-duotone ki-message-text-2 fs-2hx text-danger me-4 mb-5 mb-sm-0">
                                             <span class="path1"></span>
                                             <span class="path2"></span>
+                                            <span class="path3"></span>
                                         </i>
-                                    </button>
-                                </div>
-                            </li>
-                        </ul>
-                        @endforeach
-                    </div>
+                                        <div class="d-flex flex-column pe-0 pe-sm-10">
+                                            <h5 class="mb-1">{{ $error }}</h5>
+                                            <span>Please fill up the field with valid data!</span>
+                                        </div>
+                                        <button type="button"
+                                            class="position-absolute position-sm-relative m-2 m-sm-0 top-0 end-0 btn btn-icon ms-sm-auto"
+                                            data-bs-dismiss="alert">
+                                            <i class="ki-duotone ki-cross fs-1 text-danger">
+                                                <span class="path1"></span>
+                                                <span class="path2"></span>
+                                            </i>
+                                        </button>
+                                    </div>
+                                </li>
+                            </ul>
+                            @endforeach
+                        </div>
                     @endif
 
                     <form id="kt_inbox_reply_form" class="rounded border mt-10"
-                        action="{{ route('contact.message.reply',$message->id) }}" method="POST"
+                        action="{{ route('question.reply',$message->id) }}" method="POST"
                         enctype="multipart/form-data">
                         @csrf
                         <!--begin::Body-->
@@ -284,7 +274,7 @@
                                 <!--begin::Label-->
                                 <div class="text-dark fw-bold w-75px">To:</div>
                                 <input type="text" class="form-control border-0" name="email"
-                                    value="{{ $message->email }}" readonly />
+                                    value="{{ $message->user->email }}" readonly />
 
                                 <div class="ms-auto w-75px text-end">
                                     <span class="text-muted fs-bold cursor-pointer text-hover-primary me-2"
@@ -336,7 +326,7 @@
                             <!--begin::Subject-->
                             <div class="border-bottom">
                                 <input class="form-control border-0 px-8 min-h-45px" name="subject"
-                                    placeholder="Subject" />
+                                    placeholder="Subject" value="" />
                             </div>
                             <!--end::Subject-->
                             <!--begin::Message-->
@@ -480,13 +470,13 @@
         }).then((result) => {
             if (result.isConfirmed) {
                 $.ajax({
-                    url: "{{ route('contact.message.delete', ['id' => '__id__']) }}".replace('__id__', id),
+                    url: "{{ route('question.delete', ['id' => '__id__']) }}".replace('__id__', id),
                     type: "POST",
                     data: {
                         _token: '{{ csrf_token() }}'
                     },
                     success: function (response) {
-                        window.location.href = "{{ route('contact.message') }}";
+                        window.location.href = "{{ route('question.weekly') }}";
                     },
                     error: function (xhr) {
                         Swal.fire({

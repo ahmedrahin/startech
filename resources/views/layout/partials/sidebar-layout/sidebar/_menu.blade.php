@@ -93,7 +93,7 @@
             </div>
 
             <div data-kt-menu-trigger="click"
-                class="menu-item menu-accordion {{ request()->routeIs('user-management.*') ? 'here show' : '' }}">
+                class="menu-item menu-accordion {{ request()->routeIs('user-management.*') || request()->routeIs('question.*') || request()->routeIs('contact.*') ? 'here show' : '' }}">
                 <!--begin:Menu link-->
                 <span class="menu-link">
                     <i class="ki-duotone ki-profile-user">
@@ -123,11 +123,22 @@
                     <!--begin:Menu item-->
                     <div class="menu-item">
                         <!--begin:Menu link-->
-                        <a class="menu-link " href="{{ route('contact.weekly.message') }}">
+                        <a class="menu-link {{ request()->routeIs('contact.*') ? 'active' : '' }}" href="{{ route('contact.weekly.message') }}">
                             <span class="menu-bullet">
                                 <span class="bullet bullet-dot"></span>
                             </span>
                             <span class="menu-title">Customer Messages</span>
+                        </a>
+                        <!--end:Menu link-->
+                    </div>
+
+                    <div class="menu-item">
+                        <!--begin:Menu link-->
+                        <a class="menu-link {{ request()->routeIs('question.*') ? 'active' : '' }}" href="{{ route('question.weekly') }}">
+                            <span class="menu-bullet">
+                                <span class="bullet bullet-dot"></span>
+                            </span>
+                            <span class="menu-title">Product Questions</span>
                         </a>
                         <!--end:Menu link-->
                     </div>

@@ -3,7 +3,6 @@
 <script src="{{ asset('frontend/js/theme.js') }}"></script>
 <script src="{{ asset('frontend/js/toastify.js') }}"></script>
 <script src="{{ asset('frontend/js/bootstrap.bundle.min.js') }}"></script>
-@yield('page-script')
 
 
 {{-- messages --}}

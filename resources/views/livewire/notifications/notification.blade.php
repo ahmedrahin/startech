@@ -1,5 +1,5 @@
 <div class="app-navbar-item ms-1 ms-md-4 notification-items" wire:poll.visible.10000ms>
-    
+
     <a class="position-relative me-4 btn-notification" href="{{ route('contact.message') }}">
         <i class="ki-duotone ki-sms fs-4">
             <span class="path1"></span>
@@ -7,6 +7,17 @@
         </i> Unread Messages
         @if ($messages > 0)
         <span class="position-absolute top-0 start-100 translate-middle  badge badge-circle badge-primary">{{ $messages
+            }}</span>
+        @endif
+    </a>
+
+    <a class="position-relative me-4 btn-notification" href="{{ route('question.product') }}">
+        <i class="ki-duotone ki-sms fs-4">
+            <span class="path1"></span>
+            <span class="path2"></span>
+        </i> Unread Questions
+        @if ($question > 0)
+        <span class="position-absolute top-0 start-100 translate-middle  badge badge-circle badge-primary">{{ $question
             }}</span>
         @endif
     </a>

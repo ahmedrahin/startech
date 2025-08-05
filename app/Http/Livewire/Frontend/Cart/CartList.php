@@ -28,20 +28,20 @@ class CartList extends Component
         $this->cart = session()->get('cart', []);
         $now = now();
         $cartUpdated = false;
-    
+
         foreach ($this->cart as $cartKey => $item) {
             if (!empty($item['added_at']) && $now->diffInMinutes(Carbon::parse($item['added_at'])) > 30) {
                 unset($this->cart[$cartKey]);
                 $cartUpdated = true;
             }
         }
-    
+
         if ($cartUpdated) {
             // Update the session with the modified cart
             session()->put('cart', $this->cart);
             $this->emit('cartUpdated');
         }
-        
+
         // Create a temporary cart array to store valid items
         $validCart = [];
 
@@ -49,7 +49,7 @@ class CartList extends Component
             $productId = explode('-', $cartKey)[0];
             $product = Product::find($productId);
 
-            if ($product && ($product->status == 1 || $product->status == 3 )  && $product->quantity > 0) { 
+            if ($product && ($product->status == 1 || $product->status == 3 )  && $product->quantity > 0) {
                 $validCart[$cartKey] = $item;
                 $validCart[$cartKey]['name'] = $product->name;
                 $validCart[$cartKey]['slug'] = $product->slug;
@@ -66,7 +66,7 @@ class CartList extends Component
         session()->put('cart', $validCart);
         $this->cart = $validCart;
     }
-    
+
     public function updateQuantities($cartKey, $quantity)
     {
         // Basic validation of quantity
@@ -74,19 +74,19 @@ class CartList extends Component
             $this->emit('error', 'Invalid product quantity. Please enter a valid positive quantity.');
             return;
         }
-    
+
         // Check if this item exists in the cart
         $cart = session()->get('cart', []);
         if (isset($cart[$cartKey])) {
             $productId = explode('-', $cartKey)[0];
             $product = Product::find($productId);
-    
+
             // Validate stock availability
             if ($product && $quantity > $product->quantity) {
                 $this->emit('error', "We don't have enough stock for {$product->name}");
                 return;
             }
-    
+
             // Update quantity and refresh cart
             $cart[$cartKey]['quantity'] = (int) $quantity;
             session()->put('cart', $cart);
@@ -97,13 +97,13 @@ class CartList extends Component
             $this->emit('error', 'Product not found in the cart.');
         }
     }
-    
+
     public function incrementQuantity($cartKey)
     {
         $currentQuantity = $this->quantities[$cartKey] ?? 1;
         $productId = explode('-', $cartKey)[0];
         $product = Product::find($productId);
-    
+
         if ($product && $currentQuantity < $product->quantity) {
             $this->quantities[$cartKey] = $currentQuantity + 1;
             $this->updateQuantities($cartKey, $this->quantities[$cartKey]);
@@ -111,17 +111,17 @@ class CartList extends Component
             $this->emit('error', 'Maximum stock limit reached');
         }
     }
-    
+
     public function decrementQuantity($cartKey)
     {
         $currentQuantity = $this->quantities[$cartKey] ?? 1;
-    
+
         if ($currentQuantity > 1) {
             $this->quantities[$cartKey] = $currentQuantity - 1;
             $this->updateQuantities($cartKey, $this->quantities[$cartKey]);
         }
     }
-    
+
     public function removeItem($cartKey)
     {
         $cart = session()->get('cart', []);
@@ -131,7 +131,7 @@ class CartList extends Component
         $this->emit('cartUpdated');
         $this->loadCart();
     }
-    
+
     public function getTotalAmount()
     {
         $total = 0;

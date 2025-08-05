@@ -1,4 +1,65 @@
 <div>
+    @php
+        $productStocks = $product->productStock ?? collect();
+        $attributesList = $attributes->keyBy('id');
+        $attributesValuesList = $attributesValues->keyBy('id');
+        $groupedAttributes = [];
+
+        $singleVariationStocks = $productStocks->filter(function ($productStock) {
+            return $productStock->attributeOptions->count() === 1;
+        });
+
+        // Group values by attribute
+        foreach ($singleVariationStocks as $productStock) {
+            foreach ($productStock->attributeOptions as $option) {
+                $groupedAttributes[$option->attribute_id][$option->id] =
+                    $attributesValuesList[$option->attribute_value_id] ?? null;
+            }
+        }
+    @endphp
+
+    @if (!empty($groupedAttributes))
+        @foreach ($groupedAttributes as $attribute_id => $values)
+            @php
+                $attribute = $attributesList[$attribute_id] ?? null;
+                $attributeName = $attribute->attr_name ?? 'Option';
+                $selectedValue = $selectedAttributes[$attributeName] ?? null;
+            @endphp
+
+            @if ($attribute && !empty($values))
+                <div class="p-opt-wrap">
+                    <div class="p-opt required">
+                        <div class="p-opt-lbl">{{ $attributeName }}: <b></b></div>
+                        <div class="p-opt-vals">
+                            @foreach ($values as $optionId => $value)
+                                @if ($value)
+                                    <label>
+                                        <input class="hide" type="radio" name="attribute[{{ $attribute_id }}]"
+                                            value="{{ $optionId }}" title="{{ $value->attr_value }}"
+                                            wire:click="$emit('selectAttribute', '{{ $attributeName }}', '{{ $value->attr_value }}')"
+                                            {{ $selectedValue === $value->attr_value ? 'checked' : '' }}>
+                                        <span class="{{ $selectedValue === $value->attr_value ? 'active' : '' }}">
+                                            {{ $value->attr_value }}
+                                        </span>
+                                    </label>
+                                @endif
+                            @endforeach
+                        </div>
+
+                        {{-- Validation Error --}}
+                        @if (!empty($attributeErrors[$attributeName]))
+                            <div class="text-danger mt-1">
+                                {{ $attributeErrors[$attributeName] }}
+                            </div>
+                        @endif
+                    </div>
+                </div>
+            @endif
+        @endforeach
+
+    @endif
+
+
     <div class="cart-option">
         <label class="quantity">
             <span class="ctl minus"><i class="material-icons">remove</i></span>
@@ -25,8 +86,8 @@
 
 
     @section('addcart-js')
-    <script>
-        document.addEventListener("DOMContentLoaded", () => {
+        <script>
+            document.addEventListener("DOMContentLoaded", () => {
                 const plusMinusWrappers = document.querySelectorAll('.quantity');
 
                 plusMinusWrappers.forEach((wrapper) => {
@@ -37,7 +98,7 @@
                     if (inputEl && inputEl.dataset.quantity) {
                         const maxQuantity = parseInt(inputEl.dataset.quantity);
 
-                        addButton?.addEventListener('click', function () {
+                        addButton?.addEventListener('click', function() {
                             let currentValue = Number(inputEl.value);
                             if (currentValue < maxQuantity) {
                                 inputEl.value = currentValue + 1;
@@ -48,7 +109,7 @@
                             subButton.disabled = false;
                         });
 
-                        subButton?.addEventListener('click', function () {
+                        subButton?.addEventListener('click', function() {
                             let currentValue = Number(inputEl.value);
                             if (currentValue > 1) {
                                 inputEl.value = currentValue - 1;
@@ -64,11 +125,11 @@
                     }
                 });
             });
-    </script>
+        </script>
 
-    {{-- product qty and variaiton js --}}
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
+        {{-- product qty and variaiton js --}}
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
                 // Size swatches (new theme selector: .product-variations .size)
                 var sizeItems = document.querySelectorAll('.product-variations .size');
                 sizeItems.forEach(function(item) {
@@ -105,6 +166,6 @@
                     });
                 }
             });
-    </script>
+        </script>
     @endsection
 </div>

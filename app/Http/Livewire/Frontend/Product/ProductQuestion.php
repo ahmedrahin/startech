@@ -46,7 +46,15 @@ class ProductQuestion extends Component
         ];
 
         // store the review
-        Question::create($data);
+        $question = Question::create($data);
+
+        // add notification
+        $notification = new \App\Models\Notification();
+        $notification->create([
+            'type' => 'question',
+            'contact_message_id' => $question->id,
+        ]);
+
         $this->emit('success', __('Your question has been submitted.'));
         $this->resetForm();
         $this->emit('load');

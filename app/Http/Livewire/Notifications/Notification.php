@@ -5,12 +5,14 @@ namespace App\Http\Livewire\Notifications;
 use Livewire\Component;
 use App\Models\Order;
 use App\Models\ContactMessage;
+use App\Models\Question;
 use App\Models\Notification as AppNotification;
 
 class Notification extends Component
 {
     public $orders;
     public $messages;
+    public $question;
 
     public $hasUnread = false;
 
@@ -30,6 +32,7 @@ class Notification extends Component
     {
         $this->orders = Order::where('is_seen', 0)->count();
         $this->messages = ContactMessage::where('is_read', 0)->count();
+        $this->question = Question::where('is_read', 0)->count();
 
         $unreadCount = AppNotification::where('read', false)->count();
         $this->emit('notificationCountUpdated', $unreadCount);

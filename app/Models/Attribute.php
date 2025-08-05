@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Attribute extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory;
 
     protected $fillable = ['attr_name', 'status'];
 
@@ -17,18 +17,5 @@ class Attribute extends Model
     }
 
     // Add a model event to handle related records on deletion
-    protected static function boot()
-    {
-        parent::boot();
-
-        static::deleting(function ($attribute) {
-            // Soft delete related attribute values
-            $attribute->AttributeValue()->delete();
-        });
-
-        // Restore related attribute values when an attribute is restored
-        static::restoring(function ($attribute) {
-            $attribute->values()->AttributeValue()->restore();
-        });
-    }
+    
 }

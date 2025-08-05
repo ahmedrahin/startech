@@ -28,6 +28,13 @@
                                     $linkId = $notification->contact_message_id;
                                     $route = route('contact.message.details', $linkId);
                                     break;
+                                case 'question':
+                                    $icon = 'ki-message-text-2';
+                                    $color = 'info';
+                                    $title = 'New Product Question';
+                                    $linkId = $notification->contact_message_id;
+                                    $route = route('question.details', $linkId);
+                                    break;
                                 case 'product':
                                     $icon = 'ki-medal-star';
                                     $color = 'warning';
@@ -56,7 +63,11 @@
                                         {{ $title }}
                                     </span>
                                     <span class="text-muted fw-semibold d-block">
-                                        {{ $notification->created_at->diffForHumans() }}
+                                       @if ($notification->created_at->diffInSeconds(now()) < 5)
+                                            now
+                                        @else
+                                            {{ $notification->created_at->diffForHumans() }}
+                                        @endif
                                     </span>
                                 </div>
                             </div>

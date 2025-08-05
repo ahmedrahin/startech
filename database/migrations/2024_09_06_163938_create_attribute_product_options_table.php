@@ -16,7 +16,6 @@ return new class extends Migration
             $table->foreignId('product_stock_id')->constrained()->onDelete('cascade');
             $table->foreignId('attribute_id')->constrained()->onDelete('cascade');
             $table->foreignId('attribute_value_id')->constrained()->onDelete('cascade');
-            $table->softDeletes();
             $table->timestamps();
         });
     }

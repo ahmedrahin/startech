@@ -32,7 +32,7 @@
                                     $icon = 'ki-message-text-2';
                                     $color = 'info';
                                     $title = 'New Product Question';
-                                    $linkId = $notification->contact_message_id;
+                                    $linkId = $notification->question_id;
                                     $route = route('question.details', $linkId);
                                     break;
                                 case 'product':
@@ -63,7 +63,7 @@
                                         {{ $title }}
                                     </span>
                                     <span class="text-muted fw-semibold d-block">
-                                       @if ($notification->created_at->diffInSeconds(now()) < 5)
+                                       @if ($notification->created_at->diffInSeconds(now()) < 59)
                                             now
                                         @else
                                             {{ $notification->created_at->diffForHumans() }}

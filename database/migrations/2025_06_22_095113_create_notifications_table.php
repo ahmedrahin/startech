@@ -18,6 +18,7 @@ return new class extends Migration
             $table->foreignId('order_id')->nullable()->constrained()->onDelete('cascade');
             $table->foreignId('product_id')->nullable()->constrained()->onDelete('cascade');
             $table->foreignId('contact_message_id')->nullable()->constrained()->onDelete('cascade');
+            $table->foreignId('question_id')->nullable()->constrained()->onDelete('cascade');
             $table->boolean('read')->default(false);
             $table->timestamps();
         });

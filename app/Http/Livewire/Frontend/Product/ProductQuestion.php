@@ -52,7 +52,7 @@ class ProductQuestion extends Component
         $notification = new \App\Models\Notification();
         $notification->create([
             'type' => 'question',
-            'contact_message_id' => $question->id,
+            'question_id' => $question->id,
         ]);
 
         $this->emit('success', __('Your question has been submitted.'));

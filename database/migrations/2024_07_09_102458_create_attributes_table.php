@@ -15,7 +15,6 @@ return new class extends Migration
             $table->id();
             $table->string('attr_name')->unique();
             $table->tinyInteger("status")->default(1)->comment('0=Not active; 1=Active');
-            $table->softDeletes();
             $table->timestamps();
         });
     }

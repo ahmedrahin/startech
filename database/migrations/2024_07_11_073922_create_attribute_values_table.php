@@ -17,7 +17,6 @@ return new class extends Migration
             $table->unsignedBigInteger('attr_id');
             $table->foreign('attr_id')->references('id')->on('attributes')->onDelete('cascade');
             $table->string('option')->nullable();
-            $table->softDeletes();
             $table->timestamps();
 
         });

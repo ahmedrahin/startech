@@ -258,11 +258,12 @@ class Checkout extends Component
                         'price' => $price,
                     ]);
 
-                    foreach (['size', 'color'] as $attr) {
-                        if (!empty($item[$attr])) {
+                    // Dynamically save all selected attributes
+                    if (!empty($item['attributes']) && is_array($item['attributes'])) {
+                        foreach ($item['attributes'] as $attrName => $attrValue) {
                             $orderItem->orderItemVariations()->create([
-                                'attribute_name' => $attr,
-                                'attribute_value' => $item[$attr],
+                                'attribute_name' => $attrName,
+                                'attribute_value' => $attrValue,
                             ]);
                         }
                     }

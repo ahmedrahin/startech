@@ -113,7 +113,7 @@
                             let currentValue = Number(inputEl.value);
                             if (currentValue > 1) {
                                 inputEl.value = currentValue - 1;
-                                inputEl.dispatchEvent(new Event('input')); // trigger Livewire update
+                                inputEl.dispatchEvent(new Event('input'));
                             }
 
                             subButton.disabled = (inputEl.value <= 1);

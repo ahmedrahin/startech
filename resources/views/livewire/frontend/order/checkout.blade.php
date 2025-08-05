@@ -1,250 +1,218 @@
- <div class="page-content">
-     <div class="container">
 
 
-         <div class="mb-2">
-             Have a coupon? <a href="#" class="show-coupon font-weight-bold text-uppercase text-dark">Enter your
-                 code</a>
-         </div>
-         <div class="coupon-content mb-4" style="display: block;">
-             <p>If you have a coupon code, please apply it below.</p>
-             @if (empty($appliedCoupon))
-                 <div class="input-wrapper-inline">
-                     <input type="text" name="coupon_code" class="form-control form-control-md mr-1 mb-2"
-                         placeholder="Coupon code" id="coupon_code" wire:model="couponCode">
-                     <button type="button" class="btn button btn-rounded btn-coupon mb-2" name="apply_coupon"
-                         wire:click="applyCoupon" style="background: #336699;border-color:#336699;width: 100px;">
-                         <span wire:loading.remove wire:target="applyCoupon">Apply</span>
-                         <span wire:loading wire:target="applyCoupon">
-                             <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                         </span>
-                     </button>
-                 </div>
-             @else
-                 <div class="input-wrapper-inline">
-                     <input type="text" class="form-control form-control-md mr-1 mb-2"
-                         value="{{ $appliedCoupon['code'] }}" readonly>
-                     <button type="button" class="btn button btn-rounded btn-coupon mb-2" name="apply_coupon"
-                         wire:click="removeCoupon"
-                         style="background: #336699;border-color:#336699;width: 120px;padding:0;">
-                         <span wire:loading.remove wire:target="removeCoupon">Cancel</span>
-                         <span wire:loading wire:target="removeCoupon">
-                             <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                         </span>
-                     </button>
-                 </div>
-             @endif
-         </div>
+<section class="checkout bg-bt-gray p-tb-15">
+    <div class="container">
+        <h1 class="page-title">Checkout</h1>
 
-         <form class="form " wire:submit.prevent="order">
-             <div class="row mb-9">
-                 <div class="col-lg-7 pr-lg-4 mb-4">
-                     <h3 class="title billing-title text-uppercase ls-10 pt-1 pb-3 mb-0">
-                         Billing Details
-                     </h3>
-                     <div class="row gutter-sm">
-                         <div class="col-12">
-                             <div class="form-group">
-                                 <label>Full name *</label>
-                                 <input type="text"
-                                     class="form-control form-control-md @error('name') error-border @enderror"
-                                     name="name" placeholder="Full Name" wire:model="name">
-                                 @error('name')
-                                     <div class="text-danger mt-2">{{ $message }}</div>
-                                 @enderror
-                             </div>
-                         </div>
-                         <div class="col-md-6">
-                             <div class="form-group">
-                                 <label>E-mail Adddress </label>
-                                 <input type="text"
-                                     class="form-control form-control-md @error('email') error-border @enderror"
-                                     name="email" placeholder="E-mail Adddress" wire:model="email">
-                                 @error('email')
-                                     <div class="text-danger mt-2">{{ $message }}</div>
-                                 @enderror
-                             </div>
-                         </div>
-                         <div class="col-md-6">
-                             <div class="form-group">
-                                 <label>Phone no. *</label>
-                                 <input type="text"
-                                     class="form-control form-control-md @error('phone') error-border @enderror"
-                                     name="phone" placeholder="Phone Number" wire:model="phone">
-                                 @error('phone')
-                                     <div class="text-danger mt-2">{{ $message }}</div>
-                                 @enderror
-                             </div>
-                         </div>
-                     </div>
+        <form class="checkout-content" wire:submit.prevent="order">
+            <div class="row">
+                {{-- Left: Customer Info --}}
+                <div class="col-md-4 col-sm-12">
+                    <div class="page-section ws-box">
+                        <div class="section-head">
+                            <h2><span>1</span>Customer Information</h2>
+                        </div>
+                        <div class="address">
+                            <div class="form-group">
+                                <label>Full Name</label>
+                                <input type="text" class="form-control" wire:model="name" placeholder="Full Name*">
+                                @error('name') <div class="text-danger">{{ $message }}</div> @enderror
+                            </div>
 
-                     <div class="col-12">
-                         <div class="form-group">
-                             <label>Shipping Address *</label>
-                             <input type="text"
-                                 class="form-control form-control-md @error('shipping_address') error-border @enderror"
-                                 name="shipping_address" placeholder="Shipping Address" wire:model="shipping_address">
-                             @error('shipping_address')
-                                 <div class="text-danger mt-2">{{ $message }}</div>
-                             @enderror
-                         </div>
-                     </div>
+                            <div class="form-group">
+                                <label>Address</label>
+                                <input type="text" class="form-control" wire:model="shipping_address"
+                                    placeholder="Address*">
+                                @error('shipping_address') <div class="text-danger">{{ $message }}</div> @enderror
+                            </div>
 
-                     <div class="col-12">
-                         <div class="form-group">
-                             <label>City/State *</label>
-                             <select class="form-control" wire:model="district_id">
-                                 <option value="">Select City</option>
-                                 @foreach ($districts as $district)
-                                     <option value="{{ $district->id }}">{{ $district->name }} -
-                                         {{ $district->bn_name }}</option>
-                                 @endforeach
-                             </select>
-                             @error('district_id')
-                                 <div class="text-danger mt-2">{{ $message }}</div>
-                             @enderror
-                         </div>
-                     </div>
+                            <div class="form-group">
+                                <label>Mobile</label>
+                                <input type="text" class="form-control" wire:model="phone" placeholder="Phone*">
+                                @error('phone') <div class="text-danger">{{ $message }}</div> @enderror
+                            </div>
 
+                            <div class="form-group">
+                                <label>Email</label>
+                                <input type="email" class="form-control" wire:model="email" placeholder="Email*">
+                                @error('email') <div class="text-danger">{{ $message }}</div> @enderror
+                            </div>
 
-                     <div class="form-group mt-3">
-                         <label for="order-notes">Order notes (optional)</label>
-                         <textarea class="form-control mb-0" id="order-notes" name="order-notes" cols="30" rows="4"
-                             placeholder="Notes about your order..." wire:model="note"></textarea>
-                     </div>
-                 </div>
+                            <div class="multiple-form-group">
+                                <div class="form-group">
+                                    <label>City</label>
+                                    <select wire:model="district_id" class="form-control">
+                                        <option value="">Select City</option>
+                                        @foreach ($districts as $district)
+                                            <option value="{{ $district->id }}">{{ $district->name }} - {{ $district->bn_name }}</option>
+                                        @endforeach
+                                    </select>
+                                    @error('district_id') <div class="text-danger">{{ $message }}</div> @enderror
+                                </div>
+                            </div>
 
-                 <div class="col-lg-5 mb-4 sticky-sidebar-wrapper">
-                     <div class="order-summary-wrapper sticky-sidebar">
-                         <h3 class="title text-uppercase ls-10">Your Order</h3>
-                         <div class="order-summary">
-                             <table class="order-table">
-                                 <thead>
-                                     <tr>
-                                         <th colspan="2">
-                                             <b>Product</b>
-                                         </th>
+                            <div class="form-group">
+                                <label>Order Note</label>
+                                <textarea class="form-control" rows="5" wire:model="note"
+                                    placeholder="Notes about your order..."></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-                                     </tr>
-                                 </thead>
-                                 <tbody>
-                                     @foreach ($cart as $cartKey => $item)
-                                         <tr class="bb-no">
-                                             <td class="product-name"><a
-                                                     href="{{ route('product-details', $item['slug']) }}"
-                                                     style="color: #F4442C;">{{ $item['name'] }}</a> <i
-                                                     class="fas fa-times"></i>
-                                                 <span class="product-quantity">{{ $item['quantity'] }}</span>
-                                             </td>
-                                             <td class="product-total">
-                                                 ৳{{ $item['quantity'] * $item['offer_price'] }}</td>
-                                         </tr>
-                                     @endforeach
-                                     <tr class="cart-subtotal bb-no">
-                                         <td>
-                                             <b>Subtotal</b>
-                                         </td>
-                                         <td>
-                                             <b>৳ {{ number_format($this->getTotalAmount(), 2) }}</b>
-                                         </td>
-                                     </tr>
-                                 </tbody>
-                                 <tfoot>
-                                     <tr class="shipping-methods">
-                                         <td colspan="2" class="text-left">
-                                             <h4 class="title title-simple bb-no mb-1 pb-0 pt-3">Shipping</h4>
-                                             <ul id="shipping-method" class="mb-4">
-                                                 @foreach ($shippingMethods as $shippingMethod)
-                                                     <li>
-                                                         <div class="custom-radio">
-                                                             <input type="radio"
-                                                                 id="shipping-method-{{ $shippingMethod->id }}"
-                                                                 class="custom-control-input" name="shipping"
-                                                                 wire:model="selectedShippingMethodId"
-                                                                 value="{{ $shippingMethod->id }}">
-                                                             <label for="shipping-method-{{ $shippingMethod->id }}"
-                                                                 class="custom-control-label color-dark">
-                                                                 {{ $shippingMethod->provider_name }} -
-                                                                 ৳{{ $shippingMethod->provider_charge }}
-                                                             </label>
-                                                         </div>
-                                                     </li>
-                                                 @endforeach
-                                                 @if ($selectedShippingCharge)
-                                                     <li>
-                                                         <span><strong>Shipping (+):
-                                                                 ৳{{ $selectedShippingCharge }}</strong></span>
-                                                     </li>
-                                                 @elseif($shippingMethods->count() === 1)
-                                                     @php $singleMethod = $shippingMethods->first(); @endphp
-                                                     <li>
-                                                         <span><strong>Shipping (+):
-                                                                 ৳{{ $singleMethod->provider_charge }}</strong></span>
-                                                     </li>
-                                                 @endif
-                                             </ul>
-                                         </td>
-                                     </tr>
+                {{-- Right: Payment, Delivery, Coupon, Summary --}}
+                <div class="col-md-8 col-sm-12">
+                    <div class="row row-payment-delivery-order">
 
-                                     @if (!empty($appliedCoupon))
-                                         <tr class="cart-subtotal bb-no coupon-discount">
-                                             <td>
-                                                 <b>Coupon Discount</b>
-                                             </td>
-                                             <td>
-                                                 <b class="text-danger">-৳{{ $appliedCoupon['discount'] }}</b>
-                                             </td>
-                                         </tr>
-                                     @endif
+                        {{-- Payment Method --}}
+                        <div class="col-md-6 col-sm-12 payment-methods">
+                            <div class="page-section ws-box">
+                                <div class="section-head">
+                                    <h2><span>2</span>Payment Method</h2>
+                                </div>
+                                <p>Select a payment method</p>
+                                <label class="radio-inline">
+                                    <input type="radio" name="payment_type" wire:model="payment_type" value="cod"> Cash on Delivery
+                                </label><br>
+                                {{-- Add more payment options here if needed --}}
+                            </div>
+                        </div>
 
-                                     <tr class="order-total">
-                                         <th>
-                                             <b>Total</b>
-                                         </th>
-                                         <td>
-                                             <b>৳{{ number_format($this->grandTotal(), 2) }}</b>
-                                         </td>
-                                     </tr>
-                                 </tfoot>
-                             </table>
+                        {{-- Shipping Method --}}
+                        <div class="col-md-6 col-sm-12 delivery-methods">
+                            <div class="page-section ws-box">
+                                <div class="section-head">
+                                    <h2><span>3</span>Delivery Method</h2>
+                                </div>
+                                <p>Select a delivery method</p>
+                                @foreach ($shippingMethods as $method)
+                                    <label class="radio-inline">
+                                        <input type="radio" wire:model="selectedShippingMethodId"
+                                            value="{{ $method->id }}">
+                                        {{ $method->provider_name }} - ৳{{ $method->provider_charge }}
+                                    </label><br>
+                                @endforeach
+                                @if ($selectedShippingCharge)
+                                    <div class="mt-2">
+                                        <strong>Shipping (+): ৳{{ $selectedShippingCharge }}</strong>
+                                    </div>
+                                @endif
+                            </div>
+                        </div>
 
+                        {{-- Coupon Code --}}
+                        <div class="col-md-12 col-sm-12">
+                            <div class="page-section ws-box voucher-coupon">
+                                <div class="row">
+                                    <div class="col-md-12 col-sm-12" id="discount-coupon">
+                                        @if (empty($appliedCoupon))
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" wire:model="couponCode"
+                                                    placeholder="Promo / Coupon Code" />
+                                                <span class="input-group-btn">
+                                                    <button type="button" class="btn st-outline btncouopn"
+                                                        wire:click="applyCoupon">
+                                                        <span wire:loading.remove wire:target="applyCoupon">Apply</span>
+                                                        <span wire:loading wire:target="applyCoupon">
+                                                           Loading...
+                                                        </span>
+                                                    </button>
+                                                </span>
+                                            </div>
+                                        @else
+                                            <div class="input-group">
+                                                <input type="text" class="form-control"
+                                                    value="{{ $appliedCoupon['code'] }}" readonly>
+                                                <span class="input-group-btn">
+                                                    <button type="button" class="btn st-outline btncouopn"
+                                                        wire:click="removeCoupon">
+                                                        <span wire:loading.remove wire:target="removeCoupon">Cancel</span>
+                                                        <span wire:loading wire:target="removeCoupon">
+                                                           Loading...
+                                                        </span>
+                                                    </button>
+                                                </span>
+                                            </div>
+                                        @endif
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
-                             <div class="payment-methods">
-                                 <h4>Payment Methods</h4>
+                        {{-- Order Overview --}}
+                        <div class="col-md-12 col-sm-12 details-section-wrap">
+                            <div class="page-section ws-box">
+                                <div class="section-head">
+                                    <h2><span>4</span>Order Overview</h2>
+                                </div>
+                                <table class="table-bordered bg-white checkout-data">
+                                    <thead>
+                                        <tr>
+                                            <td>Product Name</td>
+                                            <td>Price</td>
+                                            <td class="text-right">Total</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($cart as $item)
+                                            <tr>
+                                                <td class="name">
+                                                    <a href="{{ route('product-details', $item['slug']) }}">
+                                                        {{ $item['name'] }}
+                                                    </a>
+                                                </td>
+                                                <td class="price">৳{{ number_format($item['offer_price'],0) }} x {{ $item['quantity'] }}</td>
+                                                <td class="price text-right">৳{{ $item['offer_price'] * $item['quantity'] }}</td>
+                                            </tr>
+                                        @endforeach
 
-                                 <div class="payment-option">
-                                     <input type="radio" id="payment_cod" name="payment_type" value="cod"
-                                         wire:model="payment_type">
-                                     <label class="method-details" for="payment_cod">
-                                         <strong>Cash on Delivery</strong>
-                                     </label>
-                                 </div>
+                                        <tr class="total">
+                                            <td colspan="2" class="text-right"><strong>Sub-Total:</strong></td>
+                                            <td class="text-right">৳{{ number_format($this->getTotalAmount(), 0) }}</td>
+                                        </tr>
 
-                                 {{-- <div class="payment-option">
-                                     <input type="radio" id="payment_ssl" name="payment_type" value="sslcommerz"
-                                         wire:model="payment_type">
-                                     <label class="method-details" for="payment_ssl">
-                                         <strong>Pay with Sslcommerz</strong>
-                                     </label>
-                                 </div> --}}
+                                        @if (!empty($appliedCoupon))
+                                            <tr class="total">
+                                                <td colspan="2" class="text-right"><strong>Coupon Discount:</strong></td>
+                                                <td class="text-right" style="color:#ef4a23;">-৳{{ $appliedCoupon['discount'] }}</td>
+                                            </tr>
+                                        @endif
 
-                             </div>
+                                        @if ($selectedShippingCharge)
+                                            <tr class="total">
+                                                <td colspan="2" class="text-right"><strong>Shipping Charge:</strong></td>
+                                                <td class="text-right">৳{{ $selectedShippingCharge }}</td>
+                                            </tr>
+                                        @endif
 
+                                        <tr class="total">
+                                            <td colspan="2" class="text-right"><strong>Total:</strong></td>
+                                            <td class="text-right" style="color:#ef4a23;"><strong>৳{{ number_format($this->grandTotal(), 0) }}</strong></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-                             <div class="form-group place-order pt-6">
-                                 <button class="btn btn-dark btn-block btn-rounded" type="submit">
-                                     <span wire:loading.remove wire:target="order">Place
-                                         Order</span>
-                                     <span wire:loading wire:target="order">
-                                         <span class="spinner-border spinner-border-sm" role="status"
-                                             aria-hidden="true"></span>
-                                     </span>
-                                 </button>
-                             </div>
-                         </div>
-                     </div>
-                 </div>
-             </div>
-         </form>
-     </div>
- </div>
+            {{-- Final Button & Terms --}}
+            <div class="checkout-final-action mt-4">
+                <div class="agree-text mb-2">
+                    I have read and agree to the
+                    <a href="{{ route('terms') }}" target="_blank"><b>Terms & Conditions</b></a>,
+                    <a href="{{ route('privacy.policy') }}" target="_blank"><b>Privacy Policy</b></a>,
+                    and <a href="{{ route('refund.policy') }}" target="_blank"><b>Refund Policy</b></a>
+                    <input type="checkbox" name="agree" checked>
+                </div>
+                <button type="submit" class="btn btn-dark pull-right btncouopn">
+                    <span wire:loading.remove wire:target="order">Confirm Order</span>
+                    <span wire:loading wire:target="order">
+                        Loading...
+                    </span>
+                </button>
+            </div>
+        </form>
+    </div>
+</section>

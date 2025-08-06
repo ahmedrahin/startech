@@ -58,14 +58,17 @@
             <div class="title" style="text-align: start;padding-left:5px;">Total</div>
             <div class="amount">{{ number_format($this->getTotalAmount(), 0) }}৳</div>
         </div>
+        
         <div class="checkout-btn">
             @if (config('website_settings.guest_checkout') == 1 && Auth::check())
                 <a href="{{ route('checkout') }}">
                     <button class="btn submit">Checkout</button>
                 </a>
             @elseif(config('website_settings.guest_checkout') == 0 && !Auth::check())
-                <button class="btn submit"
+                <a href="javascript:;">
+                    <button class="btn submit"
                     onclick="message('warning', 'Please log in at first to checkout')">Checkout</button>
+                </a>
             @else
                 <a href="{{ route('checkout') }}">
                     <button class="btn submit">Checkout</button>

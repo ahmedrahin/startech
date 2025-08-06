@@ -1,7 +1,7 @@
 @extends('frontend.layout.app')
 
 @section('page-title')
-    Checkout | {{ config('app.name') }}
+    Checkout 
 @endsection
 
 @section('page-css')
@@ -11,7 +11,9 @@
             .btncouopn {
                 width: 200px;
             }
-            
+        }
+        #cart, #cmpr-btn{
+            display: none;
         }
     </style>
 @endsection

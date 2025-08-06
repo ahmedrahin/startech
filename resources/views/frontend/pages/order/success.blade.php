@@ -1,106 +1,359 @@
 @extends('frontend.layout.app')
 
 @section('page-title')
-    Checkout Successful | {{ config('app.name') }}
+    Order Confirmed | {{ config('app.name') }}
 @endsection
 
 @section('page-css')
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
     <style>
-        .success-wrapper {
-            background: #f9f9f9;
-            padding: 40px 20px;
-            border-radius: 10px;
-            text-align: center;
-            margin-bottom: 40px;
+        :root {
+            --primary-color: #4f46e5;
+            --success-color: #10b981;
+            --dark-color: #1f2937;
+            --light-color: #f9fafb;
+            --border-color: #e5e7eb;
+            --text-color: #374151;
+            --text-muted: #6b7280;
         }
-
-        .success-icon {
-            width: 70px;
-            height: 70px;
-            background: #28a745;
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            color: var(--text-color);
+            background-color: #f5f7fa;
+        }
+        
+        .success-container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 15px;
+        }
+        
+        .success-card {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+            margin-bottom: 2rem;
+        }
+        
+        .success-header {
+            background: linear-gradient(135deg, var(--primary-color), #7c3aed);
             color: white;
+            padding: 2.5rem;
+            text-align: center;
+            position: relative;
+        }
+        
+        .success-icon {
+            width: 80px;
+            height: 80px;
+            background: white;
+            color: var(--success-color);
             border-radius: 50%;
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            font-size: 30px;
-            margin-bottom: 15px;
+            font-size: 36px;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 4px 20px rgba(16, 185, 129, 0.3);
         }
-
-        .order-summary, .shipping-info {
-            background: #ffffff;
-            border-radius: 10px;
-            padding: 25px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.05);
-            margin-bottom: 25px;
+        
+        .success-header h2 {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            font-size: 1.8rem;
         }
-
-        .order-item {
+        
+       .success-container .success-header p {
+            opacity: 0.9;
+            margin-bottom: 0;
+            font-size: 1.1rem;
+        }
+        
+       .success-container .order-details {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            padding: 1.5rem 0;
+            background: var(--light-color);
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+       .success-container .detail-item {
+            text-align: center;
+            padding: 0 1rem;
+            margin: 0.5rem 0;
+        }
+        
+       .success-container .detail-item strong {
+            display: block;
+            font-weight: 600;
+            color: var(--dark-color);
+            margin-bottom: 0.25rem;
+            font-size: 1.1rem;
+        }
+        
+       .success-container .detail-item span {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+        
+       .success-container .order-content {
+            display: flex;
+            flex-wrap: wrap;
+            padding: 0;
+        }
+        
+        .success-container .order-items {
+            flex: 1 1 60%;
+            padding: 2rem;
+            border-right: 1px solid var(--border-color);
+            min-width: 300px;
+        }
+        
+       .success-container .order-summary {
+            flex: 1 1 40%;
+            padding: 2rem;
+            background: var(--light-color);
+            min-width: 300px;
+        }
+        
+       .success-container .section-title {
+            font-weight: 600;
+            color: var(--dark-color);
+            margin-bottom: 1.5rem;
+            font-size: 1.25rem;
+            position: relative;
+            padding-bottom: 0.75rem;
+        }
+        
+       .success-container .section-title:after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 50px;
+            height: 3px;
+            background: var(--primary-color);
+            border-radius: 3px;
+        }
+        
+       .success-container .order-item {
             display: flex;
             align-items: center;
-            margin-bottom: 20px;
-            border-bottom: 1px solid #eee;
-            padding-bottom: 15px;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
         }
-
-        .order-item img {
-            width: 60px;
-            height: 60px;
-            object-fit: cover;
+        
+      .success-container  .order-item:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+        
+       .success-container .item-image {
+            width: 80px;
+            height: 80px;
             border-radius: 8px;
-            border: 1px solid #ccc;
-            margin-right: 15px;
+            object-fit: cover;
+            margin-right: 1.5rem;
+            border: 1px solid var(--border-color);
+            flex-shrink: 0;
         }
-
-        .order-item-details {
+        
+       .success-container  .item-details {
             flex-grow: 1;
         }
-
-        .order-summary .summary-total {
-            font-size: 18px;
-            font-weight: 600;
-            color: #333;
-            border-top: 1px solid #ddd;
-            padding-top: 15px;
+        
+        .success-container .item-name {
+            font-weight: 500;
+            margin-bottom: 0.25rem;
+            color: var(--dark-color);
         }
-
-        .btn-group-actions {
-            margin-top: 25px;
-        }
-
-        .btn-group-actions .btn {
-            width: 48%;
-        }
-
-        .btn_black {
-            background-color: #222;
-            color: white;
-            border-radius: 6px;
-            /* padding: 10px 15px; */
+        
+        .success-container .item-name a {
+            color: inherit;
             text-decoration: none;
-            text-align: center;
-            transition: 0.3s;
+            transition: color 0.2s;
         }
-
-        .btn_black:hover {
-            background-color: #000;
+        
+        .success-container .item-name a:hover {
+            color: var(--primary-color);
         }
-
+        
+        .success-container .item-variants {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 0.25rem;
+        }
+        
+        .success-container .item-meta {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+        
+        .success-container .item-price {
+            font-weight: 600;
+            color: var(--dark-color);
+            min-width: 80px;
+            text-align: right;
+        }
+        
+        .success-container .summary-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .success-container .summary-row:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+        
+        .success-container .summary-label {
+            color: var(--text-muted);
+        }
+        
+        .success-container .summary-value {
+            font-weight: 500;
+        }
+        
+       .success-container  .summary-total {
+            font-weight: 600;
+            font-size: 1.1rem;
+            color: var(--dark-color);
+        }
+        
+        .success-container .shipping-info {
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--border-color);
+        }
+        
+         .success-container .shipping-address {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-top: 1rem;
+            border: 1px solid var(--border-color);
+        }
+        
+        .success-container .action-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        
+        .success-container .btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 500;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            flex: 1;
+            min-width: 200px;
+        }
+        
+        .success-container .btn-primary {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+        }
+        
+        .success-container .btn-primary:hover {
+            background: #4338ca;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.2);
+        }
+        
+        .success-container .btn-outline {
+            background: white;
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+        }
+        
+        .success-container .btn-outline:hover {
+            background: #f5f3ff;
+            transform: translateY(-2px);
+        }
+        
+        .success-container .btn i {
+            margin-right: 8px;
+        }
+        
+        .order-date {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+            display: block;
+        }
+        
+        #cart, #cmpr-btn {
+            display: none;
+        }
+        
         @media (max-width: 768px) {
-            .order-item {
+            .order-content {
+                flex-direction: column;
+            }
+            
+            .order-items {
+                border-right: none;
+                border-bottom: 1px solid var(--border-color);
+            }
+            
+            .success-header {
+                padding: 1.5rem;
+            }
+            
+            .success-header h2 {
+                font-size: 1.5rem;
+                line-height: 33px;
+            }
+            
+            .order-details {
                 flex-direction: column;
                 align-items: flex-start;
+                padding: 1rem;
             }
-
-            .order-item img {
-                margin-bottom: 10px;
-            }
-
-            .btn-group-actions .btn {
+            
+            .detail-item {
+                text-align: left;
+                margin: 0.5rem 0;
+                padding: 0;
                 width: 100%;
-                margin-bottom: 10px;
+            }
+            
+            .item-image {
+                width: 60px;
+                height: 60px;
+                margin-right: 1rem;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+            }
+            
+            .success-container .btn {
+                width: 100%;
+                padding: 4px;
+            }
+            .success-icon{
+                width: 50px;
+                 height: 50px;
+                 font-size: 28px;
             }
         }
     </style>
@@ -115,95 +368,102 @@
         };
     @endphp
 
-    <div class="container my-5">
-        <!-- Success Message -->
-        <div class="success-wrapper">
-            <div class="success-icon">
-                <i class="fas fa-check"></i>
+    <div class="success-container">
+        <div class="success-card">
+            <div class="success-header">
+                <div class="success-icon">
+                    <i class="fas fa-check"></i>
+                </div>
+                <h2>Thank You For Your Order!</h2>
+                <p>Your order has been confirmed and will be processed shortly</p>
             </div>
-            <h3 class="text-success mb-2">Thank You! Your Order is Confirmed</h3>
-            <p class="text-muted">
-                Payment Method: <strong>{{ $payment }}</strong><br>
-                Order ID: <strong>{{ $order->order_id }}</strong><br>
-                Total Amount: <strong>৳{{ number_format($order->grand_total, 2) }}</strong>
-            </p>
-        </div>
-
-        <div class="row" style="margin-bottom:50px;">
-            <!-- Left: Order Items -->
-            <div class="col-lg-8">
-                <div class="order-summary">
-                    <h5 class="mb-4">Order Items</h5>
+            
+            <div class="order-details">
+                <div class="detail-item">
+                    <strong>Order Number</strong>
+                    <span>{{ $order->order_id }}</span>
+                </div>
+                <div class="detail-item">
+                    <strong>Date</strong>
+                    <span>{{ \Carbon\Carbon::parse($order->order_date)->format('M d, Y') }}</span>
+                </div>
+                <div class="detail-item">
+                    <strong>Total</strong>
+                    <span>৳{{ number_format($order->grand_total, 2) }}</span>
+                </div>
+                <div class="detail-item">
+                    <strong>Payment Method</strong>
+                    <span>{{ $payment }}</span>
+                </div>
+            </div>
+            
+            <div class="order-content">
+                <div class="order-items">
+                    <h3 class="section-title">Your Order</h3>
+                    
                     @foreach ($order->orderItems as $item)
                         <div class="order-item">
-                            <img src="{{ asset($item->product->thumb_image) }}" alt="">
-                            <div class="order-item-details">
-                                <h6 class="mb-1">
+                            <img src="{{ asset($item->product->thumb_image) }}" alt="{{ $item->product->name }}" class="item-image">
+                            <div class="item-details">
+                                <h4 class="item-name">
                                     <a href="{{ route('product-details', $item->product->slug) }}">
                                         {{ $item->product->name }}
                                     </a>
-                                </h6>
+                                </h4>
                                 @if ($item->orderItemVariations->count())
-                                    <small class="text-muted">
+                                    <div class="item-variants">
                                         @foreach ($item->orderItemVariations as $variant)
                                             {{ ucfirst($variant->attribute_name) }}: {{ ucfirst($variant->attribute_value) }}
                                             @if (!$loop->last) - @endif
                                         @endforeach
-                                    </small><br>
+                                    </div>
                                 @endif
-                                <small>Qty: {{ $item->quantity }} | Unit Price: ৳{{ $item->price }}</small>
+                                <div class="item-meta">Qty: {{ $item->quantity }} | Unit Price: ৳{{ $item->price }}</div>
                             </div>
-                            <div>
-                                <strong>৳{{ $item->price * $item->quantity }}</strong>
-                            </div>
+                            <div class="item-price">৳{{ $item->price * $item->quantity }}</div>
                         </div>
                     @endforeach
-
-                    <div class="summary-total d-flex justify-content-between pt-3">
-                        <span>Total</span>
-                        <span>৳{{ number_format($order->orderItems->sum(fn($i) => $i->price * $i->quantity), 2) }}</span>
-                    </div>
                 </div>
-            </div>
-
-            <!-- Right: Summary -->
-            <div class="col-lg-4">
+                
                 <div class="order-summary">
-                    <h5 class="mb-4">Payment Summary</h5>
-                    <div class="d-flex justify-content-between mb-2">
-                        <span>Subtotal</span>
-                        <span>৳{{ number_format($order->orderItems->sum(fn($i) => $i->price * $i->quantity), 2) }}</span>
+                    <h3 class="section-title">Order Summary</h3>
+                    
+                    <div class="summary-row">
+                        <span class="summary-label">Subtotal</span>
+                        <span class="summary-value">৳{{ number_format($order->orderItems->sum(fn($i) => $i->price * $i->quantity), 2) }}</span>
                     </div>
-                    <div class="d-flex justify-content-between mb-2">
-                        <span>Shipping</span>
-                        <span>৳{{ number_format($order->shipping_cost, 2) }}</span>
+                    <div class="summary-row">
+                        <span class="summary-label">Shipping</span>
+                        <span class="summary-value">৳{{ number_format($order->shipping_cost, 2) }}</span>
                     </div>
-                    <div class="d-flex justify-content-between mb-2">
-                        <span>Discount</span>
-                        <span>-৳{{ number_format($order->coupon_discount, 2) }}</span>
+                    <div class="summary-row">
+                        <span class="summary-label">Discount</span>
+                        <span class="summary-value">-৳{{ number_format($order->coupon_discount, 2) }}</span>
                     </div>
-                    <div class="summary-total d-flex justify-content-between pt-3">
-                        <span>Total</span>
-                        <strong class="text-primary">৳{{ number_format($order->grand_total, 2) }}</strong>
+                    <div class="summary-row">
+                        <span class="summary-total">Total</span>
+                        <span class="summary-total">৳{{ number_format($order->grand_total, 2) }}</span>
                     </div>
-                </div>
-
-                <div class="shipping-info">
-                    <h5 class="mb-3">Shipping Address</h5>
-                    <p class="mb-1">{{ $order->shipping_address }}</p>
-                    <p class="mb-1">{{ $order->district->name }}</p>
-                    <small class="text-muted">
-                        Order Date: {{ \Carbon\Carbon::parse($order->order_date)->format('M d, Y - h:i A') }}
-                    </small>
-                </div>
-
-                <div class="btn-group-actions d-flex justify-content-between">
-                    <a href="{{ route('order.invoice.pdf', $order->order_id) }}" class="btn btn_black">
-                        <i class="fas fa-download me-1"></i> Invoice
-                    </a>
-                    <a href="{{ route('shop') }}" class="btn btn_black">
-                        <i class="fas fa-shopping-bag me-1"></i> Shop More
-                    </a>
+                    
+                    <div class="shipping-info">
+                        <h3 class="section-title">Shipping Information</h3>
+                        <div class="shipping-address">
+                            <p>{{ $order->shipping_address }}</p>
+                            <p>{{ $order->district->name }}</p>
+                            <span class="order-date">
+                                <i class="far fa-clock"></i> Ordered on {{ \Carbon\Carbon::parse($order->order_date)->format('M d, Y - h:i A') }}
+                            </span>
+                        </div>
+                    </div>
+                    
+                    <div class="action-buttons">
+                        <a href="{{ route('order.invoice.pdf', $order->order_id) }}" class="btn btn-primary">
+                            <i class="fas fa-download"></i> Download Invoice
+                        </a>
+                        <a href="{{ url('/') }}" class="btn btn-outline">
+                            <i class="fas fa-shopping-bag"></i> Continue Shopping
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>

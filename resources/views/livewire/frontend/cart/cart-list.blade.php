@@ -1,120 +1,117 @@
-<div class="page-content">
-    <form action="{{ route('message') }}" method="POST" onsubmit="return confirm('Are you sure')"
-        style="display: none;">
-        @csrf
-        <button type="submit">Delete All</button>
-    </form>
-    <div class="container">
-        <div class="row gutter-lg mb-10">
-            <div class="col-lg-8 pr-lg-4 mb-0">
-                <table class="shop-table cart-table">
-                    <thead>
-                        <tr>
-                            <th class="product-name"><span>Product</span></th>
-                            <th></th>
-                            <th class="product-price"><span>Price</span></th>
-                            <th class="product-quantity"><span>Quantity</span></th>
-                            <th class="product-subtotal"><span>Subtotal</span></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach($cart as $cartKey => $item)
-                            <tr>
-                                <td class="product-thumbnail">
-                                    <div class="p-relative">
-                                        <a href="{{ route('product-details', $item['slug']) }}">
-                                            <figure>
-                                                <img src="{{ asset($item['image_url']) }}" alt="product" width="300"
-                                                    height="338">
-                                            </figure>
-                                        </a>
-                                        <button type="submit" class="btn btn-close"
-                                            wire:click="removeItem('{{ $cartKey }}')"><i class="fas fa-times"></i></button>
-                                    </div>
-                                </td>
-                                <td class="product-name">
-                                    <a href="{{ route('product-details', $item['slug']) }}"
-                                        style="font-size: 15px !important;">
-                                        {{ $item['name'] }}
-                                    </a>
-                                    <p class="mb-0" style="font-size: 12px;">
-                                        @if(isset($item['size']) && $item['size'])
-                                        <strong>Size:</strong> {{ $item['size'] }}
-                                        @endif
-                                        @if(isset($item['color']) && $item['color'])
-                                        <strong>Color:</strong> {{ $item['color'] }}
-                                        @endif
-                                    </p>
-                                </td>
-                                <td class="product-price"><span class="amount">৳{{ $item['offer_price'] }}</span></td>
-                                <td class="product-quantity">
-                                    <div class="input-group">
-                                        <input class=" form-control" type="number"
-                                            wire:model.lazy="quantities.{{ $cartKey }}" min="1"
-                                            wire:change="updateQuantities('{{ $cartKey }}', $event.target.value)"
-                                            value="{{ $item['quantity'] }}">
-                                        <button class="quantity-plus w-icon-plus"
-                                            wire:click="incrementQuantity('{{ $cartKey }}')"></button>
-                                        <button class="quantity-minus w-icon-minus"
-                                            wire:click="decrementQuantity('{{ $cartKey }}')"></button>
-                                    </div>
-                                </td>
-                                <td class="product-subtotal">
-                                    <span class="amount">৳{{ $item['offer_price'] * $item['quantity'] }}</span>
-                                </td>
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>
+<div>
+    <section class="after-header p-tb-10">
+        <div class="container">
+            <ul class="breadcrumb">
+                <li><a href="https://www.startech.com.bd/"><i class="material-icons" title="Home">home</i></a></li>
+                <li><a href="https://www.startech.com.bd/checkout/cart">Shopping Cart</a></li>
+            </ul>
+        </div>
+    </section>
 
-                <div class="cart-action mb-6">
-                    <a href="{{ route('shop') }}" class="btn btn-dark btn-rounded btn-icon-left btn-shopping mr-auto"><i
-                            class="w-icon-long-arrow-left"></i>Continue Shopping</a>
-                    <button type="button" class="btn btn-rounded btn-default btn-clear" id="clearAllButton"
-                        wire:click="clearCart">Clear Cart</button>
+
+    <section class="bg-bt-gray p-tb-15" style="padding-top: 50px;">
+        <div class="container">
+            <div class="content ws-box p-15">
+                <h1 class="title">Shopping Cart </h1>
+
+                <div class="table-responsive">
+                    <table class="table table-bordered cart-table bg-white">
+                        <thead>
+                            <tr>
+                                <td class="text-center">Action</td>
+                                <td class="text-center rs-none">Image</td>
+                                <td class="text-left">Product Name</td>
+                                <td class="text-center">Quantity</td>
+                                <td class="text-right rs-none">Unit Price</td>
+                                <td class="text-right">Total</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach($cart as $cartKey => $item)
+                            <tr>
+                                <td class="text-center">
+                                    <button type="submit" class="btn btn-danger btnremove"
+                                        wire:click="removeItem('{{ $cartKey }}')">
+                                        <i class="material-icons">clear</i>
+                                    </button>
+                                </td>
+                                <td class="text-center rs-none">
+                                    <a href="{{ route('product-details', $item['slug']) }}"><img
+                                            src="{{ asset($item['image_url']) }}"
+                                            alt="Gigasonic RB-G195S-300C 19.5&quot; HD LED Monitor"
+                                            title="Gigasonic RB-G195S-300C 19.5&quot; HD LED Monitor"
+                                            class="img-thumbnail" /></a>
+                                </td>
+                                <td class="text-left">
+                                    <a href="{{ route('product-details', $item['slug']) }}">{{ $item['name'] }}</a>
+                                    @if (!empty($item['attributes_info']))
+                                    <br>
+                                    @foreach ($item['attributes_info'] as $attr)
+                                    <small>{{ $attr['name'] }}: {{ $attr['value'] }} @if(!$loop->last) -@endif</small>
+                                    @endforeach
+                                    @endif
+                                </td>
+                                <td class="text-center">
+                                    <label class="quantity">
+                                        <button type="button" wire:click="decrementQuantity('{{ $cartKey }}')">
+                                            <i class="material-icons">remove</i>
+                                        </button>
+                                        <span class="qty">
+                                            <input type="text" min="1" wire:model.lazy="quantities.{{ $cartKey }}"
+                                                wire:change="updateQuantities('{{ $cartKey }}', $event.target.value)"
+                                                value="{{ $item['quantity'] }}">
+                                        </span>
+                                        <button type="button" wire:click="incrementQuantity('{{ $cartKey }}')">
+                                            <i class="material-icons">add</i>
+                                        </button>
+                                    </label>
+                                </td>
+                                <td class="text-right rs-none">{{ number_format($item['offer_price'],0) }}৳</td>
+                                <td class="text-right">{{ $item['offer_price'] * $item['quantity'] }}৳</td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
                 </div>
 
-            </div>
 
-
-            <div class="col-lg-4 sticky-sidebar-wrapper">
-                <div class="pin-wrapper" >
-                    <div class="sticky-sidebar" >
-                        <div class="cart-summary mb-4">
-                            <h3 class="cart-title text-uppercase">Cart Totals</h3>
-                            <div class="cart-subtotal d-flex align-items-center justify-content-between">
-                                <label class="ls-25">Total Cart Items:</label>
-                                <span>({{count($cart)}} Items)</span>
-                            </div>
-                            <div class="cart-subtotal d-flex align-items-center justify-content-between mt-1">
-                                <label class="ls-25">Total Cart Qty:</label>
-                                <span>{{ array_sum(array_column($cart, 'quantity')) }}</span>
-                            </div>
-
-                            <hr class="divider mb-6">
-                            <div class="order-total d-flex justify-content-between align-items-center">
-                                <label>Total</label>
-                                <span class="ls-50 text-primary">৳{{ number_format($this->getTotalAmount(), 2) }}</span>
-                            </div>
-
-                            @if( config('website_settings.guest_checkout') == 1 && Auth::check() )
-                                <a href="{{ route('checkout') }}"
-                                class="btn btn-block btn-dark btn-icon-right btn-rounded  btn-checkout">
-                                Proceed to checkout<i class="w-icon-long-arrow-right"></i></a>
-                            @elseif( config('website_settings.guest_checkout') == 0 && !Auth::check() )
-                                 <button
-                                class="btn btn-block btn-dark btn-icon-right btn-rounded  btn-checkout" onclick="message('warning', 'Please log in at first to checkout')">
-                                Proceed to checkout<i class="w-icon-long-arrow-right"></i></button>
-                            @else
-                                <a href="{{ route('checkout') }}"
-                                class="btn btn-block btn-dark btn-icon-right btn-rounded  btn-checkout">
-                                Proceed to checkout<i class="w-icon-long-arrow-right"></i></a>
-                            @endif
-                        </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <table class="table table-bordered bg-white cart-total">
+                            <tr>
+                                <td class="text-right"><strong>Total Quantity:</strong></td>
+                                <td class="text-right amount">{{ array_sum(array_column($cart, 'quantity')) }}</td>
+                            </tr>
+                            <tr>
+                                <td class="text-right"><strong>Total:</strong></td>
+                                <td class="text-right amount">{{ number_format($this->getTotalAmount(), 2) }}৳</td>
+                            </tr>
+                        </table>
                     </div>
                 </div>
-            </div>
 
+                <div class="buttons">
+                    <div class="pull-right"><a href="{{ url('/') }}" class="btn btn-primary">Continue
+                            Shopping</a></div>
+
+                    @if( config('website_settings.guest_checkout') == 1 && Auth::check() )
+                    <div class="pull-right">
+                        <a href="{{ route('checkout') }}" class="btn btn-primary checkout-btn">Continue Checkout</a>
+                    </div>
+                    @elseif( config('website_settings.guest_checkout') == 0 && !Auth::check() )
+                    <div class="pull-right">
+                        <button class="btn btn-primary checkout-btn"
+                            onclick="message('warning', 'Please log in at first to checkout')">Continue
+                            Checkout</button>
+                    </div>
+                    @else
+                    <div class="pull-right">
+                        <a href="{{ route('checkout') }}" class="btn btn-primary checkout-btn">Continue Checkout</a>
+                    </div>
+                    @endif
+
+                </div>
+            </div>
         </div>
-    </div>
+    </section>
 </div>

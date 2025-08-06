@@ -208,7 +208,18 @@ class Checkout extends Component
             'district_id' => 'required',
         ];
 
-        $this->validate($rules);
+        $message = [
+            'district_id.required' => 'Please select a city.',
+        ];
+
+        $this->validate($rules, $message);
+
+        $cart = session()->get('cart', []);
+
+        if(empty($cart)){
+            $this->emit('error', 'Your cart is empty');
+            return;
+        }
 
         if ($this->selectedShippingMethodId === null) {
             $this->emit('warning', 'Select a shipping method');

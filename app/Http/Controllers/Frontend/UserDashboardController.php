@@ -19,4 +19,7 @@ class UserDashboardController extends Controller
         $order = Order::where('id', $order_id)->first();
         return view('frontend.pages.user.invoice', compact('order'));
     }
+
+    
+
 }

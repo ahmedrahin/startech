@@ -18,10 +18,9 @@
                             data-count="0">0</span></div>
                 </div>
             </div>
-            <div class="ht-item search" id="search">
-                <input type="text" name="search" placeholder="Search" autocomplete="off" />
-                <button class="material-icons">search</button>
-            </div>
+           
+            <livewire:frontend.shop.search-box />
+
             <div class="ht-item q-actions">
                 <a href="https://www.startech.com.bd/information/offer" class="ac h-offer-icon">
                     <div class="ic"><i class="material-icons">card_giftcard</i></div>

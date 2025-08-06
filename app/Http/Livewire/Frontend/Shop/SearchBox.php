@@ -10,59 +10,92 @@ use Carbon\Carbon;
 class SearchBox extends Component
 {
     public $searchQuery = '';
-    public $selectedCategory = '';
+    public $activeTab = 'products';
     public $products = [];
+    public $filteredCategories = [];
+
+    protected $queryString = [
+        'searchQuery' => ['except' => '']
+    ];
 
     public function updatedSearchQuery()
     {
-        $this->fetchProducts();
+        $this->search();
     }
 
-    public function updatedSelectedCategory()
+    public function setActiveTab($tab)
     {
-        $this->fetchProducts();
-    }
-
-    public function fetchProducts()
-    {
-        $this->products = Product::whereIn('status', [1, 3])
-            ->where(function ($query) {
-                $query->whereNull('publish_at')
-                    ->orWhere('publish_at', '<=', Carbon::now());
-            })
-            ->where(function ($query) {
-                $query->whereNull('expire_date')
-                    ->orWhere('expire_date', '>', Carbon::now());
-            })
-            ->when($this->searchQuery, function ($query) {
-                $query->where(function ($q) {
-                    $q->where('name', 'like', '%' . $this->searchQuery . '%')
-                      ->orWhereHas('tags', function ($tagQuery) {
-                          $tagQuery->where('name', 'like', '%' . $this->searchQuery . '%');
-                      });
-                });
-            })
-            ->when($this->selectedCategory, function ($query) {
-                $query->where('category_id', $this->selectedCategory);
-            })
-            ->orderBy('id', 'desc')
-            ->get()
-            ->toArray();
+        $this->activeTab = $tab;
+        $this->search();
     }
 
     public function search()
     {
-        $queryParams = ['query' => $this->searchQuery];
-        if ($this->selectedCategory) {
-            $queryParams['category'] = $this->selectedCategory;
+        if (empty($this->searchQuery)) {
+            $this->products = [];
+            $this->filteredCategories = [];
+            return;
         }
 
-        return redirect()->to('/shop?' . http_build_query($queryParams));
+        if ($this->activeTab === 'products') {
+            $this->searchProducts();
+        } else {
+            $this->searchCategories();
+        }
+    }
+
+    public function searchProducts()
+    {
+        $this->products = Product::whereIn('status', [1, 3])
+            ->where(function($query) {
+                $query->where('name', 'like', '%'.$this->searchQuery.'%')
+                      ->orWhereHas('tags', function($q) {
+                          $q->where('name', 'like', '%'.$this->searchQuery.'%');
+                      });
+            })
+            ->where(function($query) {
+                $query->whereNull('publish_at')
+                      ->orWhere('publish_at', '<=', Carbon::now());
+            })
+            ->where(function($query) {
+                $query->whereNull('expire_date')
+                      ->orWhere('expire_date', '>', Carbon::now());
+            })
+            ->orderBy('name')
+            ->limit(8)
+            ->get()
+            ->toArray();
+    }
+
+    public function searchCategories()
+    {
+        $this->filteredCategories = Category::where('status', 1)
+            ->where('name', 'like', '%'.$this->searchQuery.'%')
+            ->withCount(['products' => function($query) {
+                $query->whereIn('status', [1, 3])
+                    ->where(function($q) {
+                        $q->whereNull('publish_at')
+                          ->orWhere('publish_at', '<=', Carbon::now());
+                    })
+                    ->where(function($q) {
+                        $q->whereNull('expire_date')
+                          ->orWhere('expire_date', '>', Carbon::now());
+                    });
+            }])
+            ->orderBy('name')
+            ->limit(8)
+            ->get();
+    }
+
+    public function performSearch()
+    {
+        if (empty($this->searchQuery)) return;
+
+        return redirect()->route('shop', ['query' => $this->searchQuery]);
     }
 
     public function render()
     {
-        $categories = Category::where('status', 1)->orderBy('name')->get();
-        return view('livewire.frontend.shop.search-box', compact('categories'));
+        return view('livewire.frontend.shop.search-box');
     }
 }

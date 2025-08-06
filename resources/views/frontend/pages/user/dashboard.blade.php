@@ -1,285 +1,95 @@
 @extends('frontend.layout.app')
 
 @section('page-title')
-Dashboard
+My Account
 @endsection
 
 
 @section('page-css')
-<style>
-    .mydashboard .nav-item a {
-        border: 1px solid #eee !important;
-        border-radius: 3px !important;
-    }
-
-    .tab-vertical .nav-item {
-        margin-right: 0;
-        margin: 4px 0;
-    }
-
-    #account-dashboard .icon-box p {
-        font-weight: 600;
-    }
-    #account-orders .account-orders-table .order-id{
-        width: 10%;
-    }
-</style>
+<link href="{{ asset('frontend/style/accounts.min.12.css') }}" type="text/css" rel="stylesheet" media="screen" />
 @endsection
 
 @section('body-content')
 
-<main class="main my-account">
-    <!-- Start of Page Header -->
-    <div class="page-header">
-        <div class="container">
-            <h1 class="page-title mb-0">My Account</h1>
-        </div>
-    </div>
-    <!-- End of Page Header -->
-
-    <!-- Start of Breadcrumb -->
-    <nav class="breadcrumb-nav">
+    <section class="after-header p-tb-10">
         <div class="container">
             <ul class="breadcrumb">
-                <li><a href="demo1.html">Home</a></li>
-                <li>My account</li>
+                <li><a href="{{ url('/') }}"><i class="material-icons" title="Home">home</i></a></li>
+                <li><a href="">Account</a></li>
             </ul>
         </div>
-    </nav>
-    <!-- End of Breadcrumb -->
+    </section>
 
-    <!-- Start of PageContent -->
-    <div class="page-content pt-2 mydashboard">
-        <div class="container">
-            <div class="tab tab-vertical row gutter-lg">
-                <ul class="nav nav-tabs mb-6" role="tablist">
-                    <li class="nav-item">
-                        <a href="#account-dashboard" class="nav-link active">Dashboard</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="#account-orders" class="nav-link">Orders</a>
-                    </li>
-{{-- 
-                    <li class="nav-item">
-                        <a href="#account-addresses" class="nav-link">Addresses</a>
-                    </li> --}}
-                    <li class="nav-item">
-                        <a href="#account-details" class="nav-link">Account details</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="{{ route('wishlist') }}" class="nav-link">Wishlist</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" class="nav-link">Logout</a>
-                    </li>
-                </ul>
-
-                <div class="tab-content mb-6">
-                    <div class="tab-pane active in" id="account-dashboard">
-                        <p class="greeting">
-                            Hello
-                            <span class="text-dark font-weight-bold">{{ auth()->user()->name }}</span>
-                        </p>
-
-                        <p class="mb-4">
-                            From your account dashboard you can view your <a href="#account-orders"
-                                class="text-primary link-to-tab">recent orders</a>,
-                            manage your <a href="#account-addresses" class="text-primary link-to-tab">shipping
-                                and billing
-                                addresses</a>, and
-                            <a href="#account-details" class="text-primary link-to-tab">edit your password and
-                                account details.</a>
-                        </p>
-
-                        <div class="row">
-                            <div class="col-lg-4 col-md-6 col-sm-4 col-xs-6 mb-4">
-                                <a href="#account-orders" class="link-to-tab">
-                                    <div class="icon-box text-center">
-                                        <span class="icon-box-icon icon-orders">
-                                            <i class="w-icon-orders"></i>
-                                        </span>
-                                        <div class="icon-box-content">
-                                            <p class="text-uppercase mb-0">Total Orders ({{ $user->orders->count() }})
-                                            </p>
-                                        </div>
-                                    </div>
-                                </a>
-                            </div>
-                            {{-- <div class="col-lg-4 col-md-6 col-sm-4 col-xs-6 mb-4">
-                                <a href="#account-addresses" class="link-to-tab">
-                                    <div class="icon-box text-center">
-                                        <span class="icon-box-icon icon-address">
-                                            <i class="w-icon-map-marker"></i>
-                                        </span>
-                                        <div class="icon-box-content">
-                                            <p class="text-uppercase mb-0">Addresses</p>
-                                        </div>
-                                    </div>
-                                </a>
-                            </div> --}}
-                            <div class="col-lg-4 col-md-6 col-sm-4 col-xs-6 mb-4">
-                                <a href="#account-details" class="link-to-tab">
-                                    <div class="icon-box text-center">
-                                        <span class="icon-box-icon icon-account">
-                                            <i class="w-icon-user"></i>
-                                        </span>
-                                        <div class="icon-box-content">
-                                            <p class="text-uppercase mb-0">Account Details</p>
-                                        </div>
-                                    </div>
-                                </a>
-                            </div>
-                            <div class="col-lg-4 col-md-6 col-sm-4 col-xs-6 mb-4">
-                                <a href="{{ route('wishlist') }}" class="link-to-tab">
-                                    <div class="icon-box text-center">
-                                        <span class="icon-box-icon icon-wishlist">
-                                            <i class="w-icon-heart"></i>
-                                        </span>
-                                        <div class="icon-box-content">
-                                            <p class="text-uppercase mb-0">Wishlist ({{ $user->wishlist->count() }}
-                                                Items)</p>
-                                        </div>
-                                    </div>
-                                </a>
-                            </div>
-                            <div class="col-lg-4 col-md-6 col-sm-4 col-xs-6 mb-4">
-                                <form id="logout-form" action="{{ route('logout') }}" method="POST"
-                                    style="display: none;">
-                                    @csrf
-                                </form>
-                                <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                                    <div class="icon-box text-center">
-                                        <span class="icon-box-icon icon-logout">
-                                            <i class="w-icon-logout"></i>
-                                        </span>
-                                        <div class="icon-box-content">
-                                            <p class="text-uppercase mb-0">Logout</p>
-                                        </div>
-                                    </div>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="tab-pane mb-4" id="account-orders">
-                        @include('frontend.pages.user.order-list')
-                    </div>
-
-                    <div class="tab-pane" id="account-addresses">
-                        <div class="icon-box icon-box-side icon-box-light">
-                            <span class="icon-box-icon icon-map-marker">
-                                <i class="w-icon-map-marker"></i>
-                            </span>
-                            <div class="icon-box-content">
-                                <h4 class="icon-box-title mb-0 ls-normal">Addresses</h4>
-                            </div>
-                        </div>
-                        <p>The following addresses will be used on the checkout page
-                            by default.</p>
-                        <div class="row">
-                            <div class="col-sm-6 mb-6">
-                                <div class="ecommerce-address billing-address pr-lg-8">
-                                    <h4 class="title title-underline ls-25 font-weight-bold">Billing Address</h4>
-                                    <address class="mb-4">
-                                        <table class="address-table">
-                                            <tbody>
-                                                <tr>
-                                                    <th>Name:</th>
-                                                    <td>John Doe</td>
-                                                </tr>
-                                                <tr>
-                                                    <th>Company:</th>
-                                                    <td>Conia</td>
-                                                </tr>
-                                                <tr>
-                                                    <th>Address:</th>
-                                                    <td>Wall Street</td>
-                                                </tr>
-                                                <tr>
-                                                    <th>City:</th>
-                                                    <td>California</td>
-                                                </tr>
-                                                <tr>
-                                                    <th>Country:</th>
-                                                    <td>United States (US)</td>
-                                                </tr>
-                                                <tr>
-                                                    <th>Postcode:</th>
-                                                    <td>92020</td>
-                                                </tr>
-                                                <tr>
-                                                    <th>Phone:</th>
-                                                    <td>1112223334</td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </address>
-                                    <a href="#" class="btn btn-link btn-underline btn-icon-right text-primary">Edit
-                                        your billing address<i class="w-icon-long-arrow-right"></i></a>
-                                </div>
-                            </div>
-                            <div class="col-sm-6 mb-6">
-                                <div class="ecommerce-address shipping-address pr-lg-8">
-                                    <h4 class="title title-underline ls-25 font-weight-bold">Shipping Address</h4>
-                                    <address class="mb-4">
-                                        <table class="address-table">
-                                            <tbody>
-                                                <tr>
-                                                    <th>Name:</th>
-                                                    <td>John Doe</td>
-                                                </tr>
-                                                <tr>
-                                                    <th>Company:</th>
-                                                    <td>Conia</td>
-                                                </tr>
-                                                <tr>
-                                                    <th>Address:</th>
-                                                    <td>Wall Street</td>
-                                                </tr>
-                                                <tr>
-                                                    <th>City:</th>
-                                                    <td>California</td>
-                                                </tr>
-                                                <tr>
-                                                    <th>Country:</th>
-                                                    <td>United States (US)</td>
-                                                </tr>
-                                                <tr>
-                                                    <th>Postcode:</th>
-                                                    <td>92020</td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </address>
-                                    <a href="#" class="btn btn-link btn-underline btn-icon-right text-primary">Edit your
-                                        shipping address<i class="w-icon-long-arrow-right"></i></a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="tab-pane" id="account-details">
-                        <div class="icon-box icon-box-side icon-box-light">
-                            <span class="icon-box-icon icon-account mr-2">
-                                <i class="w-icon-user"></i>
-                            </span>
-                            <div class="icon-box-content">
-                                <h4 class="icon-box-title mb-0 ls-normal">Account Details</h4>
-                            </div>
-                        </div>
-                        
-                        <livewire:frontend.user.edit-profile :user_id="$user->id" />
-                        <livewire:frontend.user.change-password :user_id="$user->id" />
-                    </div>
+    <div class="container ac-layout">
+        <div class="ac-header">
+            <div class="left">
+                <span class="avatar"><img
+                        src="https://www.gravatar.com/avatar/88dd63c75fe13fe6ca6f68ad068eecf8?s=70&amp;d=mp&amp;r=g"
+                        width="80" height="80" alt="Ra"></span>
+                <div class="name">
+                    <p>Hello,</p>
+                    <p class="user">Rahin ahmed</p>
+                </div>
+            </div>
+            <div class="right">
+                <div class="balance">
+                    <span class="blurb">Star Points</span>
+                    <span class="amount">0</span>
+                </div>
+                <div class="balance">
+                    <span class="blurb">Store Credit</span>
+                    <span class="amount">0</span>
                 </div>
             </div>
         </div>
+
+        <div class="ac-menus">
+            <div class="ac-menu-item">
+                <a href="" class="ico-btn"><span
+                        class="material-icons">chrome_reader_mode</span><span>Orders</span></a>
+            </div>
+            <div class="ac-menu-item">
+                <a href="" class="ico-btn"><span
+                        class="material-icons">assignment</span><span>Quote</span></a>
+            </div>
+            <div class="ac-menu-item">
+                <a href="" class="ico-btn"><span
+                        class="material-icons">person</span><span>Edit Profile</span></a>
+            </div>
+            <div class="ac-menu-item">
+                <a href="" class="ico-btn"><span
+                        class="material-icons">lock</span><span>Change Password</span></a>
+            </div>
+            <div class="ac-menu-item">
+                <a href="" class="ico-btn"><span
+                        class="material-icons">book</span><span>Addresses</span></a>
+            </div>
+            <div class="ac-menu-item">
+                <a href="" class="ico-btn"><span
+                        class="material-icons">favorite_border</span><span>Wish List</span></a>
+            </div>
+            <div class="ac-menu-item">
+                <a href="" class="ico-btn"><span
+                        class="material-icons">important_devices</span><span>Saved PC</span></a>
+            </div>
+            <div class="ac-menu-item">
+                <a href="" class="ico-btn"><span
+                        class="material-icons">stars</span><span>Star Points</span></a>
+            </div>
+            <div class="ac-menu-item">
+                <a href="" class="ico-btn"><span
+                        class="material-icons">account_balance_wallet</span><span>Your Transactions</span></a>
+            </div>
+            <div class="ac-menu-item hide">
+                <a href="" class="ico-btn"><span
+                        class="material-icons">delete</span><span>Delete Account</span></a>
+            </div>
+            <div class="ac-menu-item">
+                <a href="" class="ico-btn"><span
+                        class="material-icons">input</span><span>Logout</span></a>
+            </div>
+        </div>
     </div>
-    <!-- End of PageContent -->
-</main>
-
-
-
 
 @endsection
 

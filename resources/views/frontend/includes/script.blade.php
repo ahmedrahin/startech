@@ -168,6 +168,43 @@
     }
 </script>
 
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const searchBox = document.getElementById('search');
+        const input = searchBox.querySelector('input[type="text"]');
+
+        // Hide dropdown when clicking outside
+        document.addEventListener('click', function (event) {
+            const dropdown = document.getElementById('searchDropdown');
+            if (dropdown && !searchBox.contains(event.target)) {
+                dropdown.style.display = 'none';
+            }
+        });
+
+        // Show dropdown on input focus (if it has value)
+        input.addEventListener('focus', function () {
+            const dropdown = document.getElementById('searchDropdown');
+            if (dropdown && input.value.trim() !== '') {
+                dropdown.style.display = 'block';
+            }
+        });
+
+        // Show/hide dropdown on typing
+        input.addEventListener('input', function () {
+            const dropdown = document.getElementById('searchDropdown');
+            if (!dropdown) return;
+
+            if (input.value.trim() !== '') {
+                dropdown.style.display = 'block';
+            } else {
+                dropdown.style.display = 'none';
+            }
+        });
+    });
+</script>
+
+
+
 @yield('page-script')
 @yield('addcart-js')
 @stack('scripts')

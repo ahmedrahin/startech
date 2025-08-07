@@ -822,65 +822,7 @@ _t.activate = function (a) {
         window.addEventListener("scroll", e);
     });
 })();
-$(function () {
-    function a(a) {
-        var b = "";
-        a.forEach(function (a) {
-            b =
-                "remainder_cnt" === a.type
-                    ? b + ('<div class="search-item remainder-count"><a href="' + a.href + '">' + a.label + "</a></div>")
-                    : b +
-                      ('<div class="search-item"><a href="' +
-                          a.href +
-                          '"><div class="image"><img src="' +
-                          a.thumb +
-                          '"></div><div class="name">' +
-                          a.label +
-                          "</div>" +
-                          (a.price ? (a.special ? '<div class="price"><ins>' + a.special + "</ins> &nbsp; <del>" + a.price + "</del></div>" : '<div class="price">' + a.price + "</div>") : "") +
-                          "</a></div>");
-        });
-        return b;
-    }
-    var b = $('#search input[name="search"]'),
-        d = $(
-            '<div class="dropdown-menu">\n\t\t<div class="search-details">\n\t\t    <ul class="nav nav-tabs">\n                <li data-tab="tab-prod">Products</li>\n                <li data-tab="tab-cat">Categories</li>\n            </ul>\n            <div id="tab-prod" class="search-results"></div>\n            <div id="tab-cat" class="search-results"></div>\n\t\t</div>\n\t</div>'
-        );
-    b.autocomplete({
-        wrap: d,
-        source: function (b, g) {
-            var c = this;
-            b
-                ? $.ajax({
-                      url: "common/search_suggestion/index?keyword=" + encodeURIComponent(b),
-                      dataType: "json",
-                      success: function (b) {
-                          var f = a(b.categories);
-                          d.find("#tab-cat").html(f ? f : '<div class="search-item empty">No results found for query</div>');
-                          f && e.activate(d.find("[data-tab=tab-cat]"));
-                          f = a(b.products);
-                          d.find("#tab-prod").html(f ? f : '<div class="search-item empty">No results found for query</div>');
-                          f && e.activate(d.find("[data-tab=tab-prod]"));
-                          f ? c.show() : c.hide();
-                          d.scrollTop(0);
-                      },
-                  })
-                : c.hide();
-        },
-        select: function (a) {},
-    });
-    var e = new Tab(d),
-        g = !1,
-        h = b.get(0),
-        k = h.hide;
-    h.hide = function () {
-        g || k();
-    };
-    $(document).on("click", function (a) {
-        a = $(a.target);
-        d.has(a).size() || b.is(a) ? (g = !0) : ((g = !1), h.hide());
-    });
-});
+
 $(function () {
     function a(a) {
         var b = this;

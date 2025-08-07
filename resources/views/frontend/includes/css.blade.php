@@ -4,7 +4,6 @@
   <noscript>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   </noscript>
-{{-- <link rel="preload" href="{{ asset('frontend/fonts/MaterialIcons-Regular.woff2') }}" as="font" crossorigin> --}}
   <link rel="stylesheet" type="text/css" href="{{asset('frontend/style/toastify.css')}}"/>
   {{-- <link rel="stylesheet" type="text/css" id="rtl-link" href="{{asset('frontend/style/bootstrap.css')}}"/> --}}
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">

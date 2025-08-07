@@ -17,6 +17,7 @@ class SearchBox extends Component
     protected $queryString = [
         'searchQuery' => ['except' => '']
     ];
+    
 
     public function updatedSearchQuery()
     {
@@ -37,12 +38,11 @@ class SearchBox extends Component
             return;
         }
 
-        if ($this->activeTab === 'products') {
-            $this->searchProducts();
-        } else {
-            $this->searchCategories();
-        }
+        // Always search both
+        $this->searchProducts();
+        $this->searchCategories();
     }
+
 
     public function searchProducts()
     {
@@ -71,7 +71,7 @@ class SearchBox extends Component
     {
         $this->filteredCategories = Category::where('status', 1)
             ->where('name', 'like', '%'.$this->searchQuery.'%')
-            ->withCount(['products' => function($query) {
+            ->withCount(['product' => function($query) {
                 $query->whereIn('status', [1, 3])
                     ->where(function($q) {
                         $q->whereNull('publish_at')

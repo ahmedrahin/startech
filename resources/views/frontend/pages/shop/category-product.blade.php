@@ -97,7 +97,7 @@
                 </div>
             </column>
 
-            <livewire:frontend.shop.shop-product></livewire>
+           <livewire:frontend.shop.shop-product :categorySlug="$categorySlug" />
 
             
         </div>

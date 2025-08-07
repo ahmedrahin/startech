@@ -18,7 +18,10 @@ class ShopController extends Controller
     public function categoryProduct(string $slug){
         $category = Category::where('slug', $slug)->where('status', 1)->first();
         if($category){
-            return view('frontend.pages.shop.category-product', compact('category'));
+            return view('frontend.pages.shop.category-product', [
+                'category' => $category,
+                'categorySlug' => $slug
+            ]);
         }else{
             return view('frontend.pages.error.404');
         }

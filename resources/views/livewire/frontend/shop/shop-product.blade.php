@@ -34,61 +34,87 @@
 
     </div>
     <div class="main-content p-items-wrap">
-        <div class="p-item">
-            <div class="p-item-inner">
-                <div class="p-item-img"><a
-                        href="https://www.startech.com.bd/amd-ryzen-5-3400g-processor-desktop-pc"><img
-                            src="https://www.startech.com.bd/image/cache/catalog/desktop-pc/desktop-offer/38903-000100-228x228.webp"
-                            alt="AMD Ryzen 5 3400G Processor Desktop PC" width="228" height="228"></a></div>
-                <div class="p-item-details">
-                    <h4 class="p-item-name"> <a
-                            href="https://www.startech.com.bd/amd-ryzen-5-3400g-processor-desktop-pc">AMD
-                            Ryzen 5 3400G Processor Desktop PC</a></h4>
-                    <div class="short-description">
-                        <ul>
-                            <li>AMD Ryzen 5 3400G Processor with Radeon RX Vega 11 Graphics
-                            </li>
-                            <li>MSI A520M-A Pro AM4 AMD Micro-ATX Motherboard
-                            </li>
-                            <li>Corsair Vengeance LPX 8GB 3200MHz DDR4 Desktop RAM
-                            </li>
-                            <li>MiPhi MP300G3 256GB M.2 PCIe Gen3 NVMe SSD</li>
-                        </ul>
+        @if (!$products->isEmpty())
+            @foreach ($products as $product)
+                <div class="p-item">
+                    <div class="p-item-inner">
+                        <div class="p-item-img"><a
+                                href="{{ $product->name }}"><img
+                                    src="{{ asset($product->thumb_image) }}"
+                                    alt="{{ $product->name }}" width="228" height="228"></a></div>
+                        <div class="p-item-details">
+                            <h4 class="p-item-name"> <a
+                                    href="{{ route('product-details', $product->slug) }}">
+                                    {{ $product->name }}</a></h4>
+                            <div class="short-description">
+                                <ul>
+                                    <li>AMD Ryzen 5 3400G Processor with Radeon RX Vega 11 Graphics
+                                    </li>
+                                    <li>MSI A520M-A Pro AM4 AMD Micro-ATX Motherboard
+                                    </li>
+                                    <li>Corsair Vengeance LPX 8GB 3200MHz DDR4 Desktop RAM
+                                    </li>
+                                    <li>MiPhi MP300G3 256GB M.2 PCIe Gen3 NVMe SSD</li>
+                                </ul>
+                            </div>
+                            <div class="p-item-price">
+                                <span>23,950৳</span>
+                            </div>
+                            <div class="actions">
+                                <span class="st-btn btn-add-cart" type="button" onclick="cart.add('38903', '1');"><i
+                                        class="material-icons">shopping_cart</i> Buy Now</span>
+                                <span class="st-btn btn-compare" ><i
+                                        class="material-icons">library_add</i>Add to Compare</span>
+                            </div>
+                        </div>
                     </div>
-                    <div class="p-item-price">
-                        <span>23,950৳</span>
-                    </div>
-                    <div class="actions">
-                        <span class="st-btn btn-add-cart" type="button" onclick="cart.add('38903', '1');"><i
-                                class="material-icons">shopping_cart</i> Buy Now</span>
-                        <span class="st-btn btn-compare" ><i
-                                class="material-icons">library_add</i>Add to Compare</span>
-                    </div>
+                </div>
+            @endforeach    
+        @else
+
+        @endif
+
+    </div>
+
+    @if (!$products->isEmpty())
+        <div class="bottom-bar">
+            <div class="row">
+                <div class="col-md-6 col-sm-12">
+                    <ul class="pagination">
+                        {{-- PREV Button --}}
+                        @if ($products->onFirstPage())
+                            <li><span class="disabled">PREV</span></li>
+                        @else
+                            <li><a wire:click="previousPage" wire:loading.attr="disabled" role="button" style="cursor:pointer;">PREV</a></li>
+                        @endif
+
+                        {{-- Page Numbers --}}
+                        @for ($page = 1; $page <= $products->lastPage(); $page++)
+                            @if ($page == $products->currentPage())
+                                <li class="active"><span>{{ $page }}</span></li>
+                            @else
+                                <li>
+                                    <a wire:click="gotoPage({{ $page }})" wire:loading.attr="disabled" style="cursor:pointer;">{{ $page }}</a>
+                                </li>
+                            @endif
+                        @endfor
+
+                        {{-- NEXT Button --}}
+                        @if ($products->hasMorePages())
+                            <li><a wire:click="nextPage" wire:loading.attr="disabled" role="button" style="cursor:pointer;">NEXT</a></li>
+                        @else
+                            <li><span class="disabled">NEXT</span></li>
+                        @endif
+                    </ul>
+                </div>
+
+                <div class="col-md-6 rs-none text-right">
+                    <p>
+                        Showing {{ $products->firstItem() }} to {{ $products->lastItem() }} of {{ $products->total() }} ({{ $products->lastPage() }} Pages)
+                    </p>
                 </div>
             </div>
         </div>
-
-    </div>
-
-    <div class="bottom-bar">
-        <div class="row">
-            <div class="col-md-6 col-sm-12">
-                <ul class="pagination">
-                    <li><span class="disabled">PREV</span></li>
-                    <li class="active"><span>1</span></li>
-                    <li><a href="https://www.startech.com.bd/desktops?page=2">2</a></li>
-                    <li><a href="https://www.startech.com.bd/desktops?page=3">3</a></li>
-                    <li><a href="https://www.startech.com.bd/desktops?page=4">4</a></li>
-                    <li><a href="https://www.startech.com.bd/desktops?page=5">5</a></li>
-                    <li><a href="https://www.startech.com.bd/desktops?page=6">6</a></li>
-                    <li><a href="https://www.startech.com.bd/desktops?page=7">7</a></li>
-                    <li><a href="https://www.startech.com.bd/desktops?page=2">NEXT</a></li>
-                </ul>
-            </div>
-            <div class="col-md-6 rs-none text-right">
-                <p>Showing 1 to 20 of 138 (7 Pages)</p>
-            </div>
-        </div>
-    </div>
+    @endif
 
 </div>

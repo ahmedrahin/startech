@@ -43,6 +43,9 @@ class SubcategoriesDataTable extends DataTable
             ->filterColumn('category_name', function ($query, $keyword) {
                 $query->where('categories.name', 'LIKE', "%{$keyword}%"); // Enable search on category name
             })
+            ->addColumn('is_featured', function (Subcategory $category) {
+                return view('pages.apps.subcategory.columns.featured', compact('category'));
+            })
             ->addColumn('active', function (Subcategory $subcategory) {
                 return view('pages.apps.subcategory.columns._active_status', compact('subcategory'));
             })
@@ -113,6 +116,7 @@ class SubcategoriesDataTable extends DataTable
                 ->addClass('text-center')
                 ->searchable(true), // Enable searching
             Column::computed('product_summaries')->title('Product Summaries')->addClass('text-center'),
+             Column::make(data: 'is_featured')->title('Featured')->addClass('text-center')->exportable(false)->printable(false),
             Column::computed('active')
                 ->title('Status')
                 ->addClass('text-center text-nowrap no-export') 

@@ -36,8 +36,8 @@ Route::get('refund-policy', function(){
 })->name('refund.policy');
 
 // shop page
-Route::prefix('shop')->controller(ShopController::class)->group(function () {
-    Route::get('/', 'allProducts')->name('shop');
+Route::controller(ShopController::class)->group(function () {
+    Route::get('/{slug}', 'categoryProduct')->name('category.product');
     Route::get('/wishlist', 'wishlist')->name('wishlist');
 });
 

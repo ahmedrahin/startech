@@ -33,11 +33,28 @@ class AddSubcategoryModal extends Component
         'delete_subcategory' => 'delete',
         'open_add_modal' => 'openAddModal',
         'update_status'         => 'updateStatus',
+        'update_featured' => 'updateFeatured'
     ];
 
     public function __construct()
     {
         $this->cacheKey = config('dbcachekey.subcategory');
+    }
+
+     public function updateFeatured($id, $value)
+    {
+        $value = $value == 1 ? 1 : 0;
+
+        $category = Subcategory::find($id);
+
+        if ($category) {
+            $category->featured = $value;
+            $category->save();
+
+            session()->flash('success', 'Featured status updated.');
+        } else {
+            session()->flash('error', 'Category not found.');
+        }
     }
 
     public function mount()

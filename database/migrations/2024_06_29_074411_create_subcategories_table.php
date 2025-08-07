@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('slug')->unique();
             $table->text('description')->nullable();
             $table->text('image')->nullable();
+            $table->boolean('featured')->default(false);
             $table->tinyInteger("status")->comment('0=Not active; 1=Active');
             $table->softDeletes();
             $table->timestamps();

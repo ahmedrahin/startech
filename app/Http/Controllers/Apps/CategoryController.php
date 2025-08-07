@@ -18,30 +18,5 @@ class CategoryController extends Controller
         return $dataTable->render('pages.apps.category.list');
     }
     
-    /**
-     * Get the list of categories for the API.
-     */
-    public function getCategory()
-    {
-        try {
-            $categories = Category::select('id','name','slug','image')->get();
-            // Check if categories exist
-            if ($categories->isEmpty()) {
-                return response()->json([
-                    'message' => 'No categories found.',
-                ], Response::HTTP_NOT_FOUND);
-            }
-
-            // Return success response with Category data
-            return response()->json([
-                'success' => 'categories retrieved successfully.',
-                'data' => $categories,
-            ], Response::HTTP_OK);
-        } catch (\Exception $e) {
-            return response()->json([
-                'message' => 'Failed to retrieve categories.',
-                'error' => $e->getMessage(),
-            ], Response::HTTP_INTERNAL_SERVER_ERROR);
-        }
-    }
+   
 }

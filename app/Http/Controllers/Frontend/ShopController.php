@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
+use App\Models\Category;
 use Illuminate\Http\Request;
 use App\Models\Product;
 
@@ -12,6 +13,15 @@ class ShopController extends Controller
     // show product in shop page
     public function allProducts(){
         return view('frontend.pages.shop.shop');
+    }
+
+    public function categoryProduct(string $slug){
+        $category = Category::where('slug', $slug)->where('status', 1)->first();
+        if($category){
+            return view('frontend.pages.shop.category-product', compact('category'));
+        }else{
+            return view('frontend.pages.error.404');
+        }
     }
 
     // product details page

@@ -15,17 +15,30 @@ class ShopController extends Controller
         return view('frontend.pages.shop.shop');
     }
 
-    public function categoryProduct(string $slug){
-        $category = Category::where('slug', $slug)->where('status', 1)->first();
-        if($category){
-            return view('frontend.pages.shop.category-product', [
-                'category' => $category,
-                'categorySlug' => $slug
-            ]);
-        }else{
-            return view('frontend.pages.error.404');
+   public function categoryProduct(Request $request, string $slug)
+    {
+        $category = Category::where('slug', $slug)->where('status', 1)->firstOrFail();
+
+        $perPage = $request->get('limit', config('website_settings.item_per_page'));
+        $sort = $request->get('sort', '');
+
+        $query = Product::where('category_id', $category->id);
+
+        if ($sort) {
+            [$column, $direction] = explode('-', $sort);
+            $query->orderBy($column, $direction);
         }
+
+        $products = $query->paginate($perPage)->appends($request->except('page'));
+
+        if ($request->ajax()) {
+            // return only the product list + pagination partial
+            return view('frontend.pages.shop.partials.category-product-list', compact('products'))->render();
+        }
+
+        return view('frontend.pages.shop.category-product', compact('category', 'slug', 'products', 'perPage'));
     }
+
 
     // product details page
     public function productDetails(string $slug)

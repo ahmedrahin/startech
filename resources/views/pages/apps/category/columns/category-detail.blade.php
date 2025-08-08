@@ -13,19 +13,11 @@
         <span class="text-gray-800 fs-5 fw-bold mb-1">{{$category->name}}</span>
         <!--end::Title-->
         <!--begin::Description-->
-        <?php
-            $description = trim($category->description);
-
-            if (!empty($description)) {
-                $words = explode(' ', $description);
-                $limitedDescription = count($words) > 20 
-                    ? implode(' ', array_slice($words, 0, 20)) . '...' 
-                    : $description;
-            } else {
-                $limitedDescription = '';
-            }
-        ?>
-        <div class="text-muted fs-7 fw-bold">{!! $limitedDescription !!}</div>
+       @if(!empty($category->description))
+            <div class="text-muted fs-7 fw-bold">{{ Str::limit($category->description, 30) }}</div>
+        @else
+        @endif
+        
         <!--end::Description-->
     </div>
 </div>

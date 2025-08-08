@@ -12,33 +12,24 @@
 
 <section class="after-header p-tb-10">
     <div class="container c-intro">
-        <ul class="breadcrumb" itemscope itemtype="http://schema.org/BreadcrumbList">
-            <li><a href="https://www.startech.com.bd/"><i class="material-icons" title="Home">home</i></a></li>
-            <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem"><a
-                    itemtype="http://schema.org/Thing" itemprop="item" href="https://www.startech.com.bd/desktops"><span
-                        itemprop="name">Desktop</span></a>
-                <meta itemprop="position" content="1" />
+        <ul class="breadcrumb">
+            <li><a href="{{ url('/') }}"><i class="material-icons" title="Home">home</i></a></li>
+            <li><a href=""><span>{{ $category->name }}</span></a>
             </li>
         </ul>
-        <h1>Desktop PC Price in Bangladesh (BD)</h1>
-        <p><span style="font-weight: bold;">Desktop PC</span> Price in Bangladesh starts from BDT 25000 and depending on
-            the configuration the price may go up to BDT 600,000 or more, At Star Tech you can get the latest configured
-            custom Desktop PC, Gaming
-            PC, Brand PC, All-in-One PC, Portable Mini PC etc. Browse below and Order yours now!</p>
+        <h1></h1>
+        <p>
+            <span style="font-weight: bold;">{{ $category->name }}</span>
+            {{ $category->description ?? '' }}
+        </p>
         <div class="child-list">
-            <a href="https://www.startech.com.bd/special-pc">Desktop Offer</a><a
-                href="https://www.startech.com.bd/desktops/star-pc">Star PC</a><a
-                href="https://www.startech.com.bd/desktops/gaming-pc">Gaming PC</a><a
-                href="https://www.startech.com.bd/desktops/brand-pc">Brand PC</a>
-            <a href="https://www.startech.com.bd/desktops/all-in-one-pc">All-in-One PC</a><a
-                href="https://www.startech.com.bd/desktops/portable-mini-pc">Portable Mini PC</a><a
-                href="https://www.startech.com.bd/apple-mac-mini">Apple Mac Mini</a><a
-                href="https://www.startech.com.bd/apple-imac">Apple iMac</a>
-            <a href="https://www.startech.com.bd/apple-mac-studio">Apple Mac Studio</a><a
-                href="https://www.startech.com.bd/apple-mac-pro">Apple Mac Pro</a>
+            @foreach ($category->subcategories as $subcategory)
+            <a href="">{{ $subcategory->name }}</a>
+            @endforeach
         </div>
     </div>
 </section>
+
 <section class="p-item-page bg-bt-gray p-tb-15">
     <div class="container">
         <div class="row">
@@ -97,9 +88,131 @@
                 </div>
             </column>
 
-           <livewire:frontend.shop.shop-product :categorySlug="$categorySlug" />
+            {{-- product show --}}
+            <div id="content" class="col-xs-12 col-md-9 product-listing" data-category-slug="{{ $categorySlug }}">
+                <div class="top-bar ws-box">
+                    <div class="row">
+                        <div class="col-sm-4 col-xs-2 actions">
+                            <button class="tool-btn" id="lc-toggle"><i class="material-icons">filter_list</i>
+                                Filter</button>
+                            <label class="page-heading m-hide">{{ $category->name }} ({{ $category->product->count() }})</label>
+                        </div>
+                        <div class="col-sm-8 col-xs-10 show-sort">
+                            <div class="form-group rs-none">
+                                <label for="input-limit">Show:</label>
+                                <div class="custom-select">
+                                    <select id="input-limit">
+                                        <option value="20" {{ $perPage == 20 ? 'selected' : '' }}>20</option>
+                                        <option value="50" {{ $perPage == 50 ? 'selected' : '' }}>50</option>
+                                        <option value="80" {{ $perPage == 80 ? 'selected' : '' }}>80</option>
+                                        <option value="100" {{ $perPage == 100 ? 'selected' : '' }}>100</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="input-sort">Sort By:</label>
+                                <div class="custom-select">
+                                    <select id="input-sort">
+                                        <option value="" {{ request('sort') == '' ? 'selected' : '' }}>Default</option>
+                                        <option value="p.price-ASC" {{ request('sort') == 'p.price-ASC' ? 'selected' : '' }}>Price (Low &gt; High)</option>
+                                        <option value="p.price-DESC" {{ request('sort') == 'p.price-DESC' ? 'selected' : '' }}>Price (High &gt; Low)</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
-            
+                </div>
+
+                <div class="main-content p-items-wrap">
+                    @if (!$products->isEmpty())
+                        @foreach ($products as $product)
+                            <div class="p-item">
+                                <div class="p-item-inner">
+                                    <div class="p-item-img"><a href="{{ $product->name }}"><img
+                                                src="{{ asset($product->thumb_image) }}" alt="{{ $product->name }}" width="228"
+                                                height="228"></a></div>
+                                    <div class="p-item-details">
+                                        <h4 class="p-item-name"> <a href="{{ route('product-details', $product->slug) }}">
+                                                {{ $product->name }}</a></h4>
+                                        <div class="short-description">
+                                            <ul>
+                                                <li>AMD Ryzen 5 3400G Processor with Radeon RX Vega 11 Graphics
+                                                </li>
+                                                <li>MSI A520M-A Pro AM4 AMD Micro-ATX Motherboard
+                                                </li>
+                                                <li>Corsair Vengeance LPX 8GB 3200MHz DDR4 Desktop RAM
+                                                </li>
+                                                <li>MiPhi MP300G3 256GB M.2 PCIe Gen3 NVMe SSD</li>
+                                            </ul>
+                                        </div>
+                                        <div class="p-item-price">
+                                            <span>23,950৳</span>
+                                        </div>
+                                        <div class="actions">
+                                            <span class="st-btn btn-add-cart" type="button" onclick="cart.add('38903', '1');"><i
+                                                    class="material-icons">shopping_cart</i> Buy Now</span>
+                                            <span class="st-btn btn-compare"><i class="material-icons">library_add</i>Add to
+                                                Compare</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        @endforeach
+                    @else
+
+                    @endif
+
+                </div>
+
+                @if (!$products->isEmpty())
+                    <div class="bottom-bar">
+                        <div class="row">
+                            <div class="col-md-6 col-sm-12">
+                                <ul class="pagination">
+                                    {{-- PREV Button --}}
+                                    @if ($products->onFirstPage())
+                                    <li><span class="disabled">PREV</span></li>
+                                    @else
+                                    <li>
+                                        <a href="{{ $products->previousPageUrl() }}" style="cursor:pointer;">PREV</a>
+                                    </li>
+                                    @endif
+
+                                    {{-- Page Numbers --}}
+                                    @for ($page = 1; $page <= $products->lastPage(); $page++)
+                                        @if ($page == $products->currentPage())
+                                        <li class="active"><span>{{ $page }}</span></li>
+                                        @else
+                                        <li>
+                                            <a href="{{ $products->url($page) }}" style="cursor:pointer;">{{ $page }}</a>
+                                        </li>
+                                        @endif
+                                        @endfor
+
+                                        {{-- NEXT Button --}}
+                                        @if ($products->hasMorePages())
+                                        <li>
+                                            <a href="{{ $products->nextPageUrl() }}" style="cursor:pointer;">NEXT</a>
+                                        </li>
+                                        @else
+                                        <li><span class="disabled">NEXT</span></li>
+                                        @endif
+                                </ul>
+                            </div>
+
+                            <div class="col-md-6 rs-none text-right">
+                                <p>
+                                    Showing {{ $products->firstItem() }} to {{ $products->lastItem() }} of {{
+                                    $products->total() }} ({{ $products->lastPage() }} Pages)
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                @endif
+
+            </div>
+
         </div>
     </div>
 </section>

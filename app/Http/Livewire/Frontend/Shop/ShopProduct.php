@@ -30,7 +30,7 @@ class ShopProduct extends Component
         $this->subcategorySlug = $subcategorySlug;
         $this->subsubcategorySlug = $subsubcategorySlug;
 
-        $this->perPage = 1;
+        $this->perPage = config('website_settings.item_per_page');
     }
 
     public function render()

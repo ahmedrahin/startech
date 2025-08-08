@@ -71,7 +71,7 @@ class AddCategoryModal extends Component
         // Validation rules
         $rules = [
             'name' => 'required|unique:categories,name',
-            'description' => 'nullable|max:200',
+            'description' => 'nullable',
             'image'  => 'nullable|mimes:jpeg,png|max:2048'
         ];
 

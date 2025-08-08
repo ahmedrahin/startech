@@ -108,26 +108,7 @@
 
 
 @section('page-script')
-    <script src="{{ asset('frontend/vendor/nouislider/nouislider.min.js') }}"></script>
-    <script>
-        document.addEventListener('livewire:load', function() {
-            // Listen for a custom event to remove the category tag
-            Livewire.on('categoryTagRemoved', (categoryId) => {
-                // Uncheck the corresponding checkbox when the tag is removed
-                const categoryCheckbox = document.getElementById('cat-' + categoryId);
-                if (categoryCheckbox) {
-                    categoryCheckbox.checked = false;
-                }
-
-                // For subcategories, uncheck the corresponding checkbox
-                const subcategoryCheckbox = document.getElementById('subcat-' + categoryId);
-                if (subcategoryCheckbox) {
-                    subcategoryCheckbox.checked = false;
-                }
-            });
-
-        });
-    </script>
+   
 
 
 @endsection

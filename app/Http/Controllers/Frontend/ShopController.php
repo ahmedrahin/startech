@@ -15,29 +15,37 @@ class ShopController extends Controller
         return view('frontend.pages.shop.shop');
     }
 
-   public function categoryProduct(Request $request, string $slug)
+    public function categoryProduct(Request $request, string $slug)
     {
         $category = Category::where('slug', $slug)->where('status', 1)->firstOrFail();
 
         $perPage = $request->get('limit', config('website_settings.item_per_page'));
-        $sort = $request->get('sort', '');
 
         $query = Product::where('category_id', $category->id);
 
-        if ($sort) {
-            [$column, $direction] = explode('-', $sort);
-            $query->orderBy($column, $direction);
+        if ($request->filled('sort')) {
+            $column = $request->sort;
+            $direction = $request->get('order', 'ASC');
+
+            $allowedColumns = ['offer_price', 'created_at', 'id'];
+            $allowedDirections = ['ASC', 'DESC'];
+
+            if (in_array($column, $allowedColumns) && in_array(strtoupper($direction), $allowedDirections)) {
+                $query->orderBy($column, $direction);
+            }
+        } else {
+            $query->orderBy('is_featured', 'asc')->orderBy('id', 'desc');
         }
 
         $products = $query->paginate($perPage)->appends($request->except('page'));
 
         if ($request->ajax()) {
-            // return only the product list + pagination partial
-            return view('frontend.pages.shop.partials.category-product-list', compact('products'))->render();
+            return view('frontend.pages.shop.category-product-list', compact('products'))->render();
         }
 
         return view('frontend.pages.shop.category-product', compact('category', 'slug', 'products', 'perPage'));
     }
+
 
 
     // product details page

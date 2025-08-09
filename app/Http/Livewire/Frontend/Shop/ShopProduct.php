@@ -5,75 +5,92 @@ namespace App\Http\Livewire\Frontend\Shop;
 use Livewire\Component;
 use App\Models\Product;
 use Carbon\Carbon;
-use Livewire\WithPagination;
-use App\Models\Wishlist;
 use Illuminate\Support\Facades\Auth;
 
 class ShopProduct extends Component
 {
-    use WithPagination;
-    protected $paginationTheme = 'bootstrap';
-    public $perPage;
-    public $sortBy = '';
-    public $categorySlug;
-    public $subcategorySlug;
-    public $subsubcategorySlug;
-    
-    protected $queryString = [
-        'perPage' => ['except' => ''],
-        'sortBy' => ['except' => ''],
-    ];
-    
-    public function mount($categorySlug = null, $subcategorySlug = null, $subsubcategorySlug = null)
-    {
-        $this->categorySlug = $categorySlug;
-        $this->subcategorySlug = $subcategorySlug;
-        $this->subsubcategorySlug = $subsubcategorySlug;
+    public $productId;
+    public $quantity = 1;
+     public $selectedAttributes = [];
 
-        $this->perPage = config('website_settings.item_per_page');
+    public function mount($productId)
+    {
+        $this->productId = $productId;
+    }
+    
+    public function addToCart()
+    {
+        $product = Product::with('productStock.attributeOptions.attribute')->find($this->productId);
+
+        if (!$product) {
+            $this->emit('error', 'Product not found.');
+            return;
+        }
+
+        // Validate required attributes based on stock
+        $requiredAttributes = [];
+
+        foreach ($product->productStock as $stock) {
+            foreach ($stock->attributeOptions as $option) {
+                $attrName = $option->attribute->attr_name;
+                $requiredAttributes[$attrName] = true;
+            }
+        }
+
+        // Check if all required attributes are selected
+        foreach (array_keys($requiredAttributes) as $attrName) {
+            if (empty($this->selectedAttributes[$attrName])) {
+                $this->attributeErrors[$attrName] = "Please select $attrName";
+            }
+        }
+
+        if (!empty($this->attributeErrors)) {
+            $this->emit('error', 'Please select all required options.');
+            return;
+        }
+
+        // Validate quantity
+        if ($this->quantity <= 0 || !is_numeric($this->quantity)) {
+            $this->emit('error', 'Invalid product quantity.');
+            return;
+        }
+
+        // Build cart key dynamically
+        $cart = session()->get('cart', []);
+
+        $cartKey = "{$this->productId}";
+        foreach ($this->selectedAttributes as $key => $value) {
+            $cartKey .= "-{$key}:{$value}";
+        }
+
+        $existingQuantity = isset($cart[$cartKey]) ? $cart[$cartKey]['quantity'] : 0;
+        $newTotalQuantity = $existingQuantity + $this->quantity;
+
+        if ($newTotalQuantity > $product->quantity) {
+            $this->emit('error', "You have exceeded available stock for {$product->name}. Only {$product->quantity} available.");
+            return;
+        }
+
+        // Store in cart
+        $cart[$cartKey] = [
+            'product_id' => $this->productId,
+            'quantity' => $newTotalQuantity,
+            'attributes' => $this->selectedAttributes,
+            'added_at' => now(),
+        ];
+
+        session()->put('cart', $cart);
+
+        $this->emit('success', 'Product added to cart.');
+        $this->emit('cartUpdated');
+        $this->emit('cartAdded');
+        // dd($cart);
     }
 
     public function render()
     {
-        $productsQuery = Product::query()
-            ->activeProducts()
-            ->with(['category', 'subcategory', 'subsubcategory']); 
-
-
-        if ($this->categorySlug) {
-            $productsQuery->whereHas('category', function($query) {
-                $query->where('slug', $this->categorySlug)
-                    ->where('status', 1);
-            });
-        }
-
-        if ($this->subcategorySlug) {
-            $productsQuery->whereHas('subcategory', function($query) {
-                $query->where('slug', $this->subcategorySlug)
-                    ->where('status', 1);
-            });
-        }
-
-        // Apply subsubcategory filter if slug exists
-        if ($this->subsubcategorySlug) {
-            $productsQuery->whereHas('subsubcategory', function($query) {
-                $query->where('slug', $this->subsubcategorySlug)
-                    ->where('status', 1);
-            });
-        }
-
-        // Apply sorting
-        if ($this->sortBy) {
-            [$column, $direction] = explode('-', $this->sortBy);
-            $productsQuery->orderBy($column, $direction);
-        } else {
-            $productsQuery->latest(); 
-        }
-
-        // Paginate results
-        $products = $productsQuery->paginate($this->perPage);
-
-        return view('livewire.frontend.shop.shop-product', compact('products'));
+        $product = Product::with('productStock')->find($this->productId);
+        return view('livewire.frontend.shop.shop-product', compact('product'));
     }
 
 }

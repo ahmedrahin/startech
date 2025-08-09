@@ -89,7 +89,7 @@
             </column>
 
             {{-- product show --}}
-            <div id="content" class="col-xs-12 col-md-9 product-listing" data-category-slug="{{ $categorySlug }}">
+            <div id="content" class="col-xs-12 col-md-9 product-listing" data-category-slug="{{ $slug }}">
                 <div class="top-bar ws-box">
                     <div class="row">
                         <div class="col-sm-4 col-xs-2 actions">
@@ -97,25 +97,27 @@
                                 Filter</button>
                             <label class="page-heading m-hide">{{ $category->name }} ({{ $category->product->count() }})</label>
                         </div>
+
                         <div class="col-sm-8 col-xs-10 show-sort">
                             <div class="form-group rs-none">
                                 <label for="input-limit">Show:</label>
                                 <div class="custom-select">
                                     <select id="input-limit">
-                                        <option value="20" {{ $perPage == 20 ? 'selected' : '' }}>20</option>
-                                        <option value="50" {{ $perPage == 50 ? 'selected' : '' }}>50</option>
-                                        <option value="80" {{ $perPage == 80 ? 'selected' : '' }}>80</option>
-                                        <option value="100" {{ $perPage == 100 ? 'selected' : '' }}>100</option>
+                                        <option value="20" {{ request('limit') == 20 ? 'selected' : '' }}>20</option>
+                                        <option value="50" {{ request('limit') == 50 ? 'selected' : '' }}>50</option>
+                                        <option value="80" {{ request('limit') == 80 ? 'selected' : '' }}>80</option>
+                                        <option value="100" {{ request('limit') == 100 ? 'selected' : '' }}>100</option>
                                     </select>
                                 </div>
                             </div>
+
                             <div class="form-group">
                                 <label for="input-sort">Sort By:</label>
                                 <div class="custom-select">
                                     <select id="input-sort">
                                         <option value="" {{ request('sort') == '' ? 'selected' : '' }}>Default</option>
-                                        <option value="p.price-ASC" {{ request('sort') == 'p.price-ASC' ? 'selected' : '' }}>Price (Low &gt; High)</option>
-                                        <option value="p.price-DESC" {{ request('sort') == 'p.price-DESC' ? 'selected' : '' }}>Price (High &gt; Low)</option>
+                                        <option value="offer_price" {{ request('sort') == 'offer_price' ? 'selected' : '' }}>Price (Low &gt; High)</option>
+                                        <option value="offer_price_desc" {{ request('sort') == 'offer_price_desc' ? 'selected' : '' }}>Price (High &gt; Low)</option>
                                     </select>
                                 </div>
                             </div>
@@ -124,103 +126,123 @@
 
                 </div>
 
-                <div class="main-content p-items-wrap">
-                    @if (!$products->isEmpty())
-                        @foreach ($products as $product)
-                            <div class="p-item">
-                                <div class="p-item-inner">
-                                    <div class="p-item-img"><a href="{{ $product->name }}"><img
-                                                src="{{ asset($product->thumb_image) }}" alt="{{ $product->name }}" width="228"
-                                                height="228"></a></div>
-                                    <div class="p-item-details">
-                                        <h4 class="p-item-name"> <a href="{{ route('product-details', $product->slug) }}">
-                                                {{ $product->name }}</a></h4>
-                                        <div class="short-description">
-                                            <ul>
-                                                <li>AMD Ryzen 5 3400G Processor with Radeon RX Vega 11 Graphics
-                                                </li>
-                                                <li>MSI A520M-A Pro AM4 AMD Micro-ATX Motherboard
-                                                </li>
-                                                <li>Corsair Vengeance LPX 8GB 3200MHz DDR4 Desktop RAM
-                                                </li>
-                                                <li>MiPhi MP300G3 256GB M.2 PCIe Gen3 NVMe SSD</li>
-                                            </ul>
-                                        </div>
-                                        <div class="p-item-price">
-                                            <span>23,950৳</span>
-                                        </div>
-                                        <div class="actions">
-                                            <span class="st-btn btn-add-cart" type="button" onclick="cart.add('38903', '1');"><i
-                                                    class="material-icons">shopping_cart</i> Buy Now</span>
-                                            <span class="st-btn btn-compare"><i class="material-icons">library_add</i>Add to
-                                                Compare</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        @endforeach
-                    @else
-
-                    @endif
-
+                <div id="product-list">
+                    @include('frontend.pages.shop.category-product-list')
                 </div>
-
-                @if (!$products->isEmpty())
-                    <div class="bottom-bar">
-                        <div class="row">
-                            <div class="col-md-6 col-sm-12">
-                                <ul class="pagination">
-                                    {{-- PREV Button --}}
-                                    @if ($products->onFirstPage())
-                                    <li><span class="disabled">PREV</span></li>
-                                    @else
-                                    <li>
-                                        <a href="{{ $products->previousPageUrl() }}" style="cursor:pointer;">PREV</a>
-                                    </li>
-                                    @endif
-
-                                    {{-- Page Numbers --}}
-                                    @for ($page = 1; $page <= $products->lastPage(); $page++)
-                                        @if ($page == $products->currentPage())
-                                        <li class="active"><span>{{ $page }}</span></li>
-                                        @else
-                                        <li>
-                                            <a href="{{ $products->url($page) }}" style="cursor:pointer;">{{ $page }}</a>
-                                        </li>
-                                        @endif
-                                        @endfor
-
-                                        {{-- NEXT Button --}}
-                                        @if ($products->hasMorePages())
-                                        <li>
-                                            <a href="{{ $products->nextPageUrl() }}" style="cursor:pointer;">NEXT</a>
-                                        </li>
-                                        @else
-                                        <li><span class="disabled">NEXT</span></li>
-                                        @endif
-                                </ul>
-                            </div>
-
-                            <div class="col-md-6 rs-none text-right">
-                                <p>
-                                    Showing {{ $products->firstItem() }} to {{ $products->lastItem() }} of {{
-                                    $products->total() }} ({{ $products->lastPage() }} Pages)
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                @endif
-
+                
             </div>
 
         </div>
     </div>
 </section>
 
+
+<div id="ajax-loader">
+    <div style="width: 100%;height:100%;display:flex;align-items: center;justify-content: center;">
+        <div class="spinner"></div>
+    </div>
+</div>
+
+
 @endsection
 
 
 @section('page-script')
 
+    <script>
+        jQuery(function($) {
+
+            function getFilters() {
+                let params = new URLSearchParams(window.location.search);
+                params.set('limit', $('#input-limit').val());
+
+                let sortVal = $('#input-sort').val();
+                if (sortVal === '') {
+                    params.delete('sort');
+                    params.delete('order');
+                } else if (sortVal.endsWith('_desc')) {
+                    params.set('sort', sortVal.replace('_desc', ''));
+                    params.set('order', 'DESC');
+                } else {
+                    params.set('sort', sortVal);
+                    params.set('order', 'ASC');
+                }
+
+                return params.toString();
+            }
+
+            function loadProducts() {
+                let queryString = getFilters();
+                let url = window.location.pathname + '?' + queryString;
+
+                $.ajax({
+                    url: url,
+                    type: 'GET',
+                    headers: { 'X-Requested-With': 'XMLHttpRequest' },
+                    beforeSend: function () {
+                        $('#product-list').addClass('loading');
+                        $('#ajax-loader').show();
+                    },
+                    success: function (data) {
+                        $('#product-list').html(data);
+                        Livewire.rescan();
+                        history.pushState(null, '', url);
+                    },
+                    complete: function () {
+                        $('#product-list').removeClass('loading');
+                        $('#ajax-loader').hide();
+                    },
+                    error: function () {
+                        alert('Failed to load products');
+                    }
+                });
+            }
+
+            // When Show or Sort changes
+            $('#input-limit, #input-sort').on('change', function () {
+                loadProducts();
+            });
+
+            // Handle pagination links inside #product-list (delegated)
+            $(document).on('click', '#product-list .pagination a', function (e) {
+                e.preventDefault();
+                let url = $(this).attr('href');
+                $.ajax({
+                    url: url,
+                    type: 'GET',
+                    headers: { 'X-Requested-With': 'XMLHttpRequest' },
+                    beforeSend: function () {
+                        $('#product-list').addClass('loading');
+                        $('#ajax-loader').show();
+                    },
+                    success: function (data) {
+                        $('#product-list').html(data);
+                        Livewire.rescan();
+                        history.pushState(null, '', url);
+                    },
+                    complete: function () {
+                        $('#product-list').removeClass('loading');
+                        $('#ajax-loader').hide();
+                    },
+                    error: function () {
+                        alert('Failed to load products');
+                    }
+                });
+            });
+
+            // Handle browser back/forward buttons
+            window.onpopstate = function () {
+                $.ajax({
+                    url: location.href,
+                    type: 'GET',
+                    headers: { 'X-Requested-With': 'XMLHttpRequest' },
+                    success: function (data) {
+                        $('#product-list').html(data);
+                    }
+                });
+            };
+        });
+
+    </script>
 
 @endsection
